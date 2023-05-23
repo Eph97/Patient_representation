@@ -18,11 +18,16 @@ actual["beta"] = actual.gamma * actual.x
 
 
 # simulate['x'] = np.random.binomial(1, prop, size=num_ind)
-for i in range(1000):
+# number of simulated trials
+num_sims = 1000
+gammas = np.zeros(num_sims)
+
+for i in range(num_sims):
     temp = pd.DataFrame()
     # draw gamma from uniform distribution with p = 0.5
     # simulate['gamma'] = np.random.uniform(0, 1, size=num_ind)
-    simulate['gamma'] = np.repeat(np.random.uniform(0, 1, size=1), num_ind)
+    gammas[i] = np.random.uniform(0, 1, size=1)
+    simulate['gamma'] = np.repeat(gammas[i], num_ind)
     beta_ATE_i = "beta_ATE_" + str(i)
     beta_i = "beta_" + str(i)
     temp[beta_i] = simulate.gamma * simulate.x
@@ -67,10 +72,10 @@ for i in range(num_ind):
 actual['c_i'] = c_i
 
 # This isn't quite right. 
-actual['beta_post'] = (actual.x - actual.c_i * actual.x.mean()) * actual.gamma.mean()
+actual['beta_post'] = (actual.x - actual.c_i * actual.x.mean()) * gammas.mean()
 
 error = ((actual.beta_post - actual.beta_ATE)**2).mean()
 print(error)
 
 # get average gamma if x = 1
-actual[actual.x == 1].c_i.mean()
+# actual[actual.x == 1].c_i.mean()

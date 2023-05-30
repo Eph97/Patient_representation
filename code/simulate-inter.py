@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
+import sys
 
 np.random.seed(365)
 # create dataframe with row ind numbering from 0 to 100,000
@@ -137,10 +138,11 @@ if __name__ == '__main__':
                 # error_df = pd.concat([error_df, error_temp] , ignore_index=True)
                 print(error_temp)
     else: 
-        p_0 = sys.argv[1]
-        p_1 = sys.argv[2]
-        x_bar_0 = sys.argv[3]
-        x_bar_1 = sys.argv[4]
+        p_0     = int(sys.argv[1])
+        p_1     = int(sys.argv[2])
+        x_bar_0 = int(sys.argv[3])
+        x_bar_1 = int(sys.argv[4])
+        print(p_0, p_1, x_bar_0, x_bar_1)
         error_temp = simulate(p_0, p_1, x_bar_0, x_bar_1)
         print(error_temp)
 

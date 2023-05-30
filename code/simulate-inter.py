@@ -129,9 +129,19 @@ def simulate(p_0, p_1, x_bar_0, x_bar_1):
 # plot histogram of c_i
 
 if __name__ == '__main__':
-    for p_1 in options:
-        for x_bar_1 in options:
-            error_temp = simulate(p_0, p_1, x_bar_0, x_bar_1)
+    if len(sys.argv) == 1:
+        for p_1 in options:
+            for x_bar_1 in options:
+                error_temp = simulate(p_0, p_1, x_bar_0, x_bar_1)
 
-            error_df = pd.concat([error_df, error_temp] , ignore_index=True)
-            print(error_df)
+                error_df = pd.concat([error_df, error_temp] , ignore_index=True)
+                print(error_df)
+    else: 
+        p_0 = sys.argv[1]
+        p_1 = sys.argv[2]
+        x_bar_0 = sys.argv[3]
+        x_bar_1 = sys.argv[4]
+
+
+
+

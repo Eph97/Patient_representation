@@ -25,7 +25,7 @@ x_bar_0 = 1
 # x_bar_1 = 0.4
 def simulate(p_0, p_1, x_bar_0, x_bar_1):
     sampled_inds = np.random.choice(num_ind, size=3, replace=False)
-    print(p_0, p_1, x_bar_0, x_bar_1)
+    # print(p_0, p_1, x_bar_0, x_bar_1)
     # p_0, p_1, x_bar_0, x_bar_1 =  np.random.choice()
     prop = [p_0, p_1]
     x_bar = [x_bar_0, x_bar_1]
@@ -57,7 +57,7 @@ def simulate(p_0, p_1, x_bar_0, x_bar_1):
         temp[beta_ATE_i] = np.dot(x_bar, gammas[i])
         simulate = pd.concat([simulate, temp], axis=1)
 
-    print("finished simulating")
+    # print("finished simulating")
 
     # Path: simulate.py
     # beta_ATE_mean = simulate.filter(regex='beta_ATE').mean(axis=1)
@@ -83,7 +83,7 @@ def simulate(p_0, p_1, x_bar_0, x_bar_1):
 
 
     error = (np.square(actual.beta_post - actual.beta_ATE)).mean()
-    print(error)
+    # print(error)
     error_temp = pd.DataFrame({'p_0': prop[0], 'p_1': prop[1], 'x_bar_0': x_bar[0], 'x_bar_1' : x_bar[1], 'error': error}, index=[0])
 
     # Sampled beta_ATE and 3 betas
@@ -134,13 +134,15 @@ if __name__ == '__main__':
             for x_bar_1 in options:
                 error_temp = simulate(p_0, p_1, x_bar_0, x_bar_1)
 
-                error_df = pd.concat([error_df, error_temp] , ignore_index=True)
-                print(error_df)
+                # error_df = pd.concat([error_df, error_temp] , ignore_index=True)
+                print(error_temp)
     else: 
         p_0 = sys.argv[1]
         p_1 = sys.argv[2]
         x_bar_0 = sys.argv[3]
         x_bar_1 = sys.argv[4]
+        error_temp = simulate(p_0, p_1, x_bar_0, x_bar_1)
+        print(error_temp)
 
 
 

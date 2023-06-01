@@ -88,24 +88,23 @@ def simulate(p_0, p_1, x_bar_0, x_bar_1):
     error_temp = pd.DataFrame({'p_0': prop[0], 'p_1': prop[1], 'x_bar_0': x_bar[0], 'x_bar_1' : x_bar[1], 'error': error}, index=[0])
 
     # Sampled beta_ATE and 3 betas
-    fig, axs = plt.subplots(2, 2)
-    axs[0,0].hist(beta_ATEs.values, bins=100)
-    axs[0,0].set_title('beta_ATE')
+    # fig, axs = plt.subplots(2, 2)
+    # axs[0,0].hist(beta_ATEs.values, bins=100)
+    # axs[0,0].set_title('beta_ATE')
 
-    index = sampled_inds[0]
-    axs[0,1].hist(betas.iloc[index], bins=100)
-    axs[0,1].set_title('beta_' + str(sampled_inds[0]))
+    # index = sampled_inds[0]
+    # axs[0,1].hist(betas.iloc[index], bins=100)
+    # axs[0,1].set_title('beta_' + str(sampled_inds[0]))
 
-    index = sampled_inds[1]
-    axs[1,0].hist(betas.iloc[index], bins=100)
-    axs[1,0].set_title('beta_' + str(sampled_inds[1]))
+    # index = sampled_inds[1]
+    # axs[1,0].hist(betas.iloc[index], bins=100)
+    # axs[1,0].set_title('beta_' + str(sampled_inds[1]))
 
-    index = sampled_inds[2]
-    axs[1,1].hist(betas.iloc[index], bins=100)
-    axs[1,1].set_title('beta_' + str(sampled_inds[2]))
-    # plt.hist(betas.iloc[sampled_inds[3]], bins=1000)
-    # plt.show()
-    plt.savefig("../plots/beta_ATE_hist-intercept-" + str(p_1) + "-" + str(x_bar_1) + ".png")
+    # index = sampled_inds[2]
+    # axs[1,1].hist(betas.iloc[index], bins=100)
+    # axs[1,1].set_title('beta_' + str(sampled_inds[2]))
+
+    # plt.savefig("../plots/beta_ATE_hist-intercept-" + str(p_1) + "-" + str(x_bar_1) + ".png")
     
     return error_temp
 
@@ -135,16 +134,16 @@ if __name__ == '__main__':
             for x_bar_1 in options:
                 error_temp = simulate(p_0, p_1, x_bar_0, x_bar_1)
 
-                # error_df = pd.concat([error_df, error_temp] , ignore_index=True)
+                error_df = pd.concat([error_df, error_temp] , ignore_index=True)
                 print(error_temp)
     else: 
         p_0     = float(sys.argv[1])
         p_1     = float(sys.argv[2])
         x_bar_0 = float(sys.argv[3])
         x_bar_1 = float(sys.argv[4])
-        print(p_0, p_1, x_bar_0, x_bar_1)
+        # print(p_0, p_1, x_bar_0, x_bar_1)
         error_temp = simulate(p_0, p_1, x_bar_0, x_bar_1)
-        print(error_temp)
+        print(*error_temp.values[0], sep=",")
 
 
 

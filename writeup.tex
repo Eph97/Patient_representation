@@ -86,16 +86,62 @@
 \end{enumerate}
 
 
+\subsection*{Solving}
 
-% \subsection*{Thoughts}
+we want to solve
+\begin{align*}
+	\min \E[(\beta_i - \beta_{i,post})^2]
+\end{align*} 
 
+let's start by considering
+\begin{align*}
+	\E[(\beta_i - \beta_{i,post})^2] &= \E([ x \gamma  - ((x - c\bar{x}) \E(\gamma) + c \beta_ATE)]^2) \\
+									 &= \E( [x \gamma - x \E(\gamma) + c \bar{x} \E(\gamma) - c \bar{x} \gamma ]^2 ) \\
+									 &= \E ( [x ( \gamma - \E(\gamma)) - c\bar{x} ( \gamma - \E(\gamma))]^2) \\
+									 &= \E([ ( x - c \bar{x}) (\gamma - \E(\gamma))]^2) \\
+									 &= \E[ ( x - c \bar{x})^2 (\gamma - \E(\gamma))^2] \\
+									 &= \E[ ( x^2 - 2 c \bar{x}x + (c \bar{x})^2) (\gamma - \E(\gamma))^2] \\
+									 &= \E[ ( x^2 (\gamma - \E(\gamma))^2]  - \E[ ( 2 c \bar{x}x (\gamma - \E(\gamma))^2] + \E[ ( (c \bar{x})^2) \bar{x}x (\gamma - \E(\gamma))^2] \\
+\end{align*} 
+
+We must also solve $c$ and make a claim about the distribution of $x$.
+
+We have that
+\begin{align*}
+	c = \frac{\Cov (x \gamma, \bar{x} \gamma)}{ \Var( \bar{x} \gamma )}
+\end{align*} 
+
+so if we have a single characteristic and no intercept, then for individual i, $c$ reduces to
+\begin{align*}
+	c &= \frac{\Cov (x \gamma, \bar{x} \gamma)}{ \Var( \bar{x} \gamma )} = \frac{x \bar{x} \Var(\gamma)}{\bar{x}^2 \Var(\gamma)} = \frac{x}{\bar{x}}
+\end{align*} 
+
+
+note that the above formula also captures if we added an intercept. In this case, if we assume $\beta_i = \gamma_1 + \gamma_2 x$ and both gammas are drawn from the same distribution and are independent, then the equation would then simply become
+\begin{align*}
+	c = \frac{(1^2 + x \bar{x})\Var(\gamma)}{(1^2 + \bar{x}^2)\Var(\gamma)} = \frac{1 + x \bar{x}}{1 + \bar{x}^2} = \frac{x' \bar{x}}{\bar{x}' \bar{x}}
+\end{align*} 
+
+% But if we include an intercept, then
 % \begin{align*}
-% 	\min \E[(\beta_i - \beta_{i,post})^2] 
-% \end{align*} \text{ought to also be minimized when}
-% \begin{align*}
-% 	\min (\beta_i - \beta_{i,post})^2
-% \end{align*} is minimized
+% 	c &= \frac{\Cov (x \gamma, \bar{x} \gamma)}{ \Var( \bar{x} \gamma )} \\
+% 	  &= \frac{\Var(\gamma) + \bar{x} \cov}{}
+% \end{align*} 
 
+note, this is for individual $i$ so $x$ is given. Thus the only random variable in this context is $\gamma$
+
+going back to the objective function, then now we are taking the expectation over all individuals, so we can look at the expected population characteristic as a bernoulli r.v. so
+$\E(x^2) = \E(x) = p$ and we get
+ \begin{align*}
+	 &\E[ ( x^2 (\gamma - \E(\gamma))^2]  - \E[ ( 2 c \bar{x}x (\gamma - \E(\gamma))^2] + \E[ ( (c \bar{x})^2) \bar{x}x (\gamma - \E(\gamma))^2] \\
+	 &= \Var(\gamma) [\E(x) - \E(2c\bar{x} x) + \E((c\bar{x})^2)]
+\end{align*} 
+In our case, we're assuming $x=[1, x]$ and  $\gamma = [\gamma_0, \gamma_1]$. Ignore dimensions for now. We can take care of proper transposes etc later to make this formally correct. But this implies we get $\Var(\gamma) = \Var(\gamma_0) + \Var(\gamma_1)$ (by assumption of being uncorrelated).
+\begin{align*}
+	  &\Var(\gamma) [\E(x) - \E(2c\bar{x} x) + \E((c\bar{x})^2)] \\
+	= &\left( \Var(\gamma_0) + \Var(\gamma_1) \right)\left[1 + \E(x) - \frac{2\bar{x}}{1 + \bar{x}^2} \E(x + x^2 \bar{x}) + \frac{\bar{x}^2}{1 + \bar{x}^2} \E(1 + x \bar{x}) \right] \\
+	= &\left( \Var(\gamma_0) + \Var(\gamma_1) \right)\left[1 + \E(x) - \frac{2\bar{x}}{1 + \bar{x}^2} \left(\E(x) +  \bar{x}\E(x)\right) + \frac{\bar{x}^2}{1 + \bar{x}^2} + \bar{x}\frac{\bar{x}^2}{1 + \bar{x}^2} \E(x) ) \right] \\
+\end{align*} 
 \end{document}
 
 

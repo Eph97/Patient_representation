@@ -95,12 +95,26 @@ we want to solve
 
 let's start by considering
 \begin{align*}
-	\E[(\beta_i - \beta_{i,post})^2] &= \E([ x \gamma  - ((x - c\bar{x}) \E(\gamma) + c \beta_ATE)]^2) \\
-									 &= \E( [x \gamma - x \E(\gamma) + c \bar{x} \E(\gamma) - c \bar{x} \gamma ]^2 ) \\
-									 &= \E ( [x ( \gamma - \E(\gamma)) - c\bar{x} ( \gamma - \E(\gamma))]^2) \\
-									 &= \E([ ( x - c \bar{x}) (\gamma - \E(\gamma))]^2) \\
-									 &= \E[ ( x - c \bar{x})^2 (\gamma - \E(\gamma))^2] \\
-									 &= \E[ ( x^2 - 2 c \bar{x}x + (c \bar{x})^2) (\gamma - \E(\gamma))^2] \\
+	\E[(\beta_i - \beta_{i,post})^2] &= \E([ x' \gamma  - ((x - c\bar{x}) \E(\gamma) + c \beta_{ATE})]^2) \\
+									 &= \E( [x' \gamma - x \E(\gamma) + c \bar{x} \E(\gamma) - c \bar{x} \gamma ]^2 ) \\
+									 &= \E ( [x' ( \gamma - \E(\gamma)) - c\bar{x} ( \gamma - \E(\gamma))]^2) \\
+									 &= \E([ ( x' - c \bar{x}) (\gamma - \E(\gamma))]^2) \\
+\end{align*} 
+
+let $A = ( x' - c \bar{x})$ and $B = (\gamma - \E(\gamma))$. Now if $A$ and $B$ are $1x1$ (i.e. there is no intercept, then:
+
+\begin{align*}
+									 &= \E[ ( x' - c \bar{x})^2 (\gamma - \E(\gamma))^2] \\
+									 &= \E[ ( x'x - 2 c \bar{x}x + (c \bar{x})^2) (\gamma - \E(\gamma))^2] \\
+									 &= \E[ ( x^2 (\gamma - \E(\gamma))^2]  - \E[ ( 2 c \bar{x}x (\gamma - \E(\gamma))^2] + \E[ ( (c \bar{x})^2) \bar{x}x (\gamma - \E(\gamma))^2] \\
+\end{align*} 
+
+but if $A$ and $B$ are not scalars but we instead allow for another arbitrary characteristic (including an intercept)
+
+\begin{align*}
+									 &= \E[ (A)^2 (B)^2] + 2*\Pi_i( A_i B_i) \\
+									 &= \E[ (A)^2 (\gamma - \E(\gamma))^2] \\
+									 &= \E[ ( x'x - 2 c \bar{x}x + (c \bar{x})^2) (\gamma - \E(\gamma))^2] \\
 									 &= \E[ ( x^2 (\gamma - \E(\gamma))^2]  - \E[ ( 2 c \bar{x}x (\gamma - \E(\gamma))^2] + \E[ ( (c \bar{x})^2) \bar{x}x (\gamma - \E(\gamma))^2] \\
 \end{align*} 
 
@@ -117,7 +131,7 @@ so if we have a single characteristic and no intercept, then for individual i, $
 \end{align*} 
 
 
-note that the above formula also captures if we added an intercept. In this case, if we assume $\beta_i = \gamma_1 + \gamma_2 x$ and both gammas are drawn from the same distribution and are independent, then the equation would then simply become
+note that the above formula also captures if we added an intercept. In this case, if we assume $\beta_i = \gamma_1, \gamma_2 x$ and both gammas are drawn from the same distribution and are independent, then the equation would then simply become
 \begin{align*}
 	c = \frac{(1^2 + x \bar{x})\Var(\gamma)}{(1^2 + \bar{x}^2)\Var(\gamma)} = \frac{1 + x \bar{x}}{1 + \bar{x}^2} = \frac{x' \bar{x}}{\bar{x}' \bar{x}}
 \end{align*} 
@@ -136,12 +150,123 @@ $\E(x^2) = \E(x) = p$ and we get
 	 &\E[ ( x^2 (\gamma - \E(\gamma))^2]  - \E[ ( 2 c \bar{x}x (\gamma - \E(\gamma))^2] + \E[ ( (c \bar{x})^2) \bar{x}x (\gamma - \E(\gamma))^2] \\
 	 &= \Var(\gamma) [\E(x) - \E(2c\bar{x} x) + \E((c\bar{x})^2)]
 \end{align*} 
-In our case, we're assuming $x=[1, x]$ and  $\gamma = [\gamma_0, \gamma_1]$. Ignore dimensions for now. We can take care of proper transposes etc later to make this formally correct. But this implies we get $\Var(\gamma) = \Var(\gamma_0) + \Var(\gamma_1)$ (by assumption of being uncorrelated).
+In our case, we're assuming $x=[x_0, x_1]$ and  $\gamma = [\gamma_0, \gamma_1]$. Ignore dimensions for now. We can take care of proper transposes etc later to make this formally correct. But this implies we get $\Var(\gamma) = (\Var(\gamma_0), \Var(\gamma_1))$ (by assumption of being uncorrelated).
 \begin{align*}
 	  &\Var(\gamma) [\E(x) - \E(2c\bar{x} x) + \E((c\bar{x})^2)] \\
 	= &\left( \Var(\gamma_0) + \Var(\gamma_1) \right)\left[1 + \E(x) - \frac{2\bar{x}}{1 + \bar{x}^2} \E(x + x^2 \bar{x}) + \frac{\bar{x}^2}{1 + \bar{x}^2} \E(1 + x \bar{x}) \right] \\
 	= &\left( \Var(\gamma_0) + \Var(\gamma_1) \right)\left[1 + \E(x) - \frac{2\bar{x}}{1 + \bar{x}^2} \left(\E(x) +  \bar{x}\E(x)\right) + \frac{\bar{x}^2}{1 + \bar{x}^2} + \bar{x}\frac{\bar{x}^2}{1 + \bar{x}^2} \E(x) ) \right] \\
 \end{align*} 
+
+
+\subsection*{notes}
+integrate over the $\gamma$ 's (taking expecation over possible gammas).
+
+
+
+\subsection*{FOC}
+Let 
+\begin{align*}
+	J = \frac{1}{(1+\bar{x}^2)^2} \left[ \E(\alpha^2)(\bar{x}^4 - 2\bar{x}^3 + p \bar{x}^2)
++ \E(\beta^2) ( p - 2 \bar{x} p + \bar{x}^2) + 2 \E(\alpha)\E(\beta)(2 \bar{x}^2 p - p \bar{x} - \bar{x}^3) \right]
+\end{align*} 
+
+Then taking derivative wrt $\bar{x}$ we get
+\begin{align*}
+	\frac{\partial J}{\partial \bar{x}} = 
+	&\frac{-4 \bar{x_1}}{(1 + \bar{x_1}^2)^3} 
+	\left[ \E(\alpha^2)(\bar{x_1}^4 - 2\bar{x_1}^3 + p \bar{x_1}^2)
+	+ \E(\beta^2) ( p - 2 \bar{x_1} p + \bar{x_1}^2) + 2 \E(\alpha)\E(\beta)(2 \bar{x_1}^2 p - p \bar{x_1} - \bar{x_1}^3) \right] \\
+	+ &\frac{1}{(1 + \bar{x_1}^2)^2} 
+	\left[ \E(\alpha^2)(4 \bar{x_1}^3 - 6\bar{x_1}^2 + 2 p \bar{x_1})
+	+ \E(\beta^2) ( 2 p + 2\bar{x_1}) + 2 \E(\alpha)\E(\beta)(4 \bar{x_1} p - p - 3 \bar{x_1}^2) \right] \\
+	\iff& \\
+		&\frac{4 \bar{x_1}}{(1 + \bar{x_1}^2)^3} 
+	\left[ \E(\alpha^2)(\bar{x_1}^4 - 2\bar{x_1}^3 + p \bar{x_1}^2)
+	+ \E(\beta^2) ( p - 2 \bar{x_1} p + \bar{x_1}^2) + 2 \E(\alpha)\E(\beta)(2 \bar{x_1}^2 p - p \bar{x_1} - \bar{x_1}^3) \right] \\
+	= &\frac{1}{(1 + \bar{x_1}^2)^2} 
+	\left[ \E(\alpha^2)(4 \bar{x_1}^3 - 6\bar{x_1}^2 + 2 p \bar{x_1})
+	+ \E(\beta^2) ( 2 p + 2\bar{x_1}) + 2 \E(\alpha)\E(\beta)(4 \bar{x_1} p - p - 3 \bar{x_1}^2) \right]
+\end{align*} 
+canceling
+\begin{align*}
+		&\frac{4 \bar{x_1}}{(1 + \bar{x_1}^2)} 
+	\left[ \E(\alpha^2)(\bar{x_1}^4 - 2\bar{x_1}^3 + p \bar{x_1}^2)
+	+ \E(\beta^2) ( p - 2 \bar{x_1} p + \bar{x_1}^2) + 2 \E(\alpha)\E(\beta)(2 \bar{x_1}^2 p - p \bar{x_1} - \bar{x_1}^3) \right] \\
+	= &\left[ \E(\alpha^2)(4 \bar{x_1}^3 - 6\bar{x_1}^2 + 2 p \bar{x_1})
+	+ \E(\beta^2) ( 2 p + 2\bar{x_1}) + 2 \E(\alpha)\E(\beta)(4 \bar{x_1} p - p - 3 \bar{x_1}^2) \right]
+\end{align*} 
+
+multiplying out
+\begin{align*}
+	  4 \alpha^2 x_1^5 - 8 x_1^4 \alpha^2 + 4 x_1^3 \alpha^2 p + 4x_1 p \beta^2 - 8 x_1^2 p \beta^2 + 4 x_1^3 \beta^2 + 16 \alpha \beta p x_1^3 - 8 \alpha \beta p x_1^2 - 8 \alpha \beta x_1^4 \\
+	  = 4 \alpha^2 x_1^3 + 4 \alpha^2 x_1^5 - 6 \alpha^2 x_1^2 - 6 x_1^4 \alpha^2 + 2p \alpha^2 \bar{x_1} + 2p \alpha^2 \bar{x_1}^3
+	  + 2 \beta^2 p + 2 \beta^2 p \bar{x_1}^2 + 2 \beta^2 \bar{x_1} + 2 \beta^2 \bar{x_1}^3 \\
+	  + 8 \alpha \beta p \bar{x_1} + 8 \alpha \beta p \bar{x_1}^3 - 2 \alpha \beta p - 2 \alpha \beta p \bar{x_1}^2 - 6 \alpha \beta \bar{x_1}^2 - 6 \alpha \beta \bar{x_1}^4
+\end{align*} 
+
+Cancelling
+\begin{align*}
+	  - 2 x_1^4 \alpha^2 + 4 x_1^3 \alpha^2 p + 4x_1 p \beta^2 - 8 x_1^2 p \beta^2 + 4 x_1^3 \beta^2 + 16 \alpha \beta p x_1^3 - 6 \alpha \beta p x_1^2 - 2 \alpha \beta x_1^4 \\
+	  = 4 \alpha^2 x_1^3 - 6 \alpha^2 x_1^2 - 6 x_1^4 \alpha^2 + 2p \alpha^2 \bar{x_1} + 2p \alpha^2 \bar{x_1}^3
+	  + 2 \beta^2 p + 2 \beta^2 p \bar{x_1}^2 + 2 \beta^2 \bar{x_1} + 2 \beta^2 \bar{x_1}^3 \\
+	  + 8 \alpha \beta p \bar{x_1} + 8 \alpha \beta p \bar{x_1}^3 - 2 \alpha \beta p - 6 \alpha \beta \bar{x_1}^2 
+\end{align*} 
+more cancelling
+\begin{align*}
+	  - 2 x_1^4 \alpha^2 + 4 x_1^3 \alpha^2 p + 4x_1 p \beta^2 - 8 x_1^2 p \beta^2 + 4 x_1^3 \beta^2 + 16 \alpha \beta p x_1^3 - 6 \alpha \beta p x_1^2 - 2 \alpha \beta x_1^4 \\
+	  = 4 \alpha^2 x_1^3 - 6 \alpha^2 x_1^2 - 6 x_1^4 \alpha^2 + 2p \alpha^2 \bar{x_1} + 2p \alpha^2 \bar{x_1}^3
+	  + 2 \beta^2 p + 2 \beta^2 p \bar{x_1}^2 + 2 \beta^2 \bar{x_1} + 2 \beta^2 \bar{x_1}^3 \\
+	  + 8 \alpha \beta p \bar{x_1} + 8 \alpha \beta p \bar{x_1}^3 - 2 \alpha \beta p - 6 \alpha \beta \bar{x_1}^2 
+\end{align*} 
+
+reduces to
+\begin{align*}
+	&(x_1^4)(a_2p + a_1b_1) + (x_1^3)(2a_2 - a_2p - b_2 - 8a_1b_1p ) + \\
+    &(x_1^2)(3b_2p + 7a_1b_1p - 3a_2p - 3a_1b_1) + x_1(pa_2 - 2b_2p + b_2 + 4a_1b_1p) - (b_2p+ a_1b_1p)
+\end{align*} 
+
+
+Now $a_2 = \Var(\gamma_0) = 1 = B_2 = \Var(\gamma_1)$ and $a_1 = \E(\gamma_0 - E(\gamma_0)) = 0 = b_1 =(\gamma_1 - E(\gamma_1)) $
+
+so we further reduce to
+ \begin{align*}
+	&(x_1^4)(\Var(\gamma_0)p) + (x_1^3)(2 \Var(\gamma_0) - \Var(\gamma_0) p - \Var(\gamma_1)) + \\
+    &(x_1^2)(3p \Var(\gamma_1)  - 3 \Var(\gamma_0)p) + x_1(p \Var(\gamma_0) - 2 \Var(\gamma_1)p + \Var(\gamma_1)) - (\Var(\gamma_1) p)
+\end{align*} 
+
+So we finally get
+\begin{align*}
+	&(x_1^4)(p) + (x_1^3)(1 - p) + \\
+    & + x_1(1 - p) - p
+\end{align*} 
+
+solving we get 
+\begin{align*}
+	x = \pm \frac{\sqrt{5 p^2 - 2p + 1} +p -1}{2p}
+\end{align*} 
+
+
+
+
+\section{Symmetric Version}
+Now we impose symmetric variation on both groups so now we have
+$\beta_i = \gamma_0*(1-x)+\gamma_1*x$
+
+and 
+$\beta_{ate} = \gamma_0*(1-\bar{x})+\gamma_1*\bar{x}$
+
+$C$ still has the same analytical solution.
+
+To solve this, let's make this slightly more general where we have $x = [x_0, x_1]$ and $\bar{x} = [\bar{x_0}, \bar{x_1}]$ as above. In the end we can reduce by letting $x_0 = 1 - x_1$ and  $\bar{x_0} = 1 - \bar{x_1}$
+
+our objective function then becomes:
+
+\begin{align*}
+	\E[(\beta_i - \beta_{i,post})^2] &= \E([ x' \gamma  - ((x - c\bar{x}) \E(\gamma) + c \beta_{ATE})]^2) \\
+									 &= \E[ (x' - c\bar{x}')^2 (\gamma - \E(\gamma))^2] + 2\E(\Pi(x' - c\bar{x}') \Pi(\gamma - \E(\gamma))) \\
+									 &= \E[ (x' - c\bar{x}')^2 (\gamma - \E(\gamma))^2] + 2\E(\Pi(x' - c\bar{x}'))\Var(\gamma_0)\Var(\gamma_1) \\
+\end{align*} 
+
 \end{document}
 
-
+(x^4)*(a2*p + a1*b1) + (x^3)*(2*a2 - a2*p - b2 - 8*a1*b1*p ) + (x^2)*(3*b2*p + 7*a1*b1*p - 3*a2*p - 3*a1*b1) + x*(p*a2 - 2*b2*p + b2 + 4*a1*b1*p) - (b2*p+ a1*b1*p)

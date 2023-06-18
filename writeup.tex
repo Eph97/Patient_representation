@@ -262,10 +262,23 @@ To solve this, let's make this slightly more general where we have $x = [x_0, x_
 our objective function then becomes:
 
 \begin{align*}
-	\E[(\beta_i - \beta_{i,post})^2] &= \E([ x' \gamma  - ((x - c\bar{x}) \E(\gamma) + c \beta_{ATE})]^2) \\
-									 &= \E[ (x' - c\bar{x}')^2 (\gamma - \E(\gamma))^2] + 2\E(\Pi(x' - c\bar{x}') \Pi(\gamma - \E(\gamma))) \\
-									 &= \E[ (x' - c\bar{x}')^2 (\gamma - \E(\gamma))^2] + 2\E(\Pi(x' - c\bar{x}'))\Var(\gamma_0)\Var(\gamma_1) \\
+	\E_{\gamma} \left(\E_{x}[(\beta_i - \beta_{i,post})^2] \right) &= \E_{\gamma} \left( \E_{x}([ x' \gamma  - ((x - c\bar{x}) \E_{x}(\gamma) + c \beta_{ATE})]^2) \right) \\
+									 &= \E_{\gamma} \left( \E_{x}[ (x' - c\bar{x}')^2 (\gamma - \E_{x}(\gamma))^2] + 2\E_{x}(\Pi(x' - c\bar{x}') \Pi(\gamma - \E_{x}(\gamma))) \right) \\
+									 &= \E_{x}[ (x' - c\bar{x}')^2] \E_{\gamma} [(\gamma - \E_{x}(\gamma))^2 ] + 2\E_{x}(\Pi(x' - c\bar{x}'))\Var(\gamma_0)\Var(\gamma_1) \\
+									 &= \E_{x}[ (x' - c\bar{x}')^2] \Var(\gamma) + 2\E_{x}(\Pi(x' - c\bar{x}'))\Var(\gamma_0)\Var(\gamma_1) \\
+									 &= \left(\frac{1}{\bar{X}' \bar{X}}\right)^2 
+									 \E_{x} \left( [ X (\bar{X} \bar{X}') - \bar{X}(X \bar{X}'))][ X (\bar{X} \bar{X}') - \bar{X}(X \bar{X}'))]' \right) \Var(\gamma) \\
+									 &+ 2\E_{x}(\Pi( X (\bar{X} \bar{X}') - \bar{X}(X \bar{X}'))) \Var(\gamma_0)\Var(\gamma_1) \\
 \end{align*} 
+
+Now taking it element wise
+\begin{align*}
+	 &\frac{1}{\bar{x}_1^4 + 2\bar{x}_1^2 \bar{x}_2^2 + \bar{x}_2^4} 
+	 \E_{x}\big( \left(x_1^2 \bar{x}_2^4  - 2 x_1 \bar{x}_2^3 x_2 \bar{x}_1 + x_2^2 \bar{x}_1^2 \bar{x}_2^2\right)\Var(\gamma_0) \\
+	+ &\left(x_2^2 \bar{x}_1^4  - 2 x_2 \bar{x}_1^3 x_1 \bar{x}_2 + x_1^2 \bar{x}_1^2 \bar{x}_2^2\right)\Var(\gamma_1) \\
+	+ & 2 \Var(\gamma_0) \Var(\gamma_1)(x_1 \bar{x}_2^2 - x_2 \bar{x}_1 \bar{x}_2) (x_2 \bar{x}_1^2 - x_1 \bar{x}_1 \bar{x}_2) \big)
+\end{align*} 
+
 
 \end{document}
 

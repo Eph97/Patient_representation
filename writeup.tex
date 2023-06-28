@@ -279,7 +279,101 @@ Now taking it element wise
 	+ & 2 \Var(\gamma_0) \Var(\gamma_1)(x_1 \bar{x}_2^2 - x_2 \bar{x}_1 \bar{x}_2) (x_2 \bar{x}_1^2 - x_1 \bar{x}_1 \bar{x}_2) \big)
 \end{align*} 
 
+Substituting in $x_2 = x$ and $x_1 = 1 - x$ and using linearity of expectation.
+
+\begin{align*}
+	 &\frac{1}{\bar{x}_1^4 + 2\bar{x}_1^2 \bar{x}_2^2 + \bar{x}_2^4} 
+	 \big( \left((1-p) \bar{x}_2^4  - 2 (1-p) \bar{x}_2^3 p \bar{x}_1 + p \bar{x}_1^2 \bar{x}_2^2\right)\Var(\gamma_0) \\
+	+ &\left(p \bar{x}_1^4  - 2 p \bar{x}_1^3 (1-p) \bar{x}_2 + (1-p) \bar{x}_1^2 \bar{x}_2^2\right)\Var(\gamma_1) \\
+	+ & 2 \Var(\gamma_0) \Var(\gamma_1)((1-p) \bar{x}_2^2 - p \bar{x}_1 \bar{x}_2) (p \bar{x}_1^2 - (1-p) \bar{x}_1 \bar{x}_2) \big)
+\end{align*} 
+
+Now finally substituting in $\bar x_2 = \bar x$ and $\bar x_1 = 1 - \bar x$ and using the fact that currently $\Var(\gamma_{0,1}) =1$
+
+\begin{align*}
+	 &\frac{1}{(1 - \bar{x})^4 + 2(1 - \bar{x})^2 \bar{x}^2 + \bar{x}^4} 
+	 \big( \left((1-p) \bar{x}^4  - 2 (1-p) \bar{x}^3 p (1 - \bar{x}) + p (1 - \bar{x})^2 \bar{x}^2\right) \\
+	+ &\left(p (1 - \bar{x})^4  - 2 p (1 - \bar{x})^3 (1-p) \bar{x} + (1-p) (1 - \bar{x})^2 \bar{x}^2\right) \\
+	+ & 2 ((1-p) \bar{x}^2 - p (1 - \bar{x}) \bar{x}) (p (1 - \bar{x})^2 - (1-p) (1 - \bar{x}) \bar{x}) \big)
+\end{align*} 
+
+
+\begin{align*}
+&((4 - 8*x) * ((p2 * x^4 - 2 * p * p2 * x^3 + 2 * p*p2*x^4 + p*x^2 -2*p*x^3 + p*x^4) + \\
+&(p*(1-4x + 6x^2 - 4x^3 + x^4) - 2*(x - x^2 - 2*x^2 + 2*x^3 - x^4)*p2*p + p2*(x^2 - 2*x^3 + p*x^4)) + \\ 
+&2*(p*x^2 - x*p^2 - p*x^3 + p*x^2 - x^3 + p*x^2 + x^4 - p*x^3)) \\
+&= (2*x^2 - 2*x + 1)*((4 p2 * x^3 - 6 * p * p2 * x^2 + 8 * p*p2*x^3 + 2 p*x -6*p*x^2 + 4 p*x^3) + \\
+&(p2*(2*x - 6*x^2 + 4*x^3) - 4*p*(1 - 3x + 3x^2 - x^3) - \\
+&(2 + 4*x + 8*x - 12*x^2 + 16*x^3 )*p*p2 )+ \\
+&2*(2*p*x - p^2 - 3*p*x^2 + 2*p*x - 3*x^2 + 2*p*x + 4*x^3 - 3*p*x^2)))
+\end{align*} 
+
+simplifying 
+
+\begin{align*}
+&((4 - 8*x) * (x^4 ( p_2 + p+ 2 p p_2 + p - 2 p_2 p + p_2 + 2) + \\
+&(x^3 ( -2 p p_2 - 4 p - 2p -4p_2 p  - 2 p_2 - 2 p - 2 - 2p) ) + \\
+&(x^2 (p  + 6 p + 2p_2 p + 4 p_2 p + p_2 + 2p - 2p^2 + 2 p + 2p)) + \\
+&(x (-4p -2 p_2 p - 2 p^2)) + \\
+&(p)
+ = (2*x^2 - 2x +1) (x^3 (4 p_2 + 8 p p_2 + 4 p - 16 p p_2)) + \\
+&(x^2(-6 p p_2 - 6 p - 6 p_2 - 12p - 12 p p_2 - 6 p - 6 - 6p)) + \\
+&(x(2p + 2p_2 + 12p - 12 p p_2 + 4p + 4p + 4p) + \\
+&(-4p -2 p p_2)
+\end{align*} 
+
+canceling
+
+\begin{align*}
+&((4 - 8*x) * (x^4 (4) + \\
+&(x^3 (-6 p_2 p - 8p - 4) ) + \\
+&(x^2 (18p - 8p^2)) + \\
+&(x (-4p -2 p_2 p - 2 p^2)) + \\
+&(p)
+ = (2*x^2 - 2x +1) (x^3 (4 - 8 p p_2 )) + \\
+&(x^2(-18p p_2 - 24p - 12)) + \\
+&(x(24 p - 12 p p_2 + 2) + \\
+&(-4p -2 p p_2)
+\end{align*} 
+
+\begin{align*}
+&((16 x^4  + \\
+&(4 x^3 (-6 p_2 p - 8p - 4) ) + \\
+&(4 x^2 (18p - 8p^2)) + \\
+&(4 x (-4p -2 p_2 p - 2 p^2)) + \\
+&(4p) + \\
+&(-32 x^6)  + \\
+&(-8x^5 (-6 p_2 p - 8p - 4) ) + \\
+&(-8x^4 (18p - 8p^2)) + \\
+&(-8x^3 (-4p -2 p_2 p - 2 p^2)) + \\
+&(-8x^2p)
+ = (2*x^2 - 2x +1) (x^3 (4 - 8 p p_2 )) + \\
+&(x^2(-18p p_2 - 24p - 12)) + \\
+&(x(24 p - 12 p p_2 + 2) + \\
+&(-4p -2 p p_2)
+\end{align*} 
+
+
+\subsection{element wise}
+let $b = \gamma_1 - \gamma_0$
+$a = \gamma_0 - \E(\gamma_0) + \E(\gamma_1)$
+$a^2 = \E(a^2)$
+$b^2 = \E(b^2)$
+$ab = \E(ab) = \E(a)\E(b)$
+
+% denom = (1 - 2*xb + 2*xb**2)
+
+\begin{align*}
+	&(\E(b^2)p + 2\E(ab)p + \E(a^2)) - \\
+	&\frac{(\bar{x}^2(2p\E(b^2) + 2\E(ab)  (2p-1)) + \bar{x}(2\E(ab) + 2\E(a^2)(2p-1))+2\E(a^2)(1-p) )}{denom}  + \\
+	&\frac{(\E(b^2)\bar{x}^4 + 2\bar{x}^3(\E(b^2)(p-1) + \E(ab)) + \bar{x}^2(\E(b^2)(1-p) + 4\E(ab)(p-1) + \E(a^2))}{denom^2} + \\
+	&\frac{2\bar{x}( \E(ab)(1-p) + \E(a^2)(p-1)) + \E(a^2)(1-p))}{denom^2}
+\end{align*} 
+
+
+
 
 \end{document}
 
 (x^4)*(a2*p + a1*b1) + (x^3)*(2*a2 - a2*p - b2 - 8*a1*b1*p ) + (x^2)*(3*b2*p + 7*a1*b1*p - 3*a2*p - 3*a1*b1) + x*(p*a2 - 2*b2*p + b2 + 4*a1*b1*p) - (b2*p+ a1*b1*p)
+

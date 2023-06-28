@@ -5,6 +5,7 @@ from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
 import sys
 from findMin import C, C_2
+from functions import fAndG
 
 np.random.seed(366)
 # np.random.seed(365)
@@ -31,6 +32,8 @@ x_bar_0 = 1
 p_1_opt = [0.4, 0.6, 0.75]
 gamma_actual = np.random.multivariate_normal(mean=gamma_mean, cov=gamma_cov, size=1)
 gammas = np.random.multivariate_normal(mean=gamma_mean, cov=gamma_cov, size=num_sims)
+sample_gamma_mean = gammas.mean(axis=0)
+vals = []
 
 for p_1 in p_1_opt:
     prop = np.array([p_0, p_1])
@@ -59,19 +62,12 @@ for p_1 in p_1_opt:
 
         # assert (c_i - c_i_2 < 0.05).all()
 
-        # add c_i to dataframe
-        actual['c_i'] = c_i
-
         # This isn't quite right. 
-        sample_gamma_mean = gammas.mean(axis=0)
         # beta_post = np.dot(x, sample_gamma_mean) + c_i*(actual.beta_ATE - np.dot(x_bar, sample_gamma_mean))
         beta_post = np.dot(x, sample_gamma_mean).reshape(num_ind,1) + c_i.reshape(num_ind,1)*((beta_ate - np.dot(x_bar, sample_gamma_mean)).reshape(1,num_sims))
 
         error = (np.square(beta_post - betas)).mean()
         # error = (np.square(beta_post - actual.beta)).mean()
-
-        # error = (np.square(beta_post - betas.mean(axis=1))).mean()
-
         # print(error)
         error_temp = pd.DataFrame({'p_0': prop[0], 'p_1': round(prop[1],3), 'x_bar_0': x_bar[0], 'x_bar_1' : round(x_bar[1],3), 'error': error}, index=[0])
         error_df = pd.concat([error_df, error_temp] , ignore_index=True)
@@ -88,25 +84,6 @@ output_pivot = output2.pivot(index='p_1', columns='x_bar_1', values='error')
 
 
 
-fig,ax =plt.subplots(3,3)
-ax[0,0].plot(options, output_pivot.iloc[0])
-ax[0,0].axvline(x=p_1_opt[0])
-min_ind =output_pivot.iloc[0].to_list().index(min(output_pivot.iloc[0]))
-ax[0,0].axvline(x=output_pivot.columns[min_ind], color='red')
-# add text of exact value of min(output_pivot.iloc[0])
-ax[0,0].text(0.5, 0.5, str(output_pivot.columns[min_ind]), fontsize=12)
-
-ax[1,0].plot(options, output_pivot.iloc[1])
-ax[1,0].axvline(x=p_1_opt[1])
-min_ind =output_pivot.iloc[1].to_list().index(min(output_pivot.iloc[1]))
-ax[1,0].axvline(x=output_pivot.columns[min_ind], color='red')
-ax[1,0].text(0.5, 0.5, str(output_pivot.columns[min_ind]), fontsize=12)
-
-ax[2,0].plot(options, output_pivot.iloc[2])
-ax[2,0].axvline(x=p_1_opt[2])
-min_ind =output_pivot.iloc[2].to_list().index(min(output_pivot.iloc[2]))
-ax[2,0].axvline(x=output_pivot.columns[min_ind], color='red')
-ax[2,0].text(0.5, 0.5, str(output_pivot.columns[min_ind]), fontsize=12)
 
 def error(p, x_bar_1,a,b):
     error12 = (((a**2).mean()*(x_bar_1**4 - 2*p*x_bar_1**3 + p*x_bar_1**2)) + ((b**2).mean()*(p - 2*x_bar_1*p + x_bar_1**2)) + ((2*a*b).mean()*(2*p*x_bar_1**2 - p*x_bar_1 - x_bar_1**3)))/(1+ 2*x_bar_1**2+x_bar_1**4)
@@ -152,20 +129,43 @@ def anal_min(p):
     two = (p+ np.sqrt(5*p**2 - 2*p + 1) - 1)/(2*p)
     return np.array([one,two])
 
+fig,ax =plt.subplots(3,3)
+ax[0,0].plot(options, output_pivot.iloc[0])
+ax[0,0].axvline(x=p_1_opt[0])
+min_ind =output_pivot.iloc[0].to_list().index(min(output_pivot.iloc[0]))
+ax[0,0].axvline(x=output_pivot.columns[min_ind], color='red')
+# add text of exact value of min(output_pivot.iloc[0])
+ax[0,0].text(0.5, 0.5, str(output_pivot.columns[min_ind]), fontsize=12)
+
+ax[1,0].plot(options, output_pivot.iloc[1])
+ax[1,0].axvline(x=p_1_opt[1])
+min_ind =output_pivot.iloc[1].to_list().index(min(output_pivot.iloc[1]))
+ax[1,0].axvline(x=output_pivot.columns[min_ind], color='red')
+ax[1,0].text(0.5, 0.5, str(output_pivot.columns[min_ind]), fontsize=12)
+
+ax[2,0].plot(options, output_pivot.iloc[2])
+ax[2,0].axvline(x=p_1_opt[2])
+min_ind =output_pivot.iloc[2].to_list().index(min(output_pivot.iloc[2]))
+ax[2,0].axvline(x=output_pivot.columns[min_ind], color='red')
+ax[2,0].text(0.5, 0.5, str(output_pivot.columns[min_ind]), fontsize=12)
 
 for ind, p_1 in enumerate(p_1_opt):
     p = p_1
     # B = (gamma_actual - sample_gamma_mean).T
     B = (gammas - sample_gamma_mean).T
+    prop = np.array([p_0, p_1])
+
+    x = np.random.binomial(1, prop, size=(num_ind, num_groups))
     a = B[0]
     b = B[1]
 
     props = np.linspace(0,1,101)
 
-    y_error = [error(p, x, a, b) for x in props]
-    y_deriv1 = [deriv(p, x, a, b).mean() for x in props]
-    y_deriv2 = [deriv2(p, x, a, b) for x in props]
-    y_deriv4 = [deriv4(p, x, a, b) for x in props]
+    y_error = [error(p, prop, a, b) for prop in props]
+    y_deriv1 = [deriv(p, prop, a, b).mean() for prop in props]
+    y_deriv2 = [deriv2(p, prop, a, b) for prop in props]
+    y_deriv4 = [deriv4(p, prop, a, b) for prop in props]
+    y_deriv5 = np.array([[fAndG(B.var(axis=1), np.array([1,prop]), x_i)[0] for prop in props] for x_i in x]).mean(axis=0)
 
     # assert (np.array(y_deriv1) - np.array(y_deriv4) < 0.001).all()
     y_deriv = y_deriv4.copy()

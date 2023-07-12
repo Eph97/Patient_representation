@@ -5,6 +5,10 @@ Here we start with a stylized optimal approach. Later we will look at how physic
 First we examine a simple solution in which two subpopulations comprise the population and share equal variance.
 Interestingly our model suggests it is optimal to under-represent minority groups. It seems because error is linear in marginal changes in representation?
 
+# Versions
+
+* Equal variance for in two symmetric subpopulations. [Writeup](./writeup/writeup.pdf)
+
 # Simulate
 
 * N = 100,000 people

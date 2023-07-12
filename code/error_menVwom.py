@@ -5,7 +5,6 @@ def error(x, xb, g0, g1):
     g1 = g1.reshape(1,-1)
     a = (g0 - g0.mean())
     b = (g1 - g1.mean())
-    # b2_prev = 
     b2 = (b**2).mean()
     a2 = (a**2).mean()
     y = xb
@@ -28,7 +27,6 @@ def errorMenWom(x, xb, g0, g1):
     b = (g1 - g1.mean())
     y = (1-x)
     yb = (1-xb)
-    # b2_prev = 
     # b2 = (b**2).mean()
     # a2 = (a**2).mean()
     c = (1 - x - xb + 2*x*xb)/(1 - 2*xb + 2*xb**2)
@@ -50,7 +48,6 @@ def errorMenWom2(x, xb, g0, g1):
     b = (g1 - g1.mean())
     y = (1-x)
     yb = (1-xb)
-    # b2_prev = 
     # b2 = (b**2).mean()
     # a2 = (a**2).mean()
     c = (1 - x - xb + 2*x*xb)/(1 - 2*xb + 2*xb**2)
@@ -68,7 +65,6 @@ def errorMenWom3(x, xb, g0, g1):
     b = (g1 - g1.mean())
     y = (1-x)
     yb = (1-xb)
-    # b2_prev = 
     # b2 = (b**2).mean()
     # a2 = (a**2).mean()
     c = (1 - x - xb + 2*x*xb)/(1 - 2*xb + 2*xb**2)
@@ -85,14 +81,13 @@ def errorMenWom4(x, xb, g0, g1):
     # b = (g1 - g1.mean())
     y = (1-x)
     yb = (1-xb)
-    # b2_prev = 
     # b2 = (b**2).mean()
     # a2 = (a**2).mean()
     # c = (1 - x - xb + 2*x*xb)/(1 - 2*xb + 2*xb**2)
     c = (y*yb + x*xb)/(yb**2 + xb**2)
-    w_men = (x - c*xb)**2*np.var(g1)
-    w_wom = (y - c*yb)**2*np.var(g0)
-    error = (w_men + w_wom)
+    w_men = (x - c*xb)
+    w_wom = (y - c*yb)
+    error = (w_wom**2*np.var(g0) + w_men**2*np.var(g1))
     return error.mean()
 
 
@@ -103,7 +98,6 @@ def errorMenWom5(p, xb, g0, g1):
     # a = (g0 - g0.mean())
     # b = (g1 - g1.mean())
     yb = (1-xb)
-    # b2_prev = 
     # b2 = (b**2).mean()
     # a2 = (a**2).mean()
     w_wom = 1 - (yb**2)/(yb**2 + xb**2)
@@ -111,6 +105,15 @@ def errorMenWom5(p, xb, g0, g1):
     error = ((1-p)*w_wom*np.var(g0) + p*w_men*np.var(g1))
     return error
 
+def errorMenWom5Rev(p, xb, g0, g1):
+    g0 = g0.reshape(1,-1)
+    g1 = g1.reshape(1,-1)
+    yb = (1-xb)
+    denom = (yb**2 + xb**2)
+    w_wom = 1 - (yb**2)/denom
+    w_men = 1 - (xb**2)/denom
+    error = ((1-p)*w_wom*np.var(g0) + p*w_men*np.var(g1))
+    return error
 
 
 
@@ -121,7 +124,6 @@ def errorMenWom6(p, xb, g0, g1):
     # a = (g0 - g0.mean())
     # b = (g1 - g1.mean())
     yb = (1-xb)
-    # b2_prev = 
     # b2 = (b**2).mean()
     # a2 = (a**2).mean()
     w_men = (yb**2)/(yb**2 + xb**2)
@@ -130,7 +132,47 @@ def errorMenWom6(p, xb, g0, g1):
     return error
 
 
+def errorMenWom7(p, xb, g0, g1):
+    # x = x.reshape(-1,1)
+    g0 = g0.reshape(1,-1)
+    g1 = g1.reshape(1,-1)
+    # a = (g0 - g0.mean())
+    # b = (g1 - g1.mean())
+    yb = (1-xb)
+    # b2 = (b**2).mean()
+    # a2 = (a**2).mean()
+    denom = (yb**2 + xb**2)
+    w_men = p*(yb**4 )/denom**2 +(1-p)*yb**2*xb**2/denom**2
+    w_wom = (1-p)*(xb**4 )/denom**2 +p*yb**2*xb**2/denom**2
+    error = (w_wom*np.var(g0) + w_men*np.var(g1))
+    # error = ((1-p)*(xb**2/denom) + p*(yb**2/denom))
+    return error
 
+def errorMenWom8(p, xb, g0, g1):
+    g0 = g0.reshape(1,-1)
+    g1 = g1.reshape(1,-1)
+    a = (g0 - g0.mean())
+    b = (g1 - g1.mean())
+    yb = (1-xb)
+    denom = (yb**2 + xb**2)
+    w_wom = ((xb**2 )/denom)*a - ((xb*yb)/denom)*b
+    w_men = ((yb**2 )/denom)*b - ((xb*yb)/denom)*a
+    error = (1-p)*w_wom**2 + p*w_men**2
+    # error = ((1-p)*(xb**2/denom) + p*(yb**2/denom))
+    return error.mean()
+
+def errorMenWom9(p, xb, g0, g1):
+    g0 = g0.reshape(1,-1)
+    g1 = g1.reshape(1,-1)
+    a = (g0 - g0.mean())
+    b = (g1 - g1.mean())
+    yb = (1-xb)
+    denom = (yb**2 + xb**2)
+    w_wom = ((xb**4 )/denom**2)*np.var(g0) + ((xb*yb)**2/denom**2)*np.var(g1)
+    w_men = ((yb**4 )/denom**2)*np.var(g1) + ((xb*yb)**2/denom**2)*np.var(g0)
+    error = (1-p)*w_wom + p*w_men
+    # error = ((1-p)*(xb**2/denom) + p*(yb**2/denom))
+    return error
 
 def splitderiv2(p, xb, g0, g1):
     # x = x.reshape(-1,1)
@@ -139,18 +181,12 @@ def splitderiv2(p, xb, g0, g1):
     # a = (g0 - g0.mean())
     # b = (g1 - g1.mean())
     yb = (1-xb)
-    # b2_prev = 
     # b2 = (b**2).mean()
     # a2 = (a**2).mean()
     w_men = (2*xb*(1-xb))/(2*xb**2-2*xb+1)**2
     w_wom = -(2*xb*(1-xb))/(2*xb**2-2*xb+1)**2
     deriv = (1-p)*w_wom + p*w_men
     return deriv
-
-
-
-
-
 
 
 

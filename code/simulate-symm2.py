@@ -6,14 +6,14 @@ import sys
 from findMin import C, C_2
 from functions import fAndG
 # from symm_error import error, deriv, error2, error3, error32, error4, error5, error6, error7, test1, test2
-from error_menVwom import errorMenWom, deriv, errorMenWom2, errorMenWom4, errorMenWom5, errorMenWom6, splitderiv2
+from error_menVwom import errorMenWom, deriv, errorMenWom2, errorMenWom4, errorMenWom5, errorMenWom6, splitderiv2, errorMenWom7, errorMenWom8, errorMenWom9
 
 
 # np.random.seed(366)
 # np.random.seed(365)
 # np.random.seed(36)
 # create dataframe with row ind numbering from 0 to 100,000
-num_ind = 10000
+num_ind = 1000
 num_sims = 10000
 num_groups = 2
 gamma_mean = np.ones(num_groups) *0.0
@@ -70,10 +70,11 @@ for p_1 in p_1_opt:
         error = (np.square(beta_post - betas)).mean()
         # error_val = error2(x[:,1],x_bar_1, g0, g1)
         # error_val = errorMis3(x[:,1],x_bar_1, g0, g1)
-        error_val4 = errorMenWom4(x[:,1],x_bar_1, g0, g1)
-        error_val = errorMenWom6(p_1,x_bar_1, g0, g1)
-        print(error_val4, error_val, np.abs(error_val - error_val4).round(5))
-        # assert (np.abs(error_val4 - error_val) < 0.005)
+        # error_val4 = errorMenWom4(x[:,1],x_bar_1, g0, g1)
+        # error_val = errorMenWom7(p_1,x_bar_1, g0, g1)
+        error_val = errorMenWom9(p_1,x_bar_1, g0, g1)
+        print(error, error_val, np.abs(error_val - error).round(5))
+        # assert (np.abs(error_val - error) < 0.005)
 
         # deriv = deriv5(p_1, x_bar_1,g0, g1)
         # deriv = deriv7(p_1, x_bar_1,g0, g1)

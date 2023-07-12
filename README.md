@@ -1,3 +1,10 @@
+# Idea
+
+How do physicians respond to changes in average characteristics in a clinical trial when inferring results on a subpopulation?
+Here we start with a stylized optimal approach. Later we will look at how physicians respond in the real world.
+First we examine a simple solution in which two subpopulations comprise the population and share equal variance.
+Interestingly our model suggests it is optimal to under-represent minority groups. It seems because error is linear in marginal changes in representation?
+
 # Simulate
 
 * N = 100,000 people
@@ -12,7 +19,6 @@
 
 * How much we update in the real-world depends on how beta_i and beta_ATE correlate across the 1000 simulations for each individual
 
-* https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4259486
+* current closest [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4259486)
 
 
-6206972597

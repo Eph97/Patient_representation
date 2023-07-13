@@ -123,12 +123,12 @@ Recall we want to minimize
 One way we can rewrite these equations is as the effect of women vs men.
 let
 \begin{align*}
-	\sqrt{J} &= \beta_i -  \beta_{i,post} = \underbrace{[(1-x) \gamma_0 + x \gamma_1]}_{\text{$\beta_i$}}  - \underbrace{[((x - c \bar{x})\E(\gamma) + c \beta_{ATE})]}_\text{$\beta_{i,post}$} \\
+	\sqrt{MSE} &= \beta_i -  \beta_{i,post} = \underbrace{[(1-x) \gamma_0 + x \gamma_1]}_{\text{$\beta_i$}}  - \underbrace{[((x - c \bar{x})\E(\gamma) + c \beta_{ATE})]}_\text{$\beta_{i,post}$} \\
 	  &= [(1-x) \gamma_0 + x \gamma_1]  - [((1-x) - c (1 - \bar{x})) \E(\gamma_0) + (x - c \bar{x})\E(\gamma_1) + c((1-\bar{x}) \gamma_0 + \bar{x} \gamma_1)] \\
 	  % &= [(1-x) \gamma_0 + x \gamma_1  - (x - c \bar{x})\E(\gamma) + c((1-\bar{x}) \gamma_0 + \bar{x} \gamma_1)] \\
 \end{align*}
 
-$\beta_i$ $\beta_{i, post}$ and as a result, $J$ are all a function of $x$. We can then describe
+$\beta_i$ $\beta_{i, post}$ and as a result, $MSE$ are all a function of $x$. We can then describe
 
 $\beta_{i}^{men} = \beta_i (x=1)$ and similarly for other terms to get
 
@@ -143,7 +143,7 @@ So
 this can be broken down into
 
 \begin{align*}
-	J &= (\beta_i^{men} - \beta_i^{post, men} )+ (\beta_i^{wom} - \beta_i^{post, wom}) \\
+	\sqrt{ MSE } &= (\beta_i^{men} - \beta_i^{post, men} )+ (\beta_i^{wom} - \beta_i^{post, wom}) \\
 \end{align*} 
 
 let 
@@ -185,32 +185,32 @@ and
 
 so then
 \begin{align*}
-	\E_x J &= p W_{men}^2 + (1 - p)W_{wom}^2 \\
+	\E_x MSE &= p W_{men}^2 + (1 - p)W_{wom}^2 \\
 	&= p \left(\frac{(1-\bar{x})^4\Var(\gamma_1) + ( \bar{x}^2 (1-\bar{x})^2 ) \Var(\gamma_0)}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) + (1-p)\left(\frac{(\bar{x})^4 \Var(\gamma_0) + ( \bar{x}^2 (1-\bar{x})^2 ) \Var(\gamma_1) }{((1-\bar{x})^2 + \bar{x}^2)^2}\right) \\
 \end{align*} 
 
 so using the fact that $\Var(\gamma_0) = \Var(\gamma_1) = 1$ we get
 
 \begin{align*}
-	\E_x J &= p \left(\frac{(1-\bar{x})^4 + ( \bar{x}^2 (1-\bar{x})^2 ) }{((1-\bar{x})^2 + \bar{x}^2)^2}\right) + (1-p)\left(\frac{(\bar{x})^4  + ( \bar{x}^2 (1-\bar{x})^2 ) }{((1-\bar{x})^2 + \bar{x}^2)^2}\right) \\
-	\E_x J &= p \left(\frac{(1-\bar{x})^2 }{(1-\bar{x})^2 + \bar{x}^2}\right) + (1-p)\left(\frac{(\bar{x})^2 }{(1-\bar{x})^2 + \bar{x}^2}\right) \\
+	\E_x MSE &= p \left(\frac{(1-\bar{x})^4 + ( \bar{x}^2 (1-\bar{x})^2 ) }{((1-\bar{x})^2 + \bar{x}^2)^2}\right) + (1-p)\left(\frac{(\bar{x})^4  + ( \bar{x}^2 (1-\bar{x})^2 ) }{((1-\bar{x})^2 + \bar{x}^2)^2}\right) \\
+	\E_x MSE &= p \left(\frac{(1-\bar{x})^2 }{(1-\bar{x})^2 + \bar{x}^2}\right) + (1-p)\left(\frac{(\bar{x})^2 }{(1-\bar{x})^2 + \bar{x}^2}\right) \\
 			 &= p \frac{(1-\bar{x})^2}{(1-\bar{x})^2 + \bar{x}^2} + (1-p) \frac{\bar{x}^2}{(1-\bar{x})^2 + \bar{x}^2}
 \end{align*} 
 
 In other words for individual $i$ we have that
 
 \begin{align*}
-	\E(J) &= p (1 - c_{men} \bar{x}) + (1-p) (1 - c_{women} (1 - \bar{x})) \\
-	\E(J) &= p \left(1 - \frac{\bar{x}^2}{(1-\bar{x})^2 + \bar{x}^2}\right) + (1-p) \left(1 - \frac{(1-\bar{x})^2}{(1-\bar{x})^2 + \bar{x}^2} \right) \\
-	\E(J) &= p \left(\frac{(1 - \bar{x})^2}{(1-\bar{x})^2 + \bar{x}^2}\right) + (1-p) \left(\frac{\bar{x}^2}{(1-\bar{x})^2 + \bar{x}^2} \right) \\
-	\E(J) &= p \left[ (1 - \bar{x})c_{wom} \right] + (1-p) \left[ \bar{x}c_{men} \right] \\
+	 MSE &= p (1 - c_{men} \bar{x}) + (1-p) (1 - c_{women} (1 - \bar{x})) \\
+	 MSE &= p \left(1 - \frac{\bar{x}^2}{(1-\bar{x})^2 + \bar{x}^2}\right) + (1-p) \left(1 - \frac{(1-\bar{x})^2}{(1-\bar{x})^2 + \bar{x}^2} \right) \\
+	 MSE &= p \left(\frac{(1 - \bar{x})^2}{(1-\bar{x})^2 + \bar{x}^2}\right) + (1-p) \left(\frac{\bar{x}^2}{(1-\bar{x})^2 + \bar{x}^2} \right) \\
+	 MSE &= p \left[ (1 - \bar{x})c_{wom} \right] + (1-p) \left[ \bar{x}c_{men} \right] \\
 \end{align*} 
 
 Interestingly this implies a FOC of
 
 \begin{align*}
-	\frac{\partial \E(J)}{\partial \bar{x}} &= p \left(\frac{2 \bar{x} (1 - \bar{x})}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) - (1-p) \left(\frac{2 \bar{x} (1 - \bar{x})}{((1-\bar{x})^2 + \bar{x}^2)^2} \right) = 0 \\
-	\frac{\partial \E(J)}{\partial \bar{x}} &= (2p -1) \left(\frac{2 \bar{x} (1 - \bar{x})}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) = 0
+	\frac{\partial MSE }{\partial \bar{x}} &= p \left(\frac{2 \bar{x} (1 - \bar{x})}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) - (1-p) \left(\frac{2 \bar{x} (1 - \bar{x})}{((1-\bar{x})^2 + \bar{x}^2)^2} \right) = 0 \\
+	\frac{\partial MSE}{\partial \bar{x}} &= (2p -1) \left(\frac{2 \bar{x} (1 - \bar{x})}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) = 0
 \end{align*} 
 
 meaning we've retrieved our original FOC.

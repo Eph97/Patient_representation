@@ -121,14 +121,14 @@ Recall we want to minimize
 \end{align*}
 
 One way we can rewrite these equations is as the effect of women vs men.
-let
+let the squared error (SE) be
 \begin{align*}
-	\sqrt{MSE} &= \beta_i -  \beta_{i,post} = \underbrace{[(1-x) \gamma_0 + x \gamma_1]}_{\text{$\beta_i$}}  - \underbrace{[((x - c \bar{x})\E(\gamma) + c \beta_{ATE})]}_\text{$\beta_{i,post}$} \\
+	\sqrt{SE} &= \beta_i -  \beta_{i,post} = \underbrace{[(1-x) \gamma_0 + x \gamma_1]}_{\text{$\beta_i$}}  - \underbrace{[((x - c \bar{x})\E(\gamma) + c \beta_{ATE})]}_\text{$\beta_{i,post}$} \\
 	  &= [(1-x) \gamma_0 + x \gamma_1]  - [((1-x) - c (1 - \bar{x})) \E(\gamma_0) + (x - c \bar{x})\E(\gamma_1) + c((1-\bar{x}) \gamma_0 + \bar{x} \gamma_1)] \\
 	  % &= [(1-x) \gamma_0 + x \gamma_1  - (x - c \bar{x})\E(\gamma) + c((1-\bar{x}) \gamma_0 + \bar{x} \gamma_1)] \\
 \end{align*}
 
-$\beta_i$ $\beta_{i, post}$ and as a result, $MSE$ are all a function of $x$. We can then describe
+$\beta_i$ $\beta_{i, post}$ and as a result, $SE$ are all a function of $x$. We can then describe
 
 $\beta_{i}^{men} = \beta_i (x=1)$ and similarly for other terms to get
 
@@ -143,7 +143,7 @@ So
 this can be broken down into
 
 \begin{align*}
-	\sqrt{ MSE } &= (\beta_i^{men} - \beta_i^{post, men} )+ (\beta_i^{wom} - \beta_i^{post, wom}) \\
+	\sqrt{ SE } &= (\beta_i^{men} - \beta_i^{post, men} )+ (\beta_i^{wom} - \beta_i^{post, wom}) \\
 \end{align*} 
 
 let 
@@ -183,17 +183,17 @@ and
 \end{align*} 
 
 
-so then
+so then taking the mean ($E_{x}$) with respect to $x$, we can write the mean squared error (MSE) as
 \begin{align*}
-	\E_x MSE &= p W_{men}^2 + (1 - p)W_{wom}^2 \\
+	MSE &= p W_{men}^2 + (1 - p)W_{wom}^2 \\
 	&= p \left(\frac{(1-\bar{x})^4\Var(\gamma_1) + ( \bar{x}^2 (1-\bar{x})^2 ) \Var(\gamma_0)}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) + (1-p)\left(\frac{(\bar{x})^4 \Var(\gamma_0) + ( \bar{x}^2 (1-\bar{x})^2 ) \Var(\gamma_1) }{((1-\bar{x})^2 + \bar{x}^2)^2}\right) \\
 \end{align*} 
 
 so using the fact that $\Var(\gamma_0) = \Var(\gamma_1) = 1$ we get
 
 \begin{align*}
-	\E_x MSE &= p \left(\frac{(1-\bar{x})^4 + ( \bar{x}^2 (1-\bar{x})^2 ) }{((1-\bar{x})^2 + \bar{x}^2)^2}\right) + (1-p)\left(\frac{(\bar{x})^4  + ( \bar{x}^2 (1-\bar{x})^2 ) }{((1-\bar{x})^2 + \bar{x}^2)^2}\right) \\
-	\E_x MSE &= p \left(\frac{(1-\bar{x})^2 }{(1-\bar{x})^2 + \bar{x}^2}\right) + (1-p)\left(\frac{(\bar{x})^2 }{(1-\bar{x})^2 + \bar{x}^2}\right) \\
+	 MSE &= p \left(\frac{(1-\bar{x})^4 + ( \bar{x}^2 (1-\bar{x})^2 ) }{((1-\bar{x})^2 + \bar{x}^2)^2}\right) + (1-p)\left(\frac{(\bar{x})^4  + ( \bar{x}^2 (1-\bar{x})^2 ) }{((1-\bar{x})^2 + \bar{x}^2)^2}\right) \\
+	 MSE &= p \left(\frac{(1-\bar{x})^2 }{(1-\bar{x})^2 + \bar{x}^2}\right) + (1-p)\left(\frac{(\bar{x})^2 }{(1-\bar{x})^2 + \bar{x}^2}\right) \\
 			 &= p \frac{(1-\bar{x})^2}{(1-\bar{x})^2 + \bar{x}^2} + (1-p) \frac{\bar{x}^2}{(1-\bar{x})^2 + \bar{x}^2}
 \end{align*} 
 

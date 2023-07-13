@@ -93,38 +93,6 @@
 \end{enumerate}
 
 
-% \subsection*{Solving}
-
-% we want to solve
-% \begin{align*}
-% 	\min \E[(\beta_i - \beta_{i,post})^2]
-% \end{align*} 
-
-% let's start by considering
-% \begin{align*}
-% 	\E[(\beta_i - \beta_{i,post})^2] &= \E([ x' \gamma  - ((x - c\bar{x}) \E(\gamma) + c \beta_{ATE})]^2) \\
-% 									 &= \E( [x' \gamma - x \E(\gamma) + c \bar{x} \E(\gamma) - c \bar{x} \gamma ]^2 ) \\
-% 									 &= \E ( [x' ( \gamma - \E(\gamma)) - c\bar{x} ( \gamma - \E(\gamma))]^2) \\
-% 									 &= \E([ ( x' - c \bar{x}) (\gamma - \E(\gamma))]^2) \\
-% \end{align*} 
-
-% let $A = ( x' - c \bar{x})$ and $B = (\gamma - \E(\gamma))$. Now if $A$ and $B$ are $1x1$ (i.e. there is no intercept, then:
-
-% \begin{align*}
-% 									 &= \E[ ( x' - c \bar{x})^2 (\gamma - \E(\gamma))^2] \\
-% 									 &= \E[ ( x'x - 2 c \bar{x}x + (c \bar{x})^2) (\gamma - \E(\gamma))^2] \\
-% 									 &= \E[ ( x^2 (\gamma - \E(\gamma))^2]  - \E[ ( 2 c \bar{x}x (\gamma - \E(\gamma))^2] + \E[ ( (c \bar{x})^2) \bar{x}x (\gamma - \E(\gamma))^2] \\
-% \end{align*} 
-
-% but if $A$ and $B$ are not scalars but we instead allow for another arbitrary characteristic (including an intercept)
-
-% \begin{align*}
-% 									 &= \E[ (A)^2 (B)^2] + 2*\Pi_i( A_i B_i) \\
-% 									 &= \E[ (A)^2 (\gamma - \E(\gamma))^2] \\
-% 									 &= \E[ ( x'x - 2 c \bar{x}x + (c \bar{x})^2) (\gamma - \E(\gamma))^2] \\
-% 									 &= \E[ ( x^2 (\gamma - \E(\gamma))^2]  - \E[ ( 2 c \bar{x}x (\gamma - \E(\gamma))^2] + \E[ ( (c \bar{x})^2) \bar{x}x (\gamma - \E(\gamma))^2] \\
-% \end{align*} 
-
 First observe that in our current setup, $c$ does not depend on the $\gamma$'s
 
 We have that
@@ -133,595 +101,26 @@ We have that
 \end{align*} 
 
 so for individual i, $c$ reduces to
-% \begin{align*}
-% 	c &= \frac{\Cov (x \gamma, \bar{x} \gamma)}{ \Var( \bar{x} \gamma )} = \frac{x \bar{x} \Var(\gamma)}{\bar{x}^2 \Var(\gamma)} = \frac{x}{\bar{x}}
-% \end{align*} 
 
 
 \begin{align*}
-	c = \frac{(1^2 + x \bar{x})\Var(\gamma)}{(1^2 + \bar{x}^2)\Var(\gamma)} = \frac{1 + x \bar{x}}{1 + \bar{x}^2} = \frac{x' \bar{x}}{\bar{x}' \bar{x}}
+	c &= \frac{1^2\Var(\gamma_0) + x \bar{x} \Var(\gamma_1)}{1^2\Var(\gamma_0) + \bar{x}^2\Var(\gamma_1)} \quad \text{because $\Var(\gamma_0) = \Var(\gamma_1) = \Var(\gamma) = 1$} \\
+	&= \frac{(1 + x \bar{x})\Var(\gamma)}{(1 + \bar{x}^2)\Var(\gamma)} = \frac{x' \bar{x}}{\bar{x}' \bar{x}}
 \end{align*} 
 
-% % But if we include an intercept, then
-% % \begin{align*}
-% % 	c &= \frac{\Cov (x \gamma, \bar{x} \gamma)}{ \Var( \bar{x} \gamma )} \\
-% % 	  &= \frac{\Var(\gamma) + \bar{x} \cov}{}
-% % \end{align*} 
-
-% note, this is for individual $i$ so $x$ is given. Thus the only random variable in this context is $\gamma$
-
-% going back to the objective function, then now we are taking the expectation over all individuals, so we can look at the expected population characteristic as a bernoulli r.v. so
-% $\E(x^2) = \E(x) = p$ and we get
-%  \begin{align*}
-% 	 &\E[ ( x^2 (\gamma - \E(\gamma))^2]  - \E[ ( 2 c \bar{x}x (\gamma - \E(\gamma))^2] + \E[ ( (c \bar{x})^2) \bar{x}x (\gamma - \E(\gamma))^2] \\
-% 	 &= \Var(\gamma) [\E(x) - \E(2c\bar{x} x) + \E((c\bar{x})^2)]
-% \end{align*} 
-% In our case, we're assuming $x=[x_0, x_1]$ and  $\gamma = [\gamma_0, \gamma_1]$. Ignore dimensions for now. We can take care of proper transposes etc later to make this formally correct. But this implies we get $\Var(\gamma) = (\Var(\gamma_0), \Var(\gamma_1))$ (by assumption of being uncorrelated).
-% \begin{align*}
-% 	  &\Var(\gamma) [\E(x) - \E(2c\bar{x} x) + \E((c\bar{x})^2)] \\
-% 	= &\left( \Var(\gamma_0) + \Var(\gamma_1) \right)\left[1 + \E(x) - \frac{2\bar{x}}{1 + \bar{x}^2} \E(x + x^2 \bar{x}) + \frac{\bar{x}^2}{1 + \bar{x}^2} \E(1 + x \bar{x}) \right] \\
-% 	= &\left( \Var(\gamma_0) + \Var(\gamma_1) \right)\left[1 + \E(x) - \frac{2\bar{x}}{1 + \bar{x}^2} \left(\E(x) +  \bar{x}\E(x)\right) + \frac{\bar{x}^2}{1 + \bar{x}^2} + \bar{x}\frac{\bar{x}^2}{1 + \bar{x}^2} \E(x) ) \right] \\
-% \end{align*} 
-
-
-% \subsection*{notes}
-% integrate over the $\gamma$ 's (taking expecation over possible gammas).
-
-
-% \subsection*{FOC}
-% Let 
-% \begin{align*}
-% 	J = \frac{1}{(1+\bar{x}^2)^2} \left[ \E(\alpha^2)(\bar{x}^4 - 2\bar{x}^3 + p \bar{x}^2)
-% + \E(\beta^2) ( p - 2 \bar{x} p + \bar{x}^2) + 2 \E(\alpha)\E(\beta)(2 \bar{x}^2 p - p \bar{x} - \bar{x}^3) \right]
-% \end{align*} 
-
-% Then taking derivative wrt $\bar{x}$ we get
-% \begin{align*}
-% 	\frac{\partial J}{\partial \bar{x}} = 
-% 	&\frac{-4 \bar{x_1}}{(1 + \bar{x_1}^2)^3} 
-% 	\left[ \E(\alpha^2)(\bar{x_1}^4 - 2\bar{x_1}^3 + p \bar{x_1}^2)
-% 	+ \E(\beta^2) ( p - 2 \bar{x_1} p + \bar{x_1}^2) + 2 \E(\alpha)\E(\beta)(2 \bar{x_1}^2 p - p \bar{x_1} - \bar{x_1}^3) \right] \\
-% 	+ &\frac{1}{(1 + \bar{x_1}^2)^2} 
-% 	\left[ \E(\alpha^2)(4 \bar{x_1}^3 - 6\bar{x_1}^2 + 2 p \bar{x_1})
-% 	+ \E(\beta^2) ( 2 p + 2\bar{x_1}) + 2 \E(\alpha)\E(\beta)(4 \bar{x_1} p - p - 3 \bar{x_1}^2) \right] \\
-% 	\iff& \\
-% 		&\frac{4 \bar{x_1}}{(1 + \bar{x_1}^2)^3} 
-% 	\left[ \E(\alpha^2)(\bar{x_1}^4 - 2\bar{x_1}^3 + p \bar{x_1}^2)
-% 	+ \E(\beta^2) ( p - 2 \bar{x_1} p + \bar{x_1}^2) + 2 \E(\alpha)\E(\beta)(2 \bar{x_1}^2 p - p \bar{x_1} - \bar{x_1}^3) \right] \\
-% 	= &\frac{1}{(1 + \bar{x_1}^2)^2} 
-% 	\left[ \E(\alpha^2)(4 \bar{x_1}^3 - 6\bar{x_1}^2 + 2 p \bar{x_1})
-% 	+ \E(\beta^2) ( 2 p + 2\bar{x_1}) + 2 \E(\alpha)\E(\beta)(4 \bar{x_1} p - p - 3 \bar{x_1}^2) \right]
-% \end{align*} 
-% canceling
-% \begin{align*}
-% 		&\frac{4 \bar{x_1}}{(1 + \bar{x_1}^2)} 
-% 	\left[ \E(\alpha^2)(\bar{x_1}^4 - 2\bar{x_1}^3 + p \bar{x_1}^2)
-% 	+ \E(\beta^2) ( p - 2 \bar{x_1} p + \bar{x_1}^2) + 2 \E(\alpha)\E(\beta)(2 \bar{x_1}^2 p - p \bar{x_1} - \bar{x_1}^3) \right] \\
-% 	= &\left[ \E(\alpha^2)(4 \bar{x_1}^3 - 6\bar{x_1}^2 + 2 p \bar{x_1})
-% 	+ \E(\beta^2) ( 2 p + 2\bar{x_1}) + 2 \E(\alpha)\E(\beta)(4 \bar{x_1} p - p - 3 \bar{x_1}^2) \right]
-% \end{align*} 
-
-% multiplying out
-% \begin{align*}
-% 	  4 \alpha^2 x_1^5 - 8 x_1^4 \alpha^2 + 4 x_1^3 \alpha^2 p + 4x_1 p \beta^2 - 8 x_1^2 p \beta^2 + 4 x_1^3 \beta^2 + 16 \alpha \beta p x_1^3 - 8 \alpha \beta p x_1^2 - 8 \alpha \beta x_1^4 \\
-% 	  = 4 \alpha^2 x_1^3 + 4 \alpha^2 x_1^5 - 6 \alpha^2 x_1^2 - 6 x_1^4 \alpha^2 + 2p \alpha^2 \bar{x_1} + 2p \alpha^2 \bar{x_1}^3
-% 	  + 2 \beta^2 p + 2 \beta^2 p \bar{x_1}^2 + 2 \beta^2 \bar{x_1} + 2 \beta^2 \bar{x_1}^3 \\
-% 	  + 8 \alpha \beta p \bar{x_1} + 8 \alpha \beta p \bar{x_1}^3 - 2 \alpha \beta p - 2 \alpha \beta p \bar{x_1}^2 - 6 \alpha \beta \bar{x_1}^2 - 6 \alpha \beta \bar{x_1}^4
-% \end{align*} 
-
-% Cancelling
-% \begin{align*}
-% 	  - 2 x_1^4 \alpha^2 + 4 x_1^3 \alpha^2 p + 4x_1 p \beta^2 - 8 x_1^2 p \beta^2 + 4 x_1^3 \beta^2 + 16 \alpha \beta p x_1^3 - 6 \alpha \beta p x_1^2 - 2 \alpha \beta x_1^4 \\
-% 	  = 4 \alpha^2 x_1^3 - 6 \alpha^2 x_1^2 - 6 x_1^4 \alpha^2 + 2p \alpha^2 \bar{x_1} + 2p \alpha^2 \bar{x_1}^3
-% 	  + 2 \beta^2 p + 2 \beta^2 p \bar{x_1}^2 + 2 \beta^2 \bar{x_1} + 2 \beta^2 \bar{x_1}^3 \\
-% 	  + 8 \alpha \beta p \bar{x_1} + 8 \alpha \beta p \bar{x_1}^3 - 2 \alpha \beta p - 6 \alpha \beta \bar{x_1}^2 
-% \end{align*} 
-% more cancelling
-% \begin{align*}
-% 	  - 2 x_1^4 \alpha^2 + 4 x_1^3 \alpha^2 p + 4x_1 p \beta^2 - 8 x_1^2 p \beta^2 + 4 x_1^3 \beta^2 + 16 \alpha \beta p x_1^3 - 6 \alpha \beta p x_1^2 - 2 \alpha \beta x_1^4 \\
-% 	  = 4 \alpha^2 x_1^3 - 6 \alpha^2 x_1^2 - 6 x_1^4 \alpha^2 + 2p \alpha^2 \bar{x_1} + 2p \alpha^2 \bar{x_1}^3
-% 	  + 2 \beta^2 p + 2 \beta^2 p \bar{x_1}^2 + 2 \beta^2 \bar{x_1} + 2 \beta^2 \bar{x_1}^3 \\
-% 	  + 8 \alpha \beta p \bar{x_1} + 8 \alpha \beta p \bar{x_1}^3 - 2 \alpha \beta p - 6 \alpha \beta \bar{x_1}^2 
-% \end{align*} 
-
-% reduces to
-% \begin{align*}
-% 	&(x_1^4)(a_2p + a_1b_1) + (x_1^3)(2a_2 - a_2p - b_2 - 8a_1b_1p ) + \\
-%     &(x_1^2)(3b_2p + 7a_1b_1p - 3a_2p - 3a_1b_1) + x_1(pa_2 - 2b_2p + b_2 + 4a_1b_1p) - (b_2p+ a_1b_1p)
-% \end{align*} 
-
-
-% Now $a_2 = \Var(\gamma_0) = 1 = B_2 = \Var(\gamma_1)$ and $a_1 = \E(\gamma_0 - E(\gamma_0)) = 0 = b_1 =(\gamma_1 - E(\gamma_1)) $
-
-% so we further reduce to
-%  \begin{align*}
-% 	&(x_1^4)(\Var(\gamma_0)p) + (x_1^3)(2 \Var(\gamma_0) - \Var(\gamma_0) p - \Var(\gamma_1)) + \\
-%     &(x_1^2)(3p \Var(\gamma_1)  - 3 \Var(\gamma_0)p) + x_1(p \Var(\gamma_0) - 2 \Var(\gamma_1)p + \Var(\gamma_1)) - (\Var(\gamma_1) p)
-% \end{align*} 
-
-% So we finally get
-% \begin{align*}
-% 	&(x_1^4)(p) + (x_1^3)(1 - p) + \\
-%     & + x_1(1 - p) - p
-% \end{align*} 
-
-% solving we get 
-% \begin{align*}
-% 	x = \pm \frac{\sqrt{5 p^2 - 2p + 1} +p -1}{2p}
-% \end{align*} 
 
 
 
+\section{Appendix}
 
-% \section{Symmetric Version}
-% Now we impose symmetric variation on both groups so now we have
-% $\beta_i = \gamma_0*(1-x)+\gamma_1*x$
+\subsection*{Derivations}
 
-% and 
-% $\beta_{ate} = \gamma_0*(1-\bar{x})+\gamma_1*\bar{x}$
-
-% $C$ still has the same analytical solution.
-
-% To solve this, let's make this slightly more general where we have $x = [x_0, x_1]$ and $\bar{x} = [\bar{x_0}, \bar{x_1}]$ as above. In the end we can reduce by letting $x_0 = 1 - x_1$ and  $\bar{x_0} = 1 - \bar{x_1}$
-
-% our objective function then becomes:
-
-% \begin{align*}
-% 	\E_{\gamma} \left(\E_{x}[(\beta_i - \beta_{i,post})^2] \right) &= \E_{\gamma} \left( \E_{x}([ x' \gamma  - ((x - c\bar{x}) \E_{x}(\gamma) + c \beta_{ATE})]^2) \right) \\
-% 									 &= \E_{\gamma} \left( \E_{x}[ (x' - c\bar{x}')^2 (\gamma - \E_{x}(\gamma))^2] + 2\E_{x}(\Pi(x' - c\bar{x}') \Pi(\gamma - \E_{x}(\gamma))) \right) \\
-% 									 &= \E_{x}[ (x' - c\bar{x}')^2] \E_{\gamma} [(\gamma - \E_{x}(\gamma))^2 ] + 2\E_{x}(\Pi(x' - c\bar{x}'))\Var(\gamma_0)\Var(\gamma_1) \\
-% 									 &= \E_{x}[ (x' - c\bar{x}')^2] \Var(\gamma) + 2\E_{x}(\Pi(x' - c\bar{x}'))\Var(\gamma_0)\Var(\gamma_1) \\
-% 									 &= \left(\frac{1}{\bar{X}' \bar{X}}\right)^2 
-% 									 \E_{x} \left( [ X (\bar{X} \bar{X}') - \bar{X}(X \bar{X}'))][ X (\bar{X} \bar{X}') - \bar{X}(X \bar{X}'))]' \right) \Var(\gamma) \\
-% 									 &+ 2\E_{x}(\Pi( X (\bar{X} \bar{X}') - \bar{X}(X \bar{X}'))) \Var(\gamma_0)\Var(\gamma_1) \\
-% \end{align*} 
-
-% Now taking it element wise
-% \begin{align*}
-% 	 &\frac{1}{\bar{x}_1^4 + 2\bar{x}_1^2 \bar{x}_2^2 + \bar{x}_2^4} 
-% 	 \E_{x}\big( \left(x_1^2 \bar{x}_2^4  - 2 x_1 \bar{x}_2^3 x_2 \bar{x}_1 + x_2^2 \bar{x}_1^2 \bar{x}_2^2\right)\Var(\gamma_0) \\
-% 	+ &\left(x_2^2 \bar{x}_1^4  - 2 x_2 \bar{x}_1^3 x_1 \bar{x}_2 + x_1^2 \bar{x}_1^2 \bar{x}_2^2\right)\Var(\gamma_1) \\
-% 	+ & 2 \Var(\gamma_0) \Var(\gamma_1)(x_1 \bar{x}_2^2 - x_2 \bar{x}_1 \bar{x}_2) (x_2 \bar{x}_1^2 - x_1 \bar{x}_1 \bar{x}_2) \big)
-% \end{align*} 
-
-% Substituting in $x_2 = x$ and $x_1 = 1 - x$ and using linearity of expectation.
-
-% \begin{align*}
-% 	 &\frac{1}{\bar{x}_1^4 + 2\bar{x}_1^2 \bar{x}_2^2 + \bar{x}_2^4} 
-% 	 \big( \left((1-p) \bar{x}_2^4  - 2 (1-p) \bar{x}_2^3 p \bar{x}_1 + p \bar{x}_1^2 \bar{x}_2^2\right)\Var(\gamma_0) \\
-% 	+ &\left(p \bar{x}_1^4  - 2 p \bar{x}_1^3 (1-p) \bar{x}_2 + (1-p) \bar{x}_1^2 \bar{x}_2^2\right)\Var(\gamma_1) \\
-% 	+ & 2 \Var(\gamma_0) \Var(\gamma_1)((1-p) \bar{x}_2^2 - p \bar{x}_1 \bar{x}_2) (p \bar{x}_1^2 - (1-p) \bar{x}_1 \bar{x}_2) \big)
-% \end{align*} 
-
-% Now finally substituting in $\bar x_2 = \bar x$ and $\bar x_1 = 1 - \bar x$ and using the fact that currently $\Var(\gamma_{0,1}) =1$
-
-% \begin{align*}
-% 	 &\frac{1}{(1 - \bar{x})^4 + 2(1 - \bar{x})^2 \bar{x}^2 + \bar{x}^4} 
-% 	 \big( \left((1-p) \bar{x}^4  - 2 (1-p) \bar{x}^3 p (1 - \bar{x}) + p (1 - \bar{x})^2 \bar{x}^2\right) \\
-% 	+ &\left(p (1 - \bar{x})^4  - 2 p (1 - \bar{x})^3 (1-p) \bar{x} + (1-p) (1 - \bar{x})^2 \bar{x}^2\right) \\
-% 	+ & 2 ((1-p) \bar{x}^2 - p (1 - \bar{x}) \bar{x}) (p (1 - \bar{x})^2 - (1-p) (1 - \bar{x}) \bar{x}) \big)
-% \end{align*} 
-
-
-% \begin{align*}
-% &((4 - 8*x) * ((p2 * x^4 - 2 * p * p2 * x^3 + 2 * p*p2*x^4 + p*x^2 -2*p*x^3 + p*x^4) + \\
-% &(p*(1-4x + 6x^2 - 4x^3 + x^4) - 2*(x - x^2 - 2*x^2 + 2*x^3 - x^4)*p2*p + p2*(x^2 - 2*x^3 + p*x^4)) + \\ 
-% &2*(p*x^2 - x*p^2 - p*x^3 + p*x^2 - x^3 + p*x^2 + x^4 - p*x^3)) \\
-% &= (2*x^2 - 2*x + 1)*((4 p2 * x^3 - 6 * p * p2 * x^2 + 8 * p*p2*x^3 + 2 p*x -6*p*x^2 + 4 p*x^3) + \\
-% &(p2*(2*x - 6*x^2 + 4*x^3) - 4*p*(1 - 3x + 3x^2 - x^3) - \\
-% &(2 + 4*x + 8*x - 12*x^2 + 16*x^3 )*p*p2 )+ \\
-% &2*(2*p*x - p^2 - 3*p*x^2 + 2*p*x - 3*x^2 + 2*p*x + 4*x^3 - 3*p*x^2)))
-% \end{align*} 
-
-% simplifying 
-
-% \begin{align*}
-% &((4 - 8*x) * (x^4 ( p_2 + p+ 2 p p_2 + p - 2 p_2 p + p_2 + 2) + \\
-% &(x^3 ( -2 p p_2 - 4 p - 2p -4p_2 p  - 2 p_2 - 2 p - 2 - 2p) ) + \\
-% &(x^2 (p  + 6 p + 2p_2 p + 4 p_2 p + p_2 + 2p - 2p^2 + 2 p + 2p)) + \\
-% &(x (-4p -2 p_2 p - 2 p^2)) + \\
-% &(p)
-%  = (2*x^2 - 2x +1) (x^3 (4 p_2 + 8 p p_2 + 4 p - 16 p p_2)) + \\
-% &(x^2(-6 p p_2 - 6 p - 6 p_2 - 12p - 12 p p_2 - 6 p - 6 - 6p)) + \\
-% &(x(2p + 2p_2 + 12p - 12 p p_2 + 4p + 4p + 4p) + \\
-% &(-4p -2 p p_2)
-% \end{align*} 
-
-% canceling
-
-% \begin{align*}
-% &((4 - 8*x) * (x^4 (4) + \\
-% &(x^3 (-6 p_2 p - 8p - 4) ) + \\
-% &(x^2 (18p - 8p^2)) + \\
-% &(x (-4p -2 p_2 p - 2 p^2)) + \\
-% &(p)
-%  = (2*x^2 - 2x +1) (x^3 (4 - 8 p p_2 )) + \\
-% &(x^2(-18p p_2 - 24p - 12)) + \\
-% &(x(24 p - 12 p p_2 + 2) + \\
-% &(-4p -2 p p_2)
-% \end{align*} 
-
-% \begin{align*}
-% &((16 x^4  + \\
-% &(4 x^3 (-6 p_2 p - 8p - 4) ) + \\
-% &(4 x^2 (18p - 8p^2)) + \\
-% &(4 x (-4p -2 p_2 p - 2 p^2)) + \\
-% &(4p) + \\
-% &(-32 x^6)  + \\
-% &(-8x^5 (-6 p_2 p - 8p - 4) ) + \\
-% &(-8x^4 (18p - 8p^2)) + \\
-% &(-8x^3 (-4p -2 p_2 p - 2 p^2)) + \\
-% &(-8x^2p)
-%  = (2*x^2 - 2x +1) (x^3 (4 - 8 p p_2 )) + \\
-% &(x^2(-18p p_2 - 24p - 12)) + \\
-% &(x(24 p - 12 p p_2 + 2) + \\
-% &(-4p -2 p p_2)
-% \end{align*} 
-
-
-% \subsection{element wise}
-
-% \begin{align*}
-% 	\E_{\gamma} \left(\E_{x}[(\beta_i - \beta_{i,post})^2] \right) = \E_{\gamma} \E_{x}[(J)^2]
-% \end{align*} 
-
-% let $\E(\gamma_{0,1}) = \bar{\gamma}_{0,1}$
-
-% \begin{align*}
-% 	J &= ([ (1-x) \gamma_0 + x \gamma_1  - ((x - c \bar{x})\E(\gamma) + c \beta_{ATE})]^2) \\
-% 	  &= ([ (1-x) \gamma_0 + x \gamma_1  - (((1-x) + x - c (1- \bar{x} + \bar{x})\E(\gamma) + c ((1-\bar{x}) \gamma_0 + \bar{x} \gamma_1 )]^2) \\
-% 	  &= [ (1-x) \gamma_0 + x \gamma_1  - ((1 - c)(\bar{\gamma}_0 + \bar{\gamma}_1) + c ((1-\bar{x}) \gamma_0 + \gamma_1 ))]^2 \\
-% \end{align*} 
-
-% Now recall $c = \frac{-\bar{x} + 2 \bar{x}^2+ x - 2x\bar{x}}{(1-\bar{x})^2 + \bar{x}^2} = \frac{-\bar{x} + 2 \bar{x}^2+ x - 2x\bar{x}}{1-2 \bar{x} + 2\bar{x}^2}$
-
-% let 
-% \begin{enumerate}
-% 	\item $b = \gamma_1 - \gamma_0$
-% 	\item $a = \gamma_0 - \E(\gamma_0) + \E(\gamma_1)$
-% 	\item $a^2 = \E(a^2) = \Var(\gamma_0) + \bar{\gamma}_1$
-% 	\item $b^2 = \E(b^2) = \E(\gamma_0^2) - 2\bar \gamma_0 \gamma_1 + \E(\gamma_1^2)$
-% 	\item $ab = \E(ab) = \E(a)\E(b) = \bar{\gamma}_0^2 - \Var(\gamma_0) - \bar{\gamma}_0 \bar{\gamma}_1$ and
-% 	\item $\text{denom} = (1 - 2\bar x + 2\bar x^2)$
-% \end{enumerate}
-
-% then
-
-% \begin{align*}
-% 	J &= [ bx + a + c(-b \bar{x} - a)]^2 \\
-% 	J &= [ b(x - c\bar{x}) + a(1 -c) )]^2 \\
-% 	J &= b(x - c\bar{x}) + a(1 -c) ) \\
-% 	J &= b^2 (x - cx)^2 + 2ab(x - c \bar{x})(1-c) + a^2(1-c) \\
-% 	J &= b^2 (x^2 - 2c\bar{x}x + c^2 \bar{x}^2) + 2ab(x - cx - c\bar{x} + c^2 \bar{x}) + a^2(1-2c + c^2) \\
-% 	  &= (b^2) \frac{ (p - 2p\bar{x}^2}{1-2\bar{x} + 2\bar{x}^2} + \frac{(\bar{x}^4 + 2\bar{x}^3(p-1) + \bar{x}^2(1-p))}{(1 - 2\bar{x} + 2\bar{x}^2)^2} + \\
-% 	  &(2ab)(p - \frac{p\bar{x} }{1-2\bar{x} + 2\bar{x}^2} - \bar{x}\frac{(\bar{x}(2p -1) + (1-p)) } {(1 - 2\bar{x} + 2\bar{x}^2)} + \bar{x}\frac{p(2\bar{x} -1) + (\bar{x} - 1)^2}{(1 - 2\bar{x} + 2\bar{x}^2)^2}) +\\ 
-% 	  &(a^2)(1 - 2\frac{ \bar{x}(2p - 1) + (1 - p) }{(1 - 2\bar{x} + 2\bar{x}^2)} + \frac{ p(2\bar{x} - 1) + (\bar{x} - 1)^2 }{(1 - 2\bar{x} + 2\bar{x}^2)^2}) \\
-% 	&= (b^2p + 2abp + a^2) - \\
-% 	&\frac{(\bar{x}^2(2pb^2 + 2ab(2p-1)) + \bar{x}(2ab + 2a^2(2p-1))+2a^2(1-p) )}{(1-2\bar{x} + 2\bar{x}^2)}  + \\
-% 	&\frac{b^2\bar{x}^4 + 2\bar{x}^3(b^2(p-1) + ab) + \bar{x}^2((b^2 - 4ab)(1-p) + a^2) + 2\bar{x}((ab-a^2)(1-p)) + a^2(1-p)}{(1-2\bar{x} + 2\bar{x}^2)^2}
-% \end{align*} 
-
-% now take the derivative
-
-% \begin{align*}
-% 	\frac{\partial J}{\partial \bar{x}} = 
-%    &(\bar{x}^2*(2*p*b^2 + 2*ab*(2*p-1)) + \\
-%    &\frac{\bar{x}*(2*ab + 2*a^2*(2*p-1))+2*a^2*(1-p) )*(4*\bar{x} -2 )}{(1 - 2\bar{x} + 2\bar{x}^2)^2}  - \\
-%    &\frac{(2\bar{x}(2pb^2 + 2ab(2p-1)) + (2ab + 2a^2(2p-1)))}{(1 - 2\bar{x} + 2\bar{x}^2)}  -\\
-%    &\frac{(b^2\bar{x}^4 + 2\bar{x}^3(b^2(p-1) + ab) + \bar{x}^2((b^2 - 4ab)(1-p) + a^2) + 2\bar{x}((ab-a^2)(1-p)) + a^2(1-p))(8\bar{x} -4 )}{(1 - 2\bar{x} + 2\bar{x}^2)^3}  + \\
-%    &\frac{(4b^2\bar{x}^3 + 6\bar{x}^2(b^2(p-1) + ab) + 2\bar{x}((b^2 - 4ab)(1-p) + a^2) + 2((ab-a^2)(1-p)))}{(1 - 2\bar{x} + 2\bar{x}^2)^2} = 0
-% \end{align*} 
-
-% Now multiplying out to get same denominator and then solving numerator for FOC
-% \begin{align*}
-%    &[ \bar{x}^5(16b^2p+32abp-16ab)+\\
-%    &\bar{x}^4(32a^2p-16a^2-24b^2p-48abp+40ab) +\\
-%    &\bar{x}^3(-64a^2p+40a^2+16b^2p+32abp-40ab) +\\
-%    &\bar{x}^2(56a^2p-40a^2-4b^2p-8abp+20ab) +\\
-%    &\bar{x}(-24a^2p+20a^2-4ab)+(4a^2p-4a^2) ] -\\
-%    &[ \bar{x}^5(16b^2p+32abp-16ab) +\\
-%    &\bar{x}^4(16a^2p-8a^2 -32b^2p-64abp +40ab) +\\
-%    &\bar{x}^3(-32a^2p+16a^2+32b^2p+64abp -48ab) +\\
-%    &\bar{x}^2(32a^2p-16a^2-16b^2p-32abp+32ab) +\\
-%    &\bar{x}(-16a^2p +8a^2 +4b^2p+8abp -12ab) +\\
-%    &(4a^2p-2a^2+2ab) ] -\\
-%    &[ 8\bar{x}^3(a^2+(1-p)(b^2-4ab))-4\bar{x}^2(a^2+(1-p)(b^2-4ab)) +\\
-%    &16(1-p)\bar{x}^2(ab-a^2)-\\
-%    &8(1-p)\bar{x}(ab-a^2)+8a^2(1-p)\bar{x}-\\
-%    &4a^2(1-p)+16\bar{x}^4(b^2(p-1)+ab)-\\
-%    &8\bar{x}^3(b^2(p-1)+ab)+8b^2\bar{x}^5-4b^2\bar{x}^4 ]  + \\
-%    &[ \bar{x}^5(8b^2) +\\
-%    &\bar{x}^4(12ab+12b^2p-20b^2) +\\
-%    &\bar{x}^3(4a^2+16abp-28ab-16b^2p+20b^2) +\\
-%    &\bar{x}^2(4a^2p-8a^2-20abp+26ab+10b^2p-10b^2) +\\
-%    &\bar{x}(-4a^2p+6a^2+12abp-12ab-2b^2p+2b^2) +\\
-%    &(2a^2p-2a^2-2abp+2ab) ] = 0
-% \end{align*} 
-% combining like terms
-
-% \begin{align*}
-% 	\bar{x}^4(16a^2p-8a^2+4b^2p+16abp-4ab) +\\
-% 		\bar{x}^3(-32a^2p+20a^2-16b^2p+4b^2-48abp+20ab) +\\
-% 		\bar{x}^2(12a^2p-12a^2+18b^2p-6b^2+36abp-18ab) +\\
-% 		\bar{x}(4a^2p+2a^2-6b^2p+2b^2-4abp+4ab) +\\
-% 		-2a^2p-2abp
-% \end{align*} 
-
-% Now note that 
-
-% \begin{enumerate}
-% 	\item $a^2 = \Var(\gamma_0) + \bar{\gamma}_1^2$
-% 	\item $b^2 = \E(\gamma^2_1) - 2\bar{\gamma}_1 \bar{\gamma}_0 + \E(\gamma_0^2)$
-% 	\item $ab = \bar{\gamma}_0^2 - \Var(\gamma)_0 - \bar{\gamma}_0 \bar{\gamma}_1$
-% \end{enumerate}
-
-% and using that $\gamma_0,\gamma_1 \overset{\mathrm{iid}}{\sim} N(0,1)$ 
-% then
-
-% \begin{enumerate}
-% 	\item $a^2 = \Var(\gamma_0) + \bar{\gamma}_1^2 = 1$
-% 	\item $b^2 = \E(\gamma^2_1) - 2\bar{\gamma}_1 \bar{\gamma}_0 + \E(\gamma_0^2) = 2$
-% 	\item $ab = \bar{\gamma}_0^2 - \Var(\gamma)_0 - \bar{\gamma}_0 \bar{\gamma}_1 = -1$
-% \end{enumerate}
-
-% pluging into our FOC we then get
-% \begin{align*}
-% 	\bar{x} \left(\bar{x}^3(4p - 2) + \bar{x}^2(4 - 8p) + \bar{x}(6p-3) + (2 -2p)\right) = 0
-% \end{align*} 
-
-
-
-\section{Brute Force Solution}
-
-
-recall we want to minimize
-
+Recall we want to minimize
 \begin{align*}
 \min \E_x \left(\E_{\gamma_{0,1}}[(\beta_i - \beta_{i,post})^2]\right)
 \end{align*}
-
-let
-\begin{align*}
-	J = \beta_i -  \beta_{i,post} = \underbrace{[(1-x) \gamma_0 + x \gamma_1]}_{\text{$\beta_i$}}  - \underbrace{[((x - c \bar{x})\E(\gamma) + c \beta_{ATE})]}_\text{$\beta_{i,post}$}
-\end{align*}
-
-
-\begin{align*}
-	J &= ([ (1-x) \gamma_0 + x \gamma_1  - ((x - c \bar{x})\E(\gamma) + c \beta_{ATE})]^2) \\
-	  &= ([ (1-x) \gamma_0 + x \gamma_1  - (\E(\gamma_0)(1-x-c(1-\bar{x}))- \E(\gamma_1)(x - c\bar{x}) - c ((1-\bar{x}) \gamma_0 + \bar{x} \gamma_1 )]^2) \\
-	  &= ([ \gamma_0 -x \gamma_0 + x \gamma_1  - \E(\gamma_0) +\E(\gamma_0)x + \E(\gamma_0)c-\E(\gamma_0)c \bar{x}- \E(\gamma_1)x + \E(\gamma_1)c\bar{x} - c \gamma_0 +c \bar{x} \gamma_0 - c \bar{x} \gamma_1 )]^2) \\
-	  &= ([ [ \gamma_0- \E(\gamma_0) ] -[ c \gamma_0 - \E(\gamma_0)c ] -x [ \gamma_0-\E(\gamma_0) ] + x[ \gamma_1 - \E(\gamma_1) ]  +c \bar{x}[ \gamma_0 -\E(\gamma_0) ] - c \bar{x}[ \gamma_1 -\E(\gamma_1) ])]^2) \\
-\end{align*} 
-
-Now recall
-
-\begin{enumerate}
-	\item $c = \frac{(1-x)(1-\bar{x}) + x\bar{x}}{(1-\bar{x})^2 + \bar{x}^2} = \frac{1-\bar{x} -x  + 2x\bar{x}}{1-2 \bar{x} + 2\bar{x}^2} $
-\end{enumerate}
-
-and let 
-
-\begin{enumerate}
-	\item $a = (\gamma_0 - \E(\gamma_0))$
-	\item $b = (\gamma_1 - \E(\gamma_1))$
-\end{enumerate}
-
-then
-
-\begin{align*}
-	  &= [ a - ca -xa + xb  +c \bar{x}a - c \bar{x}b]^2) \\
-	  &=a^2c^2\bar{x}^2-2a^2c^2\bar{x}+a^2c^2-2a^2cx\bar{x}+2a^2cx+2a^2c\bar{x}-\\
-	  &2a^2c+a^2x^2-2a^2x+a^2-2abc^2\bar{x}^2+2abc^2\bar{x}+4abcx\bar{x}-\\
-	  &2abcx-2abc\bar{x}-2abx^2+2abx+b^2c^2\bar{x}^2-2b^2cx\bar{x}+b^2x^2
-\end{align*} 
-But we know
-
-
-\begin{enumerate}
-	\item $\E(a^2) = \Var(\gamma_0) = 1$
-	\item $\E(b^2) = \Var(\gamma_1) = 1$
-	\item $\E(ab) = \Cov(\gamma_0,\gamma_1) = 0$
-\end{enumerate} 
-
-So we can simply the above expression to the below expression using the linearity of $\E_{\gamma_{0,1}}$
-
-
-\begin{align*}
-	  J&=c^2\bar{x}^2-2c^2\bar{x}+c^2-2cx\bar{x}+2cx+2c\bar{x}-\\
-	  &2c+x^2-2x+1 +c^2\bar{x}^2-2cx\bar{x}+x^2 \\
-  \end{align*} 
-
-  Now cleaning up and plugging in the expression for $c$
-
-  \begin{align*}
-	  &=c^2\bar{x}^2-2c^2\bar{x}+c^2+c^2\bar{x}^2-2cx\bar{x}+2cx+2c\bar{x}-2c-2cx\bar{x} +x^2-2x+x^2 +1 \\
-	  &=(\frac{-\bar{x} + 2 \bar{x}^2+ x - 2x\bar{x}}{1-2 \bar{x} + 2\bar{x}^2})^2(\bar{x}^2-2\bar{x}+1+\bar{x}^2)- \\
-	  &(\frac{-\bar{x} + 2 \bar{x}^2+ x - 2x\bar{x}}{1-2 \bar{x} + 2\bar{x}^2})(2x\bar{x}+2x+2\bar{x}-2-2x\bar{x}) + \\
-	  &(x^2-2x+x^2 +1)  \\
-	  &=\frac{(-\bar{x} + 2 \bar{x}^2+ x - 2x\bar{x})^2}{1-2 \bar{x} + 2\bar{x}^2}-(\frac{-\bar{x} + 2 \bar{x}^2+ x - 2x\bar{x}}{1-2 \bar{x} + 2\bar{x}^2})(2x\bar{x}+2x+2\bar{x}-2-2x\bar{x}) +(x^2-2x+x^2 +1) \\
-	  &= \frac{((4x^2\bar{x}^2-4x^2\bar{x}+x^2-4x\bar{x}^2+6x\bar{x}-2x+\bar{x}^2-2\bar{x}+1)}{(1 - 2\bar{x} + 2\bar{x}^2)} + \\
-	  &\frac{(-8x^2\bar{x}^2+8x^2\bar{x}-2x^2+8x\bar{x}^2-12x\bar{x}+4x-2\bar{x}^2+4\bar{x}-2)}{(1 - 2\bar{x} + 2\bar{x}^2)}+\\
-	  &\frac{(4x^2\bar{x}^2-4x^2\bar{x}+2x^2-4x\bar{x}^2+4x\bar{x}-2x+2\bar{x}^2-2\bar{x}+1))}{(1 - 2\bar{x} + 2\bar{x}^2)} \\
-	  &= \frac{(x^2-2x\bar{x}+\bar{x}^2)}{(1 - 2\bar{x} + 2\bar{x}^2)}
-\end{align*}
-
-Now we can use linearity of expectation with $\E_x (J)$ and get
- \begin{align*}
-	  &= \frac{(p-2p\bar{x}+\bar{x}^2)}{(1 - 2\bar{x} + 2\bar{x}^2)}
-\end{align*} 
-
-Solving the FOC we get
-
-\begin{align*}
-	\frac{\partial J}{\partial \bar{x}} 
-	&= \frac{2(\bar{x}^2 - \bar{x})(2p - 1)}{(1 - 2\bar{x} + 2\bar{x}^2)^2}
-\end{align*} 
-
-Which gives us roots
-$\bar{x} = 0$, $\bar{x} = 1$ and when  $p = \frac{1}{2}$ any $\bar{x} \in [0,1]$ is a root.
-
-Now to check which is the minimizing one, we can use our second order condition to check when the second derivative is positive.
-
-First,
-\begin{align*}
-	\frac{\partial^2 J}{\partial \bar{x}^2} 
-	&= \frac{-(2(2p-1)(4\bar{x}^3-6\bar{x}^2+1))}{(2(\bar{x}-1)\bar{x}+1)^3}
-\end{align*}
-
-Examing the numerator we see that
-\begin{align*}
-	&\frac{-(2(2p-1)(4\bar{x}^3-6\bar{x}^2+1))}{(2(\bar{x}-1)\bar{x}+1)^3} \\
-	&=-(2(2p-1)(2\bar{x}-1))\frac{(2\bar{x}^2-2\bar{x}-1))}{(2(\bar{x}-1)\bar{x}+1)^3}=
-\end{align*} 
-
-Examing this we can see there is a root at $\bar{x} = \frac{1}{2}$ and graphing (or by inspection) we can see that 
-for $p > \frac{1}{2}$ the second derivative is positive for $\bar{x} > \frac{1}{2}$ and if $p < \frac{1}{2}$ then the second derivative is positive for $\bar{x} < \frac{1}{2}$.
-
-Combined with our critical points from the first derivative, this gives us our answer that for $p >  \frac{1}{2}$ our error is minimized at the critical point $\bar{x} = 1$ and if $p < \frac{1}{2}$ our error is minimized at the critical point $\bar{x} = 0$. and if  $p = \frac{1}{2}$ then our error has no minimum and we achieve the same error of $0.5$ for all $\bar{x} \in [0,1]$
-
-% insert png figure named Figure_1.png here
-\begin{figure}[ht!]
-  \centering
-	\includegraphics[width=0.8\textwidth]{simulate-sym}
-  % \caption{Plot of $\frac{\partial J}{\partial \bar{x}}$}
-	\caption{First column contains the simulated error for different population proportions with the population proportion shown by the blue vertical line and point of minimum error shown with the red vertical line. The second column has the analytic error computed in the math above as well as a vertical line showing the first critical point. The third column shows the first derivative with respect to $\bar{x}$.} 
-\end{figure}
-
-
-
-% \subsection{Simpler Men V Women Solution}
-
-% One way we can rewrite these equations is as the effect of women vs men.
-
-% \begin{align*}
-% \min \E_x \left(\E_{\gamma_{0,1}}[(\beta_i - \beta_{i,post})^2]\right)
-% \end{align*}
-
-% let
-% \begin{align*}
-% 	\sqrt{J} &= \beta_i -  \beta_{i,post} = \underbrace{[(1-x) \gamma_0 + x \gamma_1]}_{\text{$\beta_i$}}  - \underbrace{[((x - c \bar{x})\E(\gamma) + c \beta_{ATE})]}_\text{$\beta_{i,post}$} \\
-% 	  &= [(1-x) \gamma_0 + x \gamma_1]  - [((1-x) - c (1 - \bar{x})) \E(\gamma_0) + (x - c \bar{x})\E(\gamma_1) + c((1-\bar{x}) \gamma_0 + \bar{x} \gamma_1)] \\
-% 	  % &= [(1-x) \gamma_0 + x \gamma_1  - (x - c \bar{x})\E(\gamma) + c((1-\bar{x}) \gamma_0 + \bar{x} \gamma_1)] \\
-% \end{align*}
-
-% $\beta_i$ $\beta_{i, post}$ and as a result, $J$ are all a function of $x$. We can then describe
-
-% $\beta_{i}^{men} = \beta_i (x=1)$ and similarly for other terms to get
-
-% So 
-% \begin{align*}
-% 	\beta_i^{men} &= \gamma_1 x\\
-% 	\beta_i^{post,men} &= ( x - c\bar{x})\E(\gamma_1) + c \bar{x} \gamma_1 \\
-% 	\beta_i^{women} &= \gamma_0 (1-x)\\
-% 	\beta_i^{post,women} &= [ (1-x) - c(1-\bar{x}) -  ]\E(\gamma_0) + c(1- \bar{x}) \gamma_0 \\
-% \end{align*} 
-
-% this can be broken down into
-
-% \begin{align*}
-% 	J &= \beta_i^{men} + \beta_i^{wom} - (\beta_i^{post, wom} + \beta_i^{post, men}) \\
-% 	J &= (\beta_i^{men} - \beta_i^{post, men}) + (\beta_i^{wom} - \beta_i^{post, wom}) \\
-% \end{align*} 
-
-% let 
-%  \begin{align*}
-% 	 W^{men} &=  (\beta_i^{men} - \beta_i^{post, men}) \\
-% 			 &= (x - c_i \bar{x}) (\gamma_1 - \E(\gamma_1)) \\
-% 	 W^{wom} &=  (\beta_i^{wom} - \beta_i^{post, wom}) \\
-% 			 &= ((1-x) - c_i (1 - \bar{x})) (\gamma_0 - \E(\gamma_0))
-% \end{align*} 
-
-% then
-% \begin{align*}
-% 	J &= (W_{men}(\gamma_1 - \E(\gamma_1)) + W_{wom}(\gamma_0 - \E(\gamma_0)))^2 \\
-% 	J &= W_{men}^2 \Var(\gamma_1) + 2 W_{men}W_{wom}\Cov(\gamma_1, \gamma_0) + W_{wom}^2 \Var(\gamma_1)
-% \end{align*} 
-
-% but because $\gamma_0$ and $\gamma_1$ are independent, $\E_{\gamma} (2 W_{men}W_{wom}) = 0$ so we have
-
-% \begin{align*}
-% 	J &= W_{men}^2 \Var(\gamma_1) + W_{wom}^2\Var(\gamma_0)
-% \end{align*} 
-
-% But $\Var(\gamma_1) = \Var(\gamma_0) = 1$ in our current setup so I will just substitute in $1$ for each of them for the rest of the calculations.
-
-% Now if we consider $W_{men}$ when $x = 1$ and vice versa then in expectation our error now becomes
-
-% \begin{align*}
-% 	\E_x (W_{men}^2) &= p\left(\frac{(1-\bar{x})^4}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) + (1-p) \frac{\bar{x}^2 (1-\bar{x})^2}{((1-\bar{x})^2 + \bar{x}^2)^2} \\
-% 	\E_x (W_{women}^2) &= (1-p)\left(\frac{(\bar{x})^4}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) + p \frac{\bar{x}^2 (1-\bar{x})^2}{((1-\bar{x})^2 + \bar{x}^2)^2} \\
-% \end{align*} 
-
-
-% we can simplify here to
-
-% \begin{align*}
-% 	&p\left(\frac{(1-\bar{x})^4 - \bar{x}^4}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) + \frac{(\bar{x})^4}{((1-\bar{x})^2 + \bar{x}^2)^2}
-%  + \frac{\bar{x}^2 (1-\bar{x})^2}{((1-\bar{x})^2 + \bar{x}^2)^2} \\
-%  &=p\left(\frac{((1-\bar{x})^2 - \bar{x}^2)((1-\bar{x})^2 + \bar{x}^2)}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) +
-% \frac{\bar{x}^2 (1-\bar{x})^2}{((1-\bar{x})^2 + \bar{x}^2)^2} + \frac{(\bar{x})^4}{((1-\bar{x})^2 + \bar{x}^2)^2} \\
-%  &=p\left(\frac{((1-\bar{x})^2 - \bar{x}^2)((1-\bar{x})^2 + \bar{x}^2)}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) +
-% \bar{x}^2 \left(\frac{(1-\bar{x})^2 + \bar{x}^2}{((1-\bar{x})^2 + \bar{x}^2)^2} \right)\\
-%  &=p\left(\frac{(1-\bar{x})^2 - \bar{x}^2}{(1-\bar{x})^2 + \bar{x}^2}\right) +
-%  \left(\frac{\bar{x}^2}{(1-\bar{x})^2 + \bar{x}^2} \right)\\
-%  &=p\left(\frac{(1-\bar{x})^2}{(1-\bar{x})^2 + \bar{x}^2}\right) +
-%  (1-p)\left(\frac{\bar{x}^2}{(1-\bar{x})^2 + \bar{x}^2} \right)\\
-% \end{align*} 
-
-
-
-
-% gives us
-
-% \begin{align*}
-% 	E_x (J) = p \frac{(1-\bar{x})^2}{(1-\bar{x})^2 + \bar{x}^2} + (1-p) \frac{\bar{x}^2}{(1-\bar{x})^2 + \bar{x}^2}
-% \end{align*} 
-
-% another way to view this is if we observe
-
-% \begin{align*}
-% 	c_{i} = \frac{(1-x)(1-\bar{x}) + x*\bar{x}}{(1-\bar{x})^2 + \bar{x}^2}
-% \end{align*}
-
-% if you are a man, then 
-
-% \begin{align*}
-% 	c_{men} =  \frac{\bar{x}}{(1-\bar{x})^2 + \bar{x}^2}
-% \end{align*}
-
-% and likewise if you are a woman, then
-
-% \begin{align*}
-% 	c_{woman} = \frac{(1-\bar{x})}{(1-\bar{x})^2 + \bar{x}^2}
-% \end{align*}
-
-
-% So then for individual $i$ we have that
-
-% \begin{align*}
-% 	\E(J) &= p (1 - c_{men} \bar{x}) + (1-p) (1 - c_{women} (1 - \bar{x})) \\
-% 	\E(J) &= p \left(1 - \frac{\bar{x}^2}{(1-\bar{x})^2 + \bar{x}^2}\right) + (1-p) \left(1 - \frac{(1-\bar{x})^2}{(1-\bar{x})^2 + \bar{x}^2} \right) \\
-% 	\E(J) &= p \left(\frac{(1 - \bar{x})^2}{(1-\bar{x})^2 + \bar{x}^2}\right) + (1-p) \left(\frac{\bar{x}^2}{(1-\bar{x})^2 + \bar{x}^2} \right) \\
-% \end{align*} 
-
-% Interestingly this implies a FOC of
-
-% \begin{align*}
-% 	\frac{\partial \E(J)}{\partial \bar{x}} &= p \left(\frac{2 \bar{x} (1 - \bar{x})}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) - (1-p) \left(\frac{2 \bar{x} (1 - \bar{x})}{((1-\bar{x})^2 + \bar{x}^2)^2} \right) = 0 \\
-% 	\frac{\partial \E(J)}{\partial \bar{x}} &= (2p -1) \left(\frac{2 \bar{x} (1 - \bar{x})}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) = 0
-% \end{align*} 
-
-% meaning we've retrieved our original FOC.
-
-
-\section{Simpler Men V Women Solution}
 
 One way we can rewrite these equations is as the effect of women vs men.
-
-\begin{align*}
-\min \E_x \left(\E_{\gamma_{0,1}}[(\beta_i - \beta_{i,post})^2]\right)
-\end{align*}
-
 let
 \begin{align*}
 	\sqrt{J} &= \beta_i -  \beta_{i,post} = \underbrace{[(1-x) \gamma_0 + x \gamma_1]}_{\text{$\beta_i$}}  - \underbrace{[((x - c \bar{x})\E(\gamma) + c \beta_{ATE})]}_\text{$\beta_{i,post}$} \\
@@ -751,31 +150,36 @@ let
  \begin{align*}
 	 W^{men} &=  (\beta_i^{men} - \beta_i^{post, men}) \\
 			&= (1 - \bar{x} c_{men}) (\gamma_1 - \bar{\gamma_1}) - c_{men} ( 1 - \bar{x}) (\gamma_0 - \bar{\gamma_0}) \\
+			&= (c_{wom} (1 - \bar{x})) (\gamma_1 - \bar{\gamma_1}) - c_{men} ( 1 - \bar{x}) (\gamma_0 - \bar{\gamma_0}) \\
 	 W^{wom} &=  (\beta_i^{wom} - \beta_i^{post, wom}) \\
 			 &= [ 1 - c_{wom}(1 - \bar{x}) ] (\gamma_0 - \bar{\gamma_0}) - c_{wom} \bar{x} (\gamma_1 - \bar{\gamma_1}) \\
+			 &= [ c_{men} \bar{x}] (\gamma_0 - \bar{\gamma_0}) - c_{wom} \bar{x} (\gamma_1 - \bar{\gamma_1}) \\
 \end{align*} 
 and recall that
 \begin{align*}
-	c_{i} = \frac{(1-x)(1-\bar{x}) + x*\bar{x}}{(1-\bar{x})^2 + \bar{x}^2}
+	c_{i} &= \frac{(1-x)(1-\bar{x})\Var(\gamma_0) + x\bar{x}\Var(\gamma_1)}{(1-\bar{x})^2\Var(\gamma_0) + \bar{x}^2\Var(\gamma_1)} \\
+		  &= \frac{(1-x)(1-\bar{x}) + x\bar{x}}{(1-\bar{x})^2 + \bar{x}^2} 
 \end{align*}
 
 so if you are a man, then 
 
 \begin{align*}
-	c_{men} =  \frac{\bar{x}}{(1-\bar{x})^2 + \bar{x}^2}
+	c_{men} =  \frac{\bar{x}\Var(\gamma_1)}{(1-\bar{x})^2\Var(\gamma_0) + \bar{x}^2\Var(\gamma_1)}
 \end{align*}
 
 and likewise if you are a woman, then
 
 \begin{align*}
-	c_{woman} = \frac{(1-\bar{x})}{(1-\bar{x})^2 + \bar{x}^2}
+	c_{woman} = \frac{(1-\bar{x})\Var(\gamma_0)}{(1-\bar{x})^2\Var(\gamma_0) + \bar{x}^2\Var(\gamma_1)}
 \end{align*}
 
 
 and 
 \begin{align*}
 	W_{men}^2 &= \left(\frac{(1-\bar{x})^4}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) \Var(\gamma_1) +  \frac{\bar{x}^2 (1-\bar{x})^2}{((1-\bar{x})^2 + \bar{x}^2)^2} \Var(\gamma_0) \\
+			  &= \big(\frac{(1-\bar{x})^2 \Var(\gamma_1)} {(1-\bar{x})^2 + \bar{x}^2} \\
 	W_{women}^2 &= \left(\frac{(\bar{x})^4}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) \Var(\gamma_0) + \frac{\bar{x}^2 (1-\bar{x})^2}{((1-\bar{x})^2 + \bar{x}^2)^2} \Var(\gamma_1) \\
+				&= \frac{(\bar{x})^2 \Var(\gamma_0) }{(1-\bar{x})^2 + \bar{x}^2} \\
 \end{align*} 
 
 
@@ -799,7 +203,7 @@ In other words for individual $i$ we have that
 	\E(J) &= p (1 - c_{men} \bar{x}) + (1-p) (1 - c_{women} (1 - \bar{x})) \\
 	\E(J) &= p \left(1 - \frac{\bar{x}^2}{(1-\bar{x})^2 + \bar{x}^2}\right) + (1-p) \left(1 - \frac{(1-\bar{x})^2}{(1-\bar{x})^2 + \bar{x}^2} \right) \\
 	\E(J) &= p \left(\frac{(1 - \bar{x})^2}{(1-\bar{x})^2 + \bar{x}^2}\right) + (1-p) \left(\frac{\bar{x}^2}{(1-\bar{x})^2 + \bar{x}^2} \right) \\
-	\E(J) &= p \left(c_{wom} \right) + (1-p) \left( c_{men} \right) \\
+	\E(J) &= p \left[ (1 - \bar{x})c_{wom} \right] + (1-p) \left[ \bar{x}c_{men} \right] \\
 \end{align*} 
 
 Interestingly this implies a FOC of
@@ -811,13 +215,57 @@ Interestingly this implies a FOC of
 
 meaning we've retrieved our original FOC.
 
+In full generality we also can say
+
+\begin{align*}
+	W_{men}^2 &= \left(\frac{(1 - \bar{x})^4}{((1-\bar{x})^2 \Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2}\right)\Var(\gamma_0)^2 \Var(\gamma_1)  \\
+			  & -  \frac{2 (1 - \bar{x})^2[\bar{x} (1-\bar{x})]}{((1-\bar{x})^2 \Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2} \Var(\gamma_1) \Var(\gamma_0) \Cov(\gamma_0, \gamma_1)  \\
+			  & + \frac{\bar{x}^2 (1-\bar{x})^2}{((1-\bar{x})^2 \Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2} \Var(\gamma_1)^2 \Var(\gamma_0) \\
+			  &= \Var(\gamma_0) \Var(\gamma_1) \bigg(\frac{(1 - \bar{x})^4}{((1-\bar{x})^2 \Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2}\Var(\gamma_0)  \\
+			  & -  \frac{2 (1 - \bar{x})^2[\bar{x} (1-\bar{x})]}{((1-\bar{x})^2 \Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2} \Cov(\gamma_0, \gamma_1)  \\
+			  & + \frac{\bar{x}^2 (1-\bar{x})^2}{((1-\bar{x})^2 \Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2} \Var(\gamma_1) \bigg) \\
+\end{align*} 
+
+
+\begin{align*}
+	W_{women}^2 &= \left(\frac{(\bar{x})^4}{((1-\bar{x})^2 \Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2}\right)\Var(\gamma_1)^2 \Var(\gamma_0)  \\
+				& -  \frac{2 \bar{x}^2[\bar{x} (1-\bar{x})]}{((1-\bar{x})^2 \Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2} \Var(\gamma_1) \Var(\gamma_0) \Cov(\gamma_0, \gamma_1)  \\
+				& + \frac{\bar{x}^2 (1-\bar{x})^2}{((1-\bar{x})^2 \Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2} \Var(\gamma_0)^2 \Var(\gamma_1) \\
+				&= \Var(\gamma_0) \Var(\gamma_1) \bigg(\frac{(\bar{x})^4}{((1-\bar{x})^2 \Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2}\Var(\gamma_1) \\
+				& -  \frac{2 \bar{x}^2[\bar{x} (1-\bar{x})]}{((1-\bar{x})^2 \Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2} \Cov(\gamma_0, \gamma_1)  \\
+				& + \frac{\bar{x}^2 (1-\bar{x})^2}{((1-\bar{x})^2 \Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2} \Var(\gamma_0) \bigg) \\
+\end{align*} 
+
+
+Now observe that
+\begin{align*}
+	W_{women}^2 + W_{women}^2 &= \Var(\gamma_0) \Var(\gamma_1) \big[ \frac{\bar{x}^2 + (1- \bar{x})^2}{(1-\bar{x})^2 \Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1)} \big]
+\end{align*} 
+
+So if $\Var(\gamma_1) = \Var(\gamma_0) = 1$ then we get
+
+\begin{align*}
+	W_{women}^2 + W_{women}^2 = 1	
+\end{align*} 
+
+And so 
+\begin{align*}
+	MSE &= p W^2_{men} + (1 - p) W^2_{women}
+\end{align*} 
+
+but
+\begin{align*}
+	W^{2}_{men} = 1 - W^{2}_{women}
+\end{align*} 
+
+So we can conclude
+
+\begin{align*}
+	MSE &= p W^{2}_{men} + (1-p) (1 - W^{2}_{men}) \\
+	&= (2p-1) W^{2}_{men} + (1-p) 
+\end{align*} 
+
+Thus when $p > \frac{1}{2}$ we can clearly see that MSE is minimized when $W_{men}^2$ is minimized (when $\bar{x} = 1$. And inversely when $p < \frac{1}{2}$ MSE is minimized when $W_{men}^2$ is maximaximized (when $\bar{x} = 0$. In other words, when the proportion of men is  $p > \frac{1}{2}$ it is optimal to have only men ($\bar{x}$) in the trial, and vice versa. And when there are eqal number of men and women in the population,  $MSE$ does not depend on $W_{men}^2$ and thus has equal error of $ \frac{1}{2}$ for any $\bar{x}$.
 
 \end{document}
 
-
-
-
-
-
-
-% ((-y + 2*y^2+ x - 2*x*y)/(1-2*y + 2*y^2))^2*(y^2-2*y+1+y^2)- (( -y + 2*y^2+ x - 2*x*y )( 1-2*y + 2*y^2 ))(2*x*y+2*x+2*y-2-2*x*y) + (x^2-2*x+x^2 +1) 

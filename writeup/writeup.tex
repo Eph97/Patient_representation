@@ -105,7 +105,7 @@ so for individual i, $c$ reduces to
 
 \begin{align*}
 	c &= \frac{1^2\Var(\gamma_0) + x \bar{x} \Var(\gamma_1)}{1^2\Var(\gamma_0) + \bar{x}^2\Var(\gamma_1)} \quad \text{because $\Var(\gamma_0) = \Var(\gamma_1) = \Var(\gamma) = 1$} \\
-	&= \frac{(1 + x \bar{x})\Var(\gamma)}{(1 + \bar{x}^2)\Var(\gamma)} = \frac{x' \bar{x}}{\bar{x}' \bar{x}}
+	  &= \frac{(1 + x \bar{x})\Var(\gamma)}{(1 + \bar{x}^2)\Var(\gamma)} = \frac{\vec{x}' \vec{\bar{x}}}{\vec{\bar{x}}' \vec{\bar{x}}}
 \end{align*} 
 
 
@@ -123,7 +123,7 @@ Recall we want to minimize
 One way we can rewrite these equations is as the effect of women vs men.
 let the squared error (SE) be
 \begin{align*}
-	\sqrt{SE} &= \beta_i -  \beta_{i,post} = \underbrace{[(1-x) \gamma_0 + x \gamma_1]}_{\text{$\beta_i$}}  - \underbrace{[((x - c \bar{x})\E(\gamma) + c \beta_{ATE})]}_\text{$\beta_{i,post}$} \\
+	\sqrt{SE} &= \beta_i -  \beta_{i,post} = \underbrace{[(1-x) \gamma_0 + x \gamma_1]}_{\text{$\beta_i$}}  - \underbrace{[((\vec{x} - c \vec{\bar{x}})\E(\gamma) + c \beta_{ATE})]}_\text{$\beta_{i,post}$} \\
 	  &= [(1-x) \gamma_0 + x \gamma_1]  - [((1-x) - c (1 - \bar{x})) \E(\gamma_0) + (x - c \bar{x})\E(\gamma_1) + c((1-\bar{x}) \gamma_0 + \bar{x} \gamma_1)] \\
 	  % &= [(1-x) \gamma_0 + x \gamma_1  - (x - c \bar{x})\E(\gamma) + c((1-\bar{x}) \gamma_0 + \bar{x} \gamma_1)] \\
 \end{align*}
@@ -249,32 +249,25 @@ So letting $\Cov(\gamma_0, \gamma_1) = 0$ we get
 
 
 
-Now observe that
+Now observe that if $\alpha = \Var(\gamma_1)$ and $\beta = \Var(\gamma_0)$ then
 \begin{align*}
-	W_{women}^2 + W_{men}^2 &= \Var(\gamma_0) \Var(\gamma_1) \big[ \frac{\bar{x}^2 + (1- \bar{x})^2}{(1-\bar{x})^2 \Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1)} \big]
+	\alpha W_{women}^2 + \beta W_{men}^2 &= \Var(\gamma_0) \Var(\gamma_1) \big[ \frac{\Var(\gamma_1) \bar{x}^2 + \Var(\gamma_0) (1- \bar{x})^2}{(1-\bar{x})^2 \Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1)} \big] \\
+										 &= \Var(\gamma_0) \Var(\gamma_1)
 \end{align*} 
-
-So if $\Var(\gamma_1) = \Var(\gamma_0) = 1$ then we get
-
+So we can write
 \begin{align*}
-	W_{women}^2 + W_{men}^2 = 1	
-\end{align*} 
-
-And so 
-\begin{align*}
-	MSE &= (1 - p) W^2_{women} + p W^2_{men}
-\end{align*} 
-
-but
-\begin{align*}
-	W^{2}_{men} = 1 - W^{2}_{women}
+	\alpha W^{2}_{women} &= \Var(\gamma_0) \Var(\gamma_1) - \beta W^{2}_{men} \\
+	W^{2}_{women} &= \frac{\Var(\gamma_0) \Var(\gamma_1) - \beta W^{2}_{men}}{\alpha} \\
+	W^{2}_{women} &= \frac{\Var(\gamma_0) \Var(\gamma_1) - \Var(\gamma_0) W^{2}_{men}}{\Var(\gamma_1)} \\
 \end{align*} 
 
 So we can conclude
 
 \begin{align*}
-	MSE &= p W^{2}_{men} + (1-p) (1 - W^{2}_{men}) \\
-	&= (2p-1) W^{2}_{men} + (1-p) 
+	MSE &= (1 - p) W^2_{women} + p W^2_{men} \\
+	MSE &= p W^{2}_{men} + (1-p) \bigg(\frac{\Var(\gamma_0) \Var(\gamma_1) - \Var(\gamma_0) W^{2}_{men}}{\Var(\gamma_1)} \bigg) \\
+	MSE &= p \Var(\gamma_1) W^{2}_{men} + (1-p) \bigg(\frac{\Var(\gamma_0) \Var(\gamma_1) - \Var(\gamma_0) W^{2}_{men}}{\Var(\gamma_1)} \bigg) \\
+	&= \frac{\bigg(p[\Var(\gamma_0) + \Var(\gamma_1)]- \Var(\gamma_0)\bigg) W^{2}_{men} + (1-p) \Var(\gamma_0) \Var(\gamma_1)}{\Var(\gamma_1)}
 \end{align*} 
 
 Thus when $p > \frac{1}{2}$ we can clearly see that MSE is minimized when $W_{men}^2$ is minimized (when $\bar{x} = 1$. And inversely when $p < \frac{1}{2}$ MSE is minimized when $W_{men}^2$ is maximaximized (when $\bar{x} = 0$. In other words, when the proportion of men is  $p > \frac{1}{2}$ it is optimal to have only men ($\bar{x}$) in the trial, and vice versa. And when there are eqal number of men and women in the population,  $MSE$ does not depend on $W_{men}^2$ and thus has equal error of $ \frac{1}{2}$ for any $\bar{x}$.
@@ -299,6 +292,46 @@ And to get which is the minizing solution we can observe the SOC
 \end{align*} 
 
 From the second order condition, we can look at the two roots. We can see that the numerator reduces to two cases. When $p > \frac{\Var(\gamma_0)}{(\Var(\gamma_0) + \Var(\gamma_1))}$, then we can observe that the numerator is positive for the root $\bar{x} = 1$. Conversely, the numerator is positive when  $\bar{x} = 0$
+
+\subsection*{Just Men}
+
+\begin{align*}
+	\beta_i &= \gamma_0 + x \gamma_1 \\
+	\beta_{i}^{post} &= \E(\gamma_0) + \E(\gamma_1)  + c_i ( \gamma_0 + \bar{x} \gamma_1 - (\E(\gamma_0) + \bar{x} \E(\gamma_1))) \\
+	\beta_i^{women} &= \gamma_0 \\
+	\beta_i^{men} &= \gamma_0 + \gamma_1 \\
+	\beta_i^{post,men} &= \E(\gamma_0) + \E(\gamma_1)  + c_{men} ( \gamma_0 + \bar{x} \gamma_1 - (\E(\gamma_0) + \bar{x} \E(\gamma_1))) \\
+	\beta_i^{post, women} &= \E(\gamma_0) +  c_{women} ( \gamma_0 + \bar{x} \gamma_1 - (\E(\gamma_0) + \bar{x} \E(\gamma_1))) \\
+\end{align*} 
+
+And we have
+\begin{align*}
+	C_i &= \frac{\Var(\gamma_0) + x \bar{x} \Var(\gamma_1)}{\Var(\gamma_0) + \bar{x}^2 \Var{\gamma_1)}} \\
+	C_{women} &= \frac{\Var(\gamma_0)}{\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1)} \\
+	C_{men} &= \frac{\Var(\gamma_0) + \bar{x} \Var(\gamma_1)}{\Var(\gamma_0) + \bar{x}^2 \Var{\gamma_1)}}
+\end{align*} 
+
+\begin{align*}
+	W_{women} &=  \beta_i^{women} - \beta_i^{post,women} \\
+			&= (\gamma_0 - \E(\gamma_0)) - C_{men} \big[(\gamma_0 - \E(\gamma_0)) + \bar{x} ( \gamma_1 - \E(\gamma_1)) \big] \\
+			&= ( 1 - c_{women}) (\gamma_0 - \E(\gamma_0)) - C_{women} \bar{x} (\gamma_1 - \E(\gamma_1)) \\
+	W_{men} &=  \beta_i^{men} - \beta_i^{post,men} \\
+			&= (\gamma_0 - \E(\gamma_0)) + (\gamma_1 - \E(\gamma_1) - C_{men} \big[(\gamma_0 - \E(\gamma_0)) + \bar{x} ( \gamma_1 - \E(\gamma_1)) \big] \\
+			&= ( 1 - c_{men}) (\gamma_0 - \E(\gamma_0)) + (1 - C_{men} \bar{x}) (\gamma_1 - \E(\gamma_1))
+\end{align*} 
+
+Squaring
+\begin{align*}
+	W_{women}^2 &= (1 - c_{wom})^2 \Var(\gamma_0) - 2( 1 - c_{wom})c_{wom} \bar{x}\Cov(\gamma_0, \gamma_1) + c_{wom}^2 \bar{x} \Var(\gamma_1) \\
+	W_{men}^2 &= (1 - c_{men})^2 \Var(\gamma_0) + 2( 1 - c_{men})(1 - c_{men} \bar{x})\Cov(\gamma_0, \gamma_1) + (1 - c_{men} \bar{x})^2 \Var(\gamma_1) \\
+\end{align*} 
+
+And assuming $\Cov(\gamma_0, \gamma_1) = 0$ we get
+
+\begin{align*}
+	W_{women}^2 &= (1 - c_{wom})^2 \Var(\gamma_0) + c_{wom}^2 \bar{x}^2 \Var(\gamma_1) \\
+	W_{men}^2 &= (1 - c_{men})^2 \Var(\gamma_0) + (1 - c_{men} \bar{x})^2 \Var(\gamma_1) \\
+\end{align*} 
 
 
 \end{document}

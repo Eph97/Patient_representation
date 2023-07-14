@@ -237,20 +237,32 @@ In full generality we also can say
 \end{align*} 
 
 
+So letting $\Cov(\gamma_0, \gamma_1) = 0$ we get
+
+\begin{align*}
+	W_{men}^2 &= \Var(\gamma_0) \Var(\gamma_1) \bigg(\frac{(1 - \bar{x})^2 }{(2-\bar{x})^2 \Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1)} \bigg) \\
+\end{align*} 
+
+\begin{align*}
+	W_{women}^2 &= \Var(\gamma_0) \Var(\gamma_1) \bigg(\frac{(\bar{x})^2 }{(1-\bar{x})^2 \Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1)} \bigg) \\
+\end{align*} 
+
+
+
 Now observe that
 \begin{align*}
-	W_{women}^2 + W_{women}^2 &= \Var(\gamma_0) \Var(\gamma_1) \big[ \frac{\bar{x}^2 + (1- \bar{x})^2}{(1-\bar{x})^2 \Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1)} \big]
+	W_{women}^2 + W_{men}^2 &= \Var(\gamma_0) \Var(\gamma_1) \big[ \frac{\bar{x}^2 + (1- \bar{x})^2}{(1-\bar{x})^2 \Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1)} \big]
 \end{align*} 
 
 So if $\Var(\gamma_1) = \Var(\gamma_0) = 1$ then we get
 
 \begin{align*}
-	W_{women}^2 + W_{women}^2 = 1	
+	W_{women}^2 + W_{men}^2 = 1	
 \end{align*} 
 
 And so 
 \begin{align*}
-	MSE &= p W^2_{men} + (1 - p) W^2_{women}
+	MSE &= (1 - p) W^2_{women} + p W^2_{men}
 \end{align*} 
 
 but
@@ -267,5 +279,26 @@ So we can conclude
 
 Thus when $p > \frac{1}{2}$ we can clearly see that MSE is minimized when $W_{men}^2$ is minimized (when $\bar{x} = 1$. And inversely when $p < \frac{1}{2}$ MSE is minimized when $W_{men}^2$ is maximaximized (when $\bar{x} = 0$. In other words, when the proportion of men is  $p > \frac{1}{2}$ it is optimal to have only men ($\bar{x}$) in the trial, and vice versa. And when there are eqal number of men and women in the population,  $MSE$ does not depend on $W_{men}^2$ and thus has equal error of $ \frac{1}{2}$ for any $\bar{x}$.
 
-\end{document}
 
+Note this also gives us a generalized error of
+
+\begin{align*}
+	MSE = (1-p)W_{women}^2 + p W_{men}^2 &= \Var(\gamma_0) \Var(\gamma_1) \big[ \frac{(1-p)\bar{x}^2 + p(1- \bar{x})^2}{(1-\bar{x})^2 \Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1)} \big]
+\end{align*} 
+
+Which gives a derivative of
+\begin{align*}
+	\frac{MSE}{d\bar{x}} = -\frac{ 2 \Var(\gamma_0) \Var(\gamma_1) (1 - \bar{x}) \bar{x} \big[\Var(\gamma_0) (p - 1) + \Var(\gamma_1) p\big] }{(\Var(\gamma_0) (\bar{x} - 1)^2 + \Var(\gamma_1) \bar{x}^2)^2}
+\end{align*} 
+
+Here we can see that we still have roots $\bar{x} = 0$ and $\bar{x} = 1$ and all that changes is we get a variances-weighted edge-case whenever $(\Var(\gamma_0) + \Var(\gamma_1))p - \Var(\gamma_0) = 0$
+
+And to get which is the minizing solution we can observe the SOC 
+\begin{align*}
+	\frac{MSE}{d \bar{x}^2} &= -\frac{2 \Var(\gamma_0) \Var(\gamma_1) [ \Var(\gamma_0) (p - 1) + \Var(\gamma_1) p ] [ \Var(\gamma_0) (2 x + 1) (x - 1)^2 + \Var(\gamma_1) x^2 (2 x - 3) ]}{[ \Var(\gamma_0) (x - 1)^2 + \Var(\gamma_1) x^2 ]^3}
+\end{align*} 
+
+From the second order condition, we can look at the two roots. We can see that the numerator reduces to two cases. When $p > \frac{\Var(\gamma_0)}{(\Var(\gamma_0) + \Var(\gamma_1))}$, then we can observe that the numerator is positive for the root $\bar{x} = 1$. Conversely, the numerator is positive when  $\bar{x} = 0$
+
+
+\end{document}

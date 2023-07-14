@@ -6,19 +6,21 @@ import sys
 from findMin import C, C_2
 from functions import fAndG
 # from symm_error import error, deriv, error2, error3, error32, error4, error5, error6, error7, test1, test2
-from error_menVwom import errorMenWom, deriv, errorMenWom2, errorMenWom4, errorMenWom5, errorMenWom6, splitderiv2, errorMenWom7, errorMenWom8, errorMenWom9
+from error_menVwom import errorMenWom, deriv, errorMenWom2, errorMenWom4, errorMenWom5, errorMenWom6, splitderiv2, errorMenWom7, errorMenWom8, errorMenWom9, errorMenWom10
 
 
 # np.random.seed(366)
 # np.random.seed(365)
 # np.random.seed(36)
 # create dataframe with row ind numbering from 0 to 100,000
-num_ind = 1000
+num_ind = 10000
 num_sims = 10000
 num_groups = 2
 gamma_mean = np.ones(num_groups) *0.0
 # gamma_mean[0] = 1.0
 gamma_cov=np.identity(num_groups)
+gamma_cov[0][0] = 5.0
+gamma_cov[1][1] = 1.0
 # gamma_cov=[[1,0],[0,1]]
 error_df = pd.DataFrame()
 error_val_df = pd.DataFrame()
@@ -29,11 +31,12 @@ deriv_df = pd.DataFrame()
 # options = np.linspace(0.0, 1.0, 101)
 options = np.linspace(0.0, 1.0, 51)
 # for i in range(3):
+max_diff = -np.inf
 
 # p_1 = 0.4
 # x_bar_1 = 0.4
 
-p_1_opt = [0.25, 0.5, 0.75]
+p_1_opt = [0.25, 0.5, 0.9]
 gammas = np.random.multivariate_normal(mean=gamma_mean, cov=gamma_cov, size=num_sims)
 sample_gamma_mean = gammas.mean(axis=0)
 var = gammas.var(axis=0)
@@ -60,8 +63,8 @@ for p_1 in p_1_opt:
         c_i = np.zeros(num_ind)
         c_i_2 = np.zeros(num_ind)
         for i in range(num_ind):
-            # c_i[i] = (np.cov(betas[i], beta_ate)[0][1]/ np.var(beta_ate))
-            c_i[i] = C(x[i], x_bar)
+            c_i[i] = (np.cov(betas[i], beta_ate)[0][1]/ np.var(beta_ate))
+            # c_i[i] = C(x[i], x_bar)
             # assert C_2(x[i,1], x_bar[1])[0][0] == C(x[i], x_bar)
 
         # This isn't quite right. 
@@ -72,8 +75,14 @@ for p_1 in p_1_opt:
         # error_val = errorMis3(x[:,1],x_bar_1, g0, g1)
         # error_val4 = errorMenWom4(x[:,1],x_bar_1, g0, g1)
         # error_val = errorMenWom7(p_1,x_bar_1, g0, g1)
-        error_val = errorMenWom9(p_1,x_bar_1, g0, g1)
-        print(error, error_val, np.abs(error_val - error).round(5))
+        error_val = errorMenWom10(p_1,x_bar_1, g0, g1)
+        diff = np.abs(error_val - error).round(5)
+        print(error, error_val, diff)
+        if diff > max_diff:
+            diff_data = pd.DataFrame({'p_0': p_0, 'p_1': round(p_1,3), 'x_bar_0': x_bar[0], 'x_bar_1' : round(x_bar[1],3), 'diff': diff}, index=[0])
+            max_diff = diff
+            print("new max diff", max_diff)
+
         # assert (np.abs(error_val - error) < 0.005)
 
         # deriv = deriv5(p_1, x_bar_1,g0, g1)

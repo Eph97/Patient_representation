@@ -174,6 +174,20 @@ def errorMenWom9(p, xb, g0, g1):
     # error = ((1-p)*(xb**2/denom) + p*(yb**2/denom))
     return error
 
+
+def errorMenWom10(p, xb, g0, g1):
+    g0 = g0.reshape(1,-1)
+    g1 = g1.reshape(1,-1)
+    a = (g0 - g0.mean())
+    b = (g1 - g1.mean())
+    yb = (1-xb)
+    denom = (yb**2*np.var(g0) + xb**2*np.var(g1))
+    # w_wom = (xb**2)
+    # w_men = ((yb**4 )/denom**2)*np.var(g1) + ((xb*yb)**2/denom**2)*np.var(g0)
+    error = np.var(g0)*np.var(g1)*((1-p)*xb**2 + p*yb**2)/denom
+    return error
+
+
 def splitderiv2(p, xb, g0, g1):
     # x = x.reshape(-1,1)
     g0 = g0.reshape(1,-1)

@@ -266,7 +266,7 @@ So we can conclude
 \begin{align*}
 	MSE &= (1 - p) W^2_{women} + p W^2_{men} \\
 	MSE &= p W^{2}_{men} + (1-p) \bigg(\frac{\Var(\gamma_0) \Var(\gamma_1) - \Var(\gamma_0) W^{2}_{men}}{\Var(\gamma_1)} \bigg) \\
-	MSE &= p \Var(\gamma_1) W^{2}_{men} + (1-p) \bigg(\frac{\Var(\gamma_0) \Var(\gamma_1) - \Var(\gamma_0) W^{2}_{men}}{\Var(\gamma_1)} \bigg) \\
+	MSE &= p W^{2}_{men} + (1-p) \bigg(\frac{\Var(\gamma_0) \Var(\gamma_1) - \Var(\gamma_0) W^{2}_{men}}{\Var(\gamma_1)} \bigg) \\
 	&= \frac{\bigg(p[\Var(\gamma_0) + \Var(\gamma_1)]- \Var(\gamma_0)\bigg) W^{2}_{men} + (1-p) \Var(\gamma_0) \Var(\gamma_1)}{\Var(\gamma_1)}
 \end{align*} 
 
@@ -292,6 +292,15 @@ And to get which is the minizing solution we can observe the SOC
 \end{align*} 
 
 From the second order condition, we can look at the two roots. We can see that the numerator reduces to two cases. When $p > \frac{\Var(\gamma_0)}{(\Var(\gamma_0) + \Var(\gamma_1))}$, then we can observe that the numerator is positive for the root $\bar{x} = 1$. Conversely, the numerator is positive when  $\bar{x} = 0$
+We can also see this outlined in the simulations below.
+% insert png figure named Figure_1.png here
+\begin{figure}[ht!]
+  \centering
+	\includegraphics[width=0.8\textwidth]{simulate-sym}
+  % \caption{Plot of $\frac{\partial J}{\partial \bar{x}}$}
+	\caption{First column contains the simulated error for different population proportions with the population proportion shown by the blue vertical line and point of minimum error shown with the red vertical line. The second column has the analytic error computed in the math above as well as a vertical line showing the first critical point. The third column shows the first derivative with respect to $\bar{x}$.} 
+\end{figure}
+
 
 \subsection*{Just Men}
 
@@ -308,7 +317,7 @@ And we have
 \begin{align*}
 	C_i &= \frac{\Var(\gamma_0) + x \bar{x} \Var(\gamma_1)}{\Var(\gamma_0) + \bar{x}^2 \Var{\gamma_1)}} \\
 	C_{women} &= \frac{\Var(\gamma_0)}{\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1)} \\
-	C_{men} &= \frac{\Var(\gamma_0) + \bar{x} \Var(\gamma_1)}{\Var(\gamma_0) + \bar{x}^2 \Var{\gamma_1)}}
+	C_{men} &= \frac{\Var(\gamma_0) + \bar{x} \Var(\gamma_1)}{\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1)}
 \end{align*} 
 
 \begin{align*}
@@ -330,8 +339,60 @@ And assuming $\Cov(\gamma_0, \gamma_1) = 0$ we get
 
 \begin{align*}
 	W_{women}^2 &= (1 - c_{wom})^2 \Var(\gamma_0) + c_{wom}^2 \bar{x}^2 \Var(\gamma_1) \\
+				&= \frac{\bar{x}^4 \Var(\gamma_1)^2}{(\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2} \Var(\gamma_0) + \frac{\bar{x}^2 \Var(\gamma_0)^2}{(\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2} \Var(\gamma_1) \\
+				&= \bar{x}^2 \Var(\gamma_1) \Var(\gamma_0)\frac{\bar{x}^2 \Var(\gamma_1) + \Var(\gamma_0)}{(\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2} \\
+				&= \frac{\bar{x}^2 \Var(\gamma_1) \Var(\gamma_0)}{\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1)} \\
 	W_{men}^2 &= (1 - c_{men})^2 \Var(\gamma_0) + (1 - c_{men} \bar{x})^2 \Var(\gamma_1) \\
+	          &= \frac{\Var(\gamma_1)^2[\bar{x}^2 - \bar{x}]^2}{(\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2} \Var(\gamma_0) + \frac{\Var(\gamma_0)^2[1 - \bar{x}]^2}{(\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2} \Var(\gamma_1) \\
+			  &= \frac{\Var(\gamma_1)^2 \bar{x}^2 [\bar{x} - 1]^2}{(\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2} \Var(\gamma_0) + \frac{\Var(\gamma_0)^2[\bar{x} - 1]^2}{(\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2} \Var(\gamma_1) \\
+			  &= \Var(\gamma_0) \Var(\gamma_1) [\bar{x} - 1]^2 \frac{\Var(\gamma_1)\bar{x}^2 + \Var(\gamma_0)}{(\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2}\\
+			  &= \frac{\Var(\gamma_0) \Var(\gamma_1) [\bar{x} - 1]^2 }{\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1)}\\
 \end{align*} 
+
+So we get MSE of
+\begin{align*}
+	MSE &= \Var(\gamma_0) \Var(\gamma_1) \frac{(1-p) \bar{x}^2 + p[\bar{x} - 1]^2 }{\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1)}\\
+\end{align*} 
+
+Taking first order conditions we get
+
+\begin{align*}
+	\frac{d}{dx} &\frac{\Var(\gamma_0) \Var(\gamma_1) [ (1 - p) x^2 + p (x - 1)^2 ]}{\Var(\gamma_0) + \Var(\gamma_1) x^2} \\
+&= 2 \Var(\gamma_0) \Var(\gamma_1) \frac{ \Var(\gamma_0) (x - p) + \Var(\gamma_1) p (x - 1) x }{(\Var(\gamma_0) + \Var(\gamma_1) x^2)^2} = 0 \\
+&\iff \Var(\gamma_0) (x - p) + \Var(\gamma_1) p (x - 1) x = 0 \\
+&\iff x^2 \Var(\gamma_1) p + x(\Var(\gamma_0) - \Var(\gamma_1) p) - \Var(\gamma_0) p = 0
+\end{align*} 
+
+For this we can use the quadratic formula with
+\begin{enumerate}
+	\item $a = \Var(\gamma_1) p$
+	\item $b = \Var(\gamma_0) - \Var(\gamma_1) p$
+	\item $c = - \Var(\gamma_0) p$
+\end{enumerate}
+
+giving us
+
+\begin{align*}
+	x &= \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} \\
+	  &= \frac{-(\Var(\gamma_0) - \Var(\gamma_1) p) \pm \sqrt{(\Var(\gamma_0) - \Var(\gamma_1) p)^2 + 4 \Var(\gamma_0) \Var(\gamma_1) p^2 }}{2 \Var(\gamma_1) p} \\
+	  &= \frac{\Var(\gamma_1) p-\Var(\gamma_0)  \pm \sqrt{\Var(\gamma_0)^2 - 2\Var(\gamma_0) \Var(\gamma_1) p + \Var(\gamma_1)^2 p^2 + 4 \Var(\gamma_0) \Var(\gamma_1) p^2 }}{2 \Var(\gamma_1) p} \\
+	  &= \frac{\Var(\gamma_1) p-\Var(\gamma_0)  \pm \sqrt{\Var(\gamma_0)^2 + 2\Var(\gamma_0) \Var(\gamma_1) p(2p -1) + \Var(\gamma_1)^2 p^2}}{2 \Var(\gamma_1) p} \\
+\end{align*} 
+
+
+\begin{figure}[ht!]
+  \centering
+	\includegraphics[width=0.9\textwidth]{v2-intercept}
+  % \caption{Plot of $\frac{\partial J}{\partial \bar{x}}$}
+	\caption{First column contains the simulated error for different population proportions with the population proportion shown by the blue vertical line and point of minimum error shown with the red vertical line. The second column has the analytic error computed in the math above as well as a vertical line showing the first critical point and blue line showing population proportion. The third column shows the first derivative with respect to $\bar{x}$ and where it equals zero.} 
+\end{figure}
+
+\begin{figure}[ht!]
+  \centering
+	\includegraphics[width=0.8\textwidth]{Intercept_optimal}
+  % \caption{Plot of $\frac{\partial J}{\partial \bar{x}}$}
+	\caption{Here we show the optimal trial proportion of men vs the population proprtion (on the y and x axis respectively) for equal variances of 1.} 
+\end{figure}
 
 
 \end{document}

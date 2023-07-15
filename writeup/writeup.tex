@@ -158,7 +158,7 @@ let
 and recall that
 \begin{align*}
 	c_{i} &= \frac{(1-x)(1-\bar{x})\Var(\gamma_0) + x\bar{x}\Var(\gamma_1)}{(1-\bar{x})^2\Var(\gamma_0) + \bar{x}^2\Var(\gamma_1)} \\
-		  &= \frac{(1-x)(1-\bar{x}) + x\bar{x}}{(1-\bar{x})^2 + \bar{x}^2} 
+		  % &= \frac{(1-x)(1-\bar{x}) + x\bar{x}}{(1-\bar{x})^2 + \bar{x}^2} 
 \end{align*}
 
 so if you are a man, then 
@@ -174,48 +174,50 @@ and likewise if you are a woman, then
 \end{align*}
 
 
-and 
-\begin{align*}
-	W_{men}^2 &= \left(\frac{(1-\bar{x})^4}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) \Var(\gamma_1) +  \frac{\bar{x}^2 (1-\bar{x})^2}{((1-\bar{x})^2 + \bar{x}^2)^2} \Var(\gamma_0) \\
-			  &= \big(\frac{(1-\bar{x})^2 \Var(\gamma_1)} {(1-\bar{x})^2 + \bar{x}^2} \\
-	W_{women}^2 &= \left(\frac{(\bar{x})^4}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) \Var(\gamma_0) + \frac{\bar{x}^2 (1-\bar{x})^2}{((1-\bar{x})^2 + \bar{x}^2)^2} \Var(\gamma_1) \\
-				&= \frac{(\bar{x})^2 \Var(\gamma_0) }{(1-\bar{x})^2 + \bar{x}^2} \\
-\end{align*} 
+% and 
+% \begin{align*}
+% 	W_{men}^2 &= \left(\frac{(1-\bar{x})^4}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) \Var(\gamma_1) +  \frac{\bar{x}^2 (1-\bar{x})^2}{((1-\bar{x})^2 + \bar{x}^2)^2} \Var(\gamma_0) \\
+% 			  &= \big(\frac{(1-\bar{x})^2 \Var(\gamma_1)} {(1-\bar{x})^2 + \bar{x}^2} \\
+% 	W_{women}^2 &= \left(\frac{(\bar{x})^4}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) \Var(\gamma_0) + \frac{\bar{x}^2 (1-\bar{x})^2}{((1-\bar{x})^2 + \bar{x}^2)^2} \Var(\gamma_1) \\
+% 				&= \frac{(\bar{x})^2 \Var(\gamma_0) }{(1-\bar{x})^2 + \bar{x}^2} \\
+% \end{align*} 
 
 
-so then taking the mean ($E_{x}$) with respect to $x$, we can write the mean squared error (MSE) as
-\begin{align*}
-	MSE &= p W_{men}^2 + (1 - p)W_{wom}^2 \\
-	&= p \left(\frac{(1-\bar{x})^4\Var(\gamma_1) + ( \bar{x}^2 (1-\bar{x})^2 ) \Var(\gamma_0)}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) + (1-p)\left(\frac{(\bar{x})^4 \Var(\gamma_0) + ( \bar{x}^2 (1-\bar{x})^2 ) \Var(\gamma_1) }{((1-\bar{x})^2 + \bar{x}^2)^2}\right) \\
-\end{align*} 
+% so then taking the mean ($E_{x}$) with respect to $x$, we can write the mean squared error (MSE) as
+% \begin{align*}
+% 	MSE &= p W_{men}^2 + (1 - p)W_{wom}^2 \\
+% 	&= p \left(\frac{(1-\bar{x})^4\Var(\gamma_1) + ( \bar{x}^2 (1-\bar{x})^2 ) \Var(\gamma_0)}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) + (1-p)\left(\frac{(\bar{x})^4 \Var(\gamma_0) + ( \bar{x}^2 (1-\bar{x})^2 ) \Var(\gamma_1) }{((1-\bar{x})^2 + \bar{x}^2)^2}\right) \\
+% \end{align*} 
 
-so using the fact that $\Var(\gamma_0) = \Var(\gamma_1) = 1$ we get
+% so using the fact that $\Var(\gamma_0) = \Var(\gamma_1) = 1$ we get
 
-\begin{align*}
-	 MSE &= p \left(\frac{(1-\bar{x})^4 + ( \bar{x}^2 (1-\bar{x})^2 ) }{((1-\bar{x})^2 + \bar{x}^2)^2}\right) + (1-p)\left(\frac{(\bar{x})^4  + ( \bar{x}^2 (1-\bar{x})^2 ) }{((1-\bar{x})^2 + \bar{x}^2)^2}\right) \\
-	 MSE &= p \left(\frac{(1-\bar{x})^2 }{(1-\bar{x})^2 + \bar{x}^2}\right) + (1-p)\left(\frac{(\bar{x})^2 }{(1-\bar{x})^2 + \bar{x}^2}\right) \\
-			 &= p \frac{(1-\bar{x})^2}{(1-\bar{x})^2 + \bar{x}^2} + (1-p) \frac{\bar{x}^2}{(1-\bar{x})^2 + \bar{x}^2}
-\end{align*} 
+% \begin{align*}
+% 	 MSE &= p \left(\frac{(1-\bar{x})^4 + ( \bar{x}^2 (1-\bar{x})^2 ) }{((1-\bar{x})^2 + \bar{x}^2)^2}\right) + (1-p)\left(\frac{(\bar{x})^4  + ( \bar{x}^2 (1-\bar{x})^2 ) }{((1-\bar{x})^2 + \bar{x}^2)^2}\right) \\
+% 	 MSE &= p \left(\frac{(1-\bar{x})^2 }{(1-\bar{x})^2 + \bar{x}^2}\right) + (1-p)\left(\frac{(\bar{x})^2 }{(1-\bar{x})^2 + \bar{x}^2}\right) \\
+% 			 &= p \frac{(1-\bar{x})^2}{(1-\bar{x})^2 + \bar{x}^2} + (1-p) \frac{\bar{x}^2}{(1-\bar{x})^2 + \bar{x}^2}
+% \end{align*} 
 
-In other words for individual $i$ we have that
+% In other words for individual $i$ we have that
 
-\begin{align*}
-	 MSE &= p (1 - c_{men} \bar{x}) + (1-p) (1 - c_{women} (1 - \bar{x})) \\
-	 MSE &= p \left(1 - \frac{\bar{x}^2}{(1-\bar{x})^2 + \bar{x}^2}\right) + (1-p) \left(1 - \frac{(1-\bar{x})^2}{(1-\bar{x})^2 + \bar{x}^2} \right) \\
-	 MSE &= p \left(\frac{(1 - \bar{x})^2}{(1-\bar{x})^2 + \bar{x}^2}\right) + (1-p) \left(\frac{\bar{x}^2}{(1-\bar{x})^2 + \bar{x}^2} \right) \\
-	 MSE &= p \left[ (1 - \bar{x})c_{wom} \right] + (1-p) \left[ \bar{x}c_{men} \right] \\
-\end{align*} 
+% \begin{align*}
+% 	 MSE &= p (1 - c_{men} \bar{x}) + (1-p) (1 - c_{women} (1 - \bar{x})) \\
+% 	 MSE &= p \left(1 - \frac{\bar{x}^2}{(1-\bar{x})^2 + \bar{x}^2}\right) + (1-p) \left(1 - \frac{(1-\bar{x})^2}{(1-\bar{x})^2 + \bar{x}^2} \right) \\
+% 	 MSE &= p \left(\frac{(1 - \bar{x})^2}{(1-\bar{x})^2 + \bar{x}^2}\right) + (1-p) \left(\frac{\bar{x}^2}{(1-\bar{x})^2 + \bar{x}^2} \right) \\
+% 	 MSE &= p \left[ (1 - \bar{x})c_{wom} \right] + (1-p) \left[ \bar{x}c_{men} \right] \\
+% \end{align*} 
 
-Interestingly this implies a FOC of
+% Interestingly this implies a FOC of
 
-\begin{align*}
-	\frac{\partial MSE }{\partial \bar{x}} &= p \left(\frac{2 \bar{x} (1 - \bar{x})}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) - (1-p) \left(\frac{2 \bar{x} (1 - \bar{x})}{((1-\bar{x})^2 + \bar{x}^2)^2} \right) = 0 \\
-	\frac{\partial MSE}{\partial \bar{x}} &= (2p -1) \left(\frac{2 \bar{x} (1 - \bar{x})}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) = 0
-\end{align*} 
+% \begin{align*}
+% 	\frac{\partial MSE }{\partial \bar{x}} &= p \left(\frac{2 \bar{x} (1 - \bar{x})}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) - (1-p) \left(\frac{2 \bar{x} (1 - \bar{x})}{((1-\bar{x})^2 + \bar{x}^2)^2} \right) = 0 \\
+% 	\frac{\partial MSE}{\partial \bar{x}} &= (2p -1) \left(\frac{2 \bar{x} (1 - \bar{x})}{((1-\bar{x})^2 + \bar{x}^2)^2}\right) = 0
+% \end{align*} 
 
-meaning we've retrieved our original FOC.
+% meaning we've retrieved our original FOC.
 
-In full generality we also can say
+
+
+And, allowing for arbitrary variances, we can say that
 
 \begin{align*}
 	W_{men}^2 &= \left(\frac{(1 - \bar{x})^4}{((1-\bar{x})^2 \Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2}\right)\Var(\gamma_0)^2 \Var(\gamma_1)  \\
@@ -261,7 +263,7 @@ So we can write
 	W^{2}_{women} &= \frac{\Var(\gamma_0) \Var(\gamma_1) - \Var(\gamma_0) W^{2}_{men}}{\Var(\gamma_1)} \\
 \end{align*} 
 
-So we can conclude
+And thus conclude
 
 \begin{align*}
 	MSE &= (1 - p) W^2_{women} + p W^2_{men} \\
@@ -270,7 +272,7 @@ So we can conclude
 	&= \frac{\bigg(p[\Var(\gamma_0) + \Var(\gamma_1)]- \Var(\gamma_0)\bigg) W^{2}_{men} + (1-p) \Var(\gamma_0) \Var(\gamma_1)}{\Var(\gamma_1)}
 \end{align*} 
 
-Thus when $p > \frac{\Var(\gamma_0)}{\Var(\gamma_0) + \Var(\gamma_1)}$ we can clearly see that MSE is minimized when $W_{men}^2$ is minimized (when $\bar{x} = 1$. And inversely when $p < \frac{1}{2}$ MSE is minimized when $W_{men}^2$ is maximaximized (when $\bar{x} = 0$.
+Thus when $p > \frac{\Var(\gamma_0)}{\Var(\gamma_0) + \Var(\gamma_1)}$ we can clearly see that MSE is minimized when $W_{men}^2$ is minimized (when $\bar{x} = 1$. And inversely when $p < \frac{\Var(\gamma_0)}{\Var(\gamma_0) + \Var(\gamma_1)}$ MSE is minimized when $W_{men}^2$ is maximaximized (when $\bar{x} = 0$.
 In other words, when the proportion of men is  $p > \frac{\Var(\gamma_0)}{\Var(\gamma_0) + \Var(\gamma_1)}$ it is optimal to have only men ($\bar{x}$) in the trial, and vice versa. And when there are eqal number of men and women in the population,  $MSE$ does not depend on $W_{men}^2$ and thus has equal error of $\frac{\Var(\gamma_0)}{\Var(\gamma_0) + \Var(\gamma_1)}$ for any $\bar{x}$.
 
 We can also solve this using the first order conditions.
@@ -295,11 +297,15 @@ From the second order condition, we can look at the two roots. We can see that t
 We can also see this outlined in the simulations below.
 % insert png figure named Figure_1.png here
 \begin{figure}[ht!]
+	\label{fig:simulate-sym}
   \centering
 	\includegraphics[width=0.8\textwidth]{simulate-sym}
   % \caption{Plot of $\frac{\partial J}{\partial \bar{x}}$}
 	\caption{First column contains the simulated error for different population proportions with the population proportion shown by the blue vertical line and point of minimum error shown with the red vertical line. The second column has the analytic error computed in the math above as well as a vertical line showing the first critical point. The third column shows the first derivative with respect to $\bar{x}$.} 
 \end{figure}
+
+
+
 
 
 \subsection*{Just Men}
@@ -379,8 +385,11 @@ giving us
 	  &= \frac{\Var(\gamma_1) p-\Var(\gamma_0)  \pm \sqrt{\Var(\gamma_0)^2 + 2\Var(\gamma_0) \Var(\gamma_1) p(2p -1) + \Var(\gamma_1)^2 p^2}}{2 \Var(\gamma_1) p} \\
 \end{align*} 
 
+We can see the errors and optimal solutions \ref{fig:v2-intercept} and \ref{fig:v2-intercept-optim}
+
 
 \begin{figure}[ht!]
+\label{fig:v2-intercept}
   \centering
 	\includegraphics[width=0.9\textwidth]{v2-intercept}
   % \caption{Plot of $\frac{\partial J}{\partial \bar{x}}$}
@@ -388,6 +397,7 @@ giving us
 \end{figure}
 
 \begin{figure}[ht!]
+\label{fig:v2-intercept-optim}
   \centering
 	\includegraphics[width=0.8\textwidth]{Intercept_optimal}
   % \caption{Plot of $\frac{\partial J}{\partial \bar{x}}$}

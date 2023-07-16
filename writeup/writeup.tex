@@ -113,7 +113,11 @@ so for individual i, $c$ reduces to
 
 \section{Appendix}
 
-\subsection*{Derivations}
+\begin{center}
+	{\large \bf Derivations }
+\end{center}
+
+\subsection*{1. symmetric case}
 
 Recall we want to minimize
 \begin{align*}
@@ -242,7 +246,7 @@ And, allowing for arbitrary variances, we can say that
 So letting $\Cov(\gamma_0, \gamma_1) = 0$ we get
 
 \begin{align*}
-	W_{men}^2 &= \Var(\gamma_0) \Var(\gamma_1) \bigg(\frac{(1 - \bar{x})^2 }{(2-\bar{x})^2 \Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1)} \bigg) \\
+	W_{men}^2 &= \Var(\gamma_0) \Var(\gamma_1) \bigg(\frac{(1 - \bar{x})^2 }{(1-\bar{x})^2 \Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1)} \bigg) \\
 \end{align*} 
 
 \begin{align*}
@@ -308,7 +312,7 @@ We can also see this outlined in the simulations below.
 
 
 
-\subsection*{Just Men}
+\subsection*{2. Just Men}
 
 \begin{align*}
 	\beta_i &= \gamma_0 + x \gamma_1 \\
@@ -404,5 +408,94 @@ We can see the errors and optimal solutions \ref{fig:v2-intercept} and \ref{fig:
 	\caption{Here we show the optimal trial proportion of men vs the population proprtion (on the y and x axis respectively) for equal variances of 1.} 
 \end{figure}
 
+\subsection*{3. Generalization of case 1 and 2}
+
+In case 1, we solved 
+
+\begin{align*}
+	\beta_i = (1 - x) \gamma_0 + x \gamma_1 = \gamma_0 + x(\gamma_0 + \gamma_1)
+\end{align*} 
+
+Thus in effect, the constant and coefficient are correlated through $\gamma_0$. We can thus nest both cases by allowing for arbitrary correlation in case 1.
+
+
+We will do this below
+
+First for $C$ 
+
+We have that
+\begin{align*}
+	c = \frac{\Cov (x \gamma, \bar{x} \gamma)}{ \Var( \bar{x} \gamma )}
+\end{align*} 
+
+so for individual i, $c$ reduces to
+
+\begin{align*}
+		c &= \frac{\Var(\gamma_0) + (x + \bar{x}) \Cov(\gamma_0, \gamma_1) + x \bar{x} \Var(\gamma_1)}{\Var(\gamma_0) + 2 \bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)} \\
+		C_{women} &= \frac{\Var(\gamma_0) + \bar{x} \Cov(\gamma_0, \gamma_1)}{\Var(\gamma_0) + 2 \bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)} \\
+	C_{men} &= \frac{\Var(\gamma_0) + (1 + \bar{x}) \Cov(\gamma_0, \gamma_1) + \bar{x} \Var(\gamma_1)}{\Var(\gamma_0) + 2 \bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)} \\
+\end{align*} 
+
+We still have
+
+\begin{align*}
+	\beta_i &= \gamma_0 + x \gamma_1 \\
+	\beta_{i}^{post} &= \E(\gamma_0) + \E(\gamma_1)  + c_i ( \gamma_0 + \bar{x} \gamma_1 - (\E(\gamma_0) + \bar{x} \E(\gamma_1))) \\
+	\beta_i^{women} &= \gamma_0 \\
+	\beta_i^{men} &= \gamma_0 + \gamma_1 \\
+	\beta_i^{post,men} &= \E(\gamma_0) + \E(\gamma_1)  + c_{men} ( \gamma_0 + \bar{x} \gamma_1 - (\E(\gamma_0) + \bar{x} \E(\gamma_1))) \\
+	\beta_i^{post, women} &= \E(\gamma_0) +  c_{women} ( \gamma_0 + \bar{x} \gamma_1 - (\E(\gamma_0) + \bar{x} \E(\gamma_1))) \\
+\end{align*} 
+
+and
+
+\begin{align*}
+	W_{women} &=  \beta_i^{women} - \beta_i^{post,women} \\
+			&= (\gamma_0 - \E(\gamma_0)) - C_{men} \big[(\gamma_0 - \E(\gamma_0)) + \bar{x} ( \gamma_1 - \E(\gamma_1)) \big] \\
+			&= ( 1 - c_{women}) (\gamma_0 - \E(\gamma_0)) - C_{women} \bar{x} (\gamma_1 - \E(\gamma_1)) \\
+	W_{men} &=  \beta_i^{men} - \beta_i^{post,men} \\
+			&= (\gamma_0 - \E(\gamma_0)) + (\gamma_1 - \E(\gamma_1) - C_{men} \big[(\gamma_0 - \E(\gamma_0)) + \bar{x} ( \gamma_1 - \E(\gamma_1)) \big] \\
+			&= ( 1 - c_{men}) (\gamma_0 - \E(\gamma_0)) + (1 - C_{men} \bar{x}) (\gamma_1 - \E(\gamma_1))
+\end{align*} 
+
+Squaring
+\begin{align*}
+	W_{women}^2 &= (1 - c_{wom})^2 \Var(\gamma_0) - 2( 1 - c_{wom})c_{wom} \bar{x}\Cov(\gamma_0, \gamma_1) + c_{wom}^2 \bar{x}^2 \Var(\gamma_1) \\
+				&=\frac{\big(\bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2 \Var(\gamma_1)\big)^2}{\big( \Var(\gamma_0) + 2 \bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)\big)^2} \Var(\gamma_0) -  \\
+				&2 \bigg(\frac{[ \bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2 \Var(\gamma_1) ][ \Var(\gamma_0) + \bar{x} \Cov(\gamma_0, \gamma_1) ]}{\big( \Var(\gamma_0) + 2 \bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)\big)^2} \bigg) \bar{x}\Cov(\gamma_0, \gamma_1) + \\
+				&\frac{\big(\Var(\gamma_0) + \bar{x} \Cov(\gamma_0, \gamma_1) \big)^2}{\big( \Var(\gamma_0) + 2 \bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)\big)^2} \bar{x}^2 \Var(\gamma_1) \\ 
+				&=\frac{\bar{x}^2 \Cov(\gamma_0, \gamma_1)^2 + 2\bar{x}^3 \Cov(\gamma_0, \gamma_1) \Var(\gamma_1) + \bar{x}^4 \Var(\gamma_1)^2 }{\big( \Var(\gamma_0) + 2 \bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)\big)^2} \Var(\gamma_0)  \\
+				&- 2 \bigg(\frac{\bar{x} \Cov(\gamma_0, \gamma_1)\Var(\gamma_0) + \bar{x}^2 \Cov(\gamma_0, \gamma_1)^2 + \bar{x}^2 \Var(\gamma_0) \Var(\gamma_1)  + \bar{x}^3 \Var(\gamma_1)\Cov(\gamma_0, \gamma_1)}{\big( \Var(\gamma_0) + 2 \bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)\big)^2} \bigg) \bar{x}\Cov(\gamma_0, \gamma_1) \\
+				&+ \frac{\Var(\gamma_0)^2 + 2 \bar{x} \Var(\gamma_0) \Cov(\gamma_0, \gamma_1) + \bar{x}^2 \Cov(\gamma_0, \gamma_1)^2 }{\big( \Var(\gamma_0) + 2 \bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)\big)^2} \bar{x}^2 \Var(\gamma_1) \\ 
+				  &= \frac{\bar{x}^2 \big[ \Var(\gamma_0) \Var(\gamma_1) - \Cov(\gamma_0, \gamma_1)^2 \big]}{\Var(\gamma_0) + \Var(\gamma_1) \bar{x}^2 + 2 \Cov(\gamma_0, \gamma_1) \bar{x}}
+\end{align*} 
+
+\begin{align*}
+	W_{men}^2 &= (1 - c_{men})^2 \Var(\gamma_0) + 2( 1 - c_{men})(1 - c_{men} \bar{x})\Cov(\gamma_0, \gamma_1) + (1 - c_{men} \bar{x})^2 \Var(\gamma_1) \\
+			  &= \frac{\big((\bar{x} - 1) \Cov(\gamma_0, \gamma_1) + (\bar{x}^2 - \bar{x}) \Var(\gamma_1)\big)^2}{\big(\Var(\gamma_0) + 2 \bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)\big)^2} \Var(\gamma_0) \\
+			  &+ 2\frac{[(\bar{x} - 1) \Cov(\gamma_0, \gamma_1) + (\bar{x}^2 - \bar{x}) \Var(\gamma_1)][(1 - \bar{x}) \Var(\gamma_0) + (\bar{x} - \bar{x}^2) \Cov(\gamma_0, \gamma_1) ]}{\big(\Var(\gamma_0) + 2 \bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1) \big)^2}\Cov(\gamma_0, \gamma_1) \\
+			  &+ \frac{[(1 - \bar{x}) \Var(\gamma_0) + (\bar{x} - \bar{x}^2) \Cov(\gamma_0, \gamma_1)]^2}{\big(\Var(\gamma_0) + 2 \bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1) \big)^2} \Var(\gamma_1) \\
+			  &= \frac{(\bar{x} - 1)^2 \big[ \Var(\gamma_0) \Var(\gamma_1) - \Cov(\gamma_0, \gamma_1)^2 \big]}{\Var(\gamma_0) + \Var(\gamma_1) \bar{x}^2 + 2 \Cov(\gamma_0, \gamma_1) \bar{x}}
+\end{align*} 
+
+We can see then that if $\Cov(\gamma_0, \gamma_1) = 0$ we recover our result from version 2.
+
+
+And we get a mean square error of 
+\begin{align*}
+	MSE = \big(\Var(\gamma_0) \Var(\gamma_1) - \Cov(\gamma_0, \gamma_1)^2 \big)\frac{(1 - p) \bar{x}^2  + p(\bar{x} - 1)^2 }{\Var(\gamma_0) + \Var(\gamma_1) \bar{x}^2 + 2 \Cov(\gamma_0, \gamma_1) \bar{x}}
+\end{align*} 
+
+\begin{align*}
+	\frac{d}{dx} &= \frac{((\Var(\gamma_0) \Var(\gamma_1) - \Cov(\gamma_0, \gamma_1)^2) ((1 - p) \bar{x}^2 + p (\bar{x} - 1)^2))}{ \Var(\gamma_0) + \Var(\gamma_1) \bar{x}^2 + 2 \bar{x} \Cov(\gamma_0, \gamma_1) } \\
+	&= \frac{2 (\Var(\gamma_0) \Var(\gamma_1) - \Cov(\gamma_0, \gamma_1)^2) (\Var(\gamma_0) (\bar{x} - p) + \Var(\gamma_1) p (\bar{x} - 1) \bar{x} + \Cov(\gamma_0, \gamma_1) (\bar{x}^2 - p)) }{(\Var(\gamma_0) + \bar{x} (\Var(\gamma_1) \bar{x} + 2 \Cov(\gamma_0, \gamma_1)))^2}
+\end{align*} 
+
+Thus we can use the quadratic formula to determine the optimal trial proportions.
+
+\begin{align*}
+	\bar{x} = \frac{\Var(\gamma_1) p - \Var(\gamma_0) - \pm \sqrt{ 4 p \big[ \Var(\gamma_0) + \Cov(\gamma_0, \gamma_1) \big] \big[ \Var(\gamma_1) p + \Cov(\gamma_0, \gamma_1) \big] + \big(\Var(\gamma_0) - \Var(\gamma_1) p\big)^2 } }{ 2 (\Var(\gamma_1) p + \Cov(\gamma_0, \gamma_1)) } 
+\end{align*} 
+and clearly $\Var(\gamma_1) p + \Cov(\gamma_0, \gamma_1) \neq 0$
 
 \end{document}

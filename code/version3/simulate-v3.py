@@ -37,14 +37,14 @@ options = np.linspace(0.0, 1.0, 51)
 
 p_1_opt = [0.25, 0.5, 0.75]
 gammas = np.random.multivariate_normal(mean=gamma_mean, cov=gamma_cov, size=num_sims)
+# gammas[:,1] += gammas[:,0]
+gammas[:,1] = gammas[:,1] - gammas[:,0]
 sample_gamma_mean = gammas.mean(axis=0)
 # var = gammas.var(axis=0)
 g0 = gammas[:,0]
 g1 = gammas[:,1]
 cov_mat = np.cov(g0, g1)
 cov = cov_mat[0,1]
-g0 = cov_mat[0,0]
-g1 = cov_mat[1,1]
 v0 = cov_mat[0,0]
 v1 = cov_mat[1,1]
 max_diff = -np.inf
@@ -58,7 +58,6 @@ for p_1 in p_1_opt:
     for x_bar_1 in options:
         actual = pd.DataFrame({'ind': range(num_ind)})
         x_bar = np.array([1, x_bar_1])
-
         # number of simulated trials
         betas = np.dot(x, gammas.T)
         beta_ate = np.dot(x_bar, gammas.T)
@@ -87,7 +86,7 @@ for p_1 in p_1_opt:
         # deriv = deriv5(p_1, x_bar_1,g0, g1)
         # deriv = deriv7(p_1, x_bar_1,g0, g1)
         # deriv_val = deriv(p_1, x_bar_1)
-        deriv_val = splitderiv2(p_1, x_bar_1, v0, v1)
+        deriv_val = splitderiv2(p_1, x_bar_1, v0, v1, cov)
         # deriv = deriv10(p_1, x_bar_1)
         # deriv_val2 = deriv5(p_1, x_bar_1,g0, g1)
         # assert (np.abs(deriv - deriv_val2) < 0.005)

@@ -84,13 +84,13 @@ def errorMenWom5(p, xb, v0, v1, cov):
     return error
 
 
-def splitderiv2(p, xb, v0, v1):
+def splitderiv2(p, xb, v0, v1, cov):
     # g0 = g0.reshape(1,-1)
     # g1 = g1.reshape(1,-1)
     # v0 = np.var(g0)
     # v1 = np.var(g1)
-    denom = (v0 + xb**2*v1)
-    deriv = 2*v0*v1*(v0*(xb - p) + v1*p*(xb-1)*xb)/denom**2
+    denom = (v0 + xb**2*v1 + 2*cov*xb)
+    deriv = 2*(v0*v1 - cov**2)*(v0*(xb - p) + v1*p*(xb-1)*xb + cov*(xb**2 - p))/denom**2
     return deriv
 
 

@@ -413,7 +413,7 @@ We can see the errors and optimal solutions \ref{fig:v2-intercept} and \ref{fig:
 In case 1, we solved 
 
 \begin{align*}
-	\beta_i = (1 - x) \gamma_0 + x \gamma_1 = \gamma_0 + x(\gamma_0 + \gamma_1)
+	\beta_i = (1 - x) \gamma_0 + x \gamma_1 = \gamma_0 + x(\gamma_1 - \gamma_0)
 \end{align*} 
 
 Thus in effect, the constant and coefficient are correlated through $\gamma_0$. We can thus nest both cases by allowing for arbitrary correlation in case 1.
@@ -487,8 +487,8 @@ And we get a mean square error of
 \end{align*} 
 
 \begin{align*}
-	\frac{d}{dx} &= \frac{((\Var(\gamma_0) \Var(\gamma_1) - \Cov(\gamma_0, \gamma_1)^2) ((1 - p) \bar{x}^2 + p (\bar{x} - 1)^2))}{ \Var(\gamma_0) + \Var(\gamma_1) \bar{x}^2 + 2 \bar{x} \Cov(\gamma_0, \gamma_1) } \\
-	&= \frac{2 (\Var(\gamma_0) \Var(\gamma_1) - \Cov(\gamma_0, \gamma_1)^2) (\Var(\gamma_0) (\bar{x} - p) + \Var(\gamma_1) p (\bar{x} - 1) \bar{x} + \Cov(\gamma_0, \gamma_1) (\bar{x}^2 - p)) }{(\Var(\gamma_0) + \bar{x} (\Var(\gamma_1) \bar{x} + 2 \Cov(\gamma_0, \gamma_1)))^2}
+	\frac{d}{dx} &\big(\Var(\gamma_0) \Var(\gamma_1) - \Cov(\gamma_0, \gamma_1)^2\big)\frac{(1 - p) \bar{x}^2 + p (\bar{x} - 1)^2}{ \Var(\gamma_0) + \Var(\gamma_1) \bar{x}^2 + 2 \bar{x} \Cov(\gamma_0, \gamma_1) } \\
+	&=2 \big(\Var(\gamma_0) \Var(\gamma_1) - \Cov(\gamma_0, \gamma_1)^2 \big) \frac{(\Var(\gamma_0) (\bar{x} - p) + \Var(\gamma_1) p (\bar{x} - 1) \bar{x} + \Cov(\gamma_0, \gamma_1) (\bar{x}^2 - p)) }{(\Var(\gamma_0) + \bar{x} (\Var(\gamma_1) \bar{x} + 2 \Cov(\gamma_0, \gamma_1)))^2}
 \end{align*} 
 
 Thus we can use the quadratic formula to determine the optimal trial proportions.

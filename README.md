@@ -8,6 +8,8 @@ Interestingly our model suggests it is optimal to under-represent minority group
 # Versions
 
 * Equal variance for in two symmetric subpopulations. [Writeup](./writeup/writeup.pdf)
+* unsymmetric case
+* generalization of case 2 allowing for arbitrary covariance (this also nests case 1).
 
 # Simulate
 

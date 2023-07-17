@@ -494,8 +494,57 @@ And we get a mean square error of
 Thus we can use the quadratic formula to determine the optimal trial proportions.
 
 \begin{align*}
-	\bar{x} = \frac{\Var(\gamma_1) p - \Var(\gamma_0) - \pm \sqrt{ 4 p \big[ \Var(\gamma_0) + \Cov(\gamma_0, \gamma_1) \big] \big[ \Var(\gamma_1) p + \Cov(\gamma_0, \gamma_1) \big] + \big(\Var(\gamma_0) - \Var(\gamma_1) p\big)^2 } }{ 2 (\Var(\gamma_1) p + \Cov(\gamma_0, \gamma_1)) } 
+	\bar{x} = \frac{\Var(\gamma_1) p - \Var(\gamma_0) \pm \sqrt{ 4 p \big[ \Var(\gamma_0) + \Cov(\gamma_0, \gamma_1) \big] \big[ \Var(\gamma_1) p + \Cov(\gamma_0, \gamma_1) \big] + \big(\Var(\gamma_0) - \Var(\gamma_1) p\big)^2 } }{ 2 (\Var(\gamma_1) p + \Cov(\gamma_0, \gamma_1)) } 
 \end{align*} 
 and clearly $\Var(\gamma_1) p + \Cov(\gamma_0, \gamma_1) \neq 0$
 
+
+We can thus see that we recover our original case of choosing between all men and all women whenever
+\begin{align*}
+	\Cov(\gamma_0, \gamma_1) = - \Var(\gamma_0)
+\end{align*} 
+
+And when this holds, when $p = \frac{\Var(\gamma_0)}{\Var(\gamma_1)}$, we again get our edge-case where the the error is independent of the trial proportions and any $\bar{x}$ produces an equal error
+
+Now we can check whether our setup in version 1 satisfies this.
+
+Recall we have
+\begin{align*}
+	\beta_i = \gamma_0 + x ( \gamma_1 - \gamma_0)
+\end{align*} 
+
+Let's call $\gamma_2 = \gamma_1 - \gamma_0$
+
+First observe that 
+
+\begin{align*}
+	\Var(\gamma_2) &= \Var(\gamma_1 - \gamma_0) = \Var(\gamma_0) + \Var(\gamma_1) \quad \text{assuming both are 1} \\
+				   &= 1 + 1 = 2
+\end{align*} 
+
+and 
+\begin{align*}
+	\Cov(\gamma_0, \gamma_2)	&= \Cov(\gamma_0, \gamma_1 - \gamma_0) = \Cov(\gamma_0, \gamma_1) - \Cov(\gamma_0, \gamma_0) \\
+										&= 0 - 1 = -1
+\end{align*} 
+
+And so we recover that
+\begin{align*}
+	\Cov(\gamma_0, \gamma_2) &= -\Var(\gamma_{0})
+\end{align*} 
+
+And more over that
+\begin{align*}
+	p = \frac{\Var(\gamma_0)}{\Var(\gamma_2)} &= \frac{1}{2}
+\end{align*} 
+
+And thus and MSE
+
+\begin{align*}
+	MSE &= \big(\Var(\gamma_0) \Var(\gamma_1) - \Cov(\gamma_0, \gamma_1)^2 \big)\frac{(1 - p) \bar{x}^2  + p(\bar{x} - 1)^2 }{\Var(\gamma_0) + \Var(\gamma_1) \bar{x}^2 + 2 \Cov(\gamma_0, \gamma_1) \bar{x}} \\
+		&= (2 - 1)\frac{\frac{1}{2} \bar{x}^2 + \frac{1}{2}(\bar{x}^2 - 2 \bar{x} + 1)}{1 - 2 \bar{x} + 2 \bar{x}^2} \\
+		&= \frac{\frac{1}{2} \bar{x}^2 + \frac{1}{2}(\bar{x}^2 -  \bar{x} + 1)}{2(\frac{1}{2} -  \bar{x} + \bar{x}^2)} = \frac{1}{2}
+\end{align*} 
+
+Which is always equal to $\frac{1}{2}$ and independent of $\bar{x}$
 \end{document}

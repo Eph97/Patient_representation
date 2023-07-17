@@ -15,7 +15,7 @@ from errorv3 import *
 # np.random.seed(36)
 # create dataframe with row ind numbering from 0 to 100,000
 num_ind = 10000
-num_sims = 1000
+num_sims = 10000
 num_groups = 2
 gamma_mean = np.ones(num_groups) *0.0
 # gamma_mean[0] = 1.0
@@ -41,6 +41,9 @@ gammas = np.random.multivariate_normal(mean=gamma_mean, cov=gamma_cov, size=num_
 gammas[:,1] = gammas[:,1] - gammas[:,0]
 sample_gamma_mean = gammas.mean(axis=0)
 # var = gammas.var(axis=0)
+# v0 = var[0]
+# v1 = var[1]
+# cov = 0
 g0 = gammas[:,0]
 g1 = gammas[:,1]
 cov_mat = np.cov(g0, g1)

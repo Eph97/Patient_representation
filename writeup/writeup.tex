@@ -93,22 +93,86 @@
 \end{enumerate}
 
 
-First observe that in our current setup, $c$ does not depend on the $\gamma$'s
-
-We have that
+First observe that in our current setup, we have that
 \begin{align*}
-	c = \frac{\Cov (x \gamma, \bar{x} \gamma)}{ \Var( \bar{x} \gamma )}
+	c = \frac{\Cov ( \gamma_0 + \gamma_1 x , \gamma_0  + \gamma_1 \bar{x} )}{ \Var( \gamma_0  + \gamma_1 \bar{x} ))}
 \end{align*} 
+
 
 so for individual i, $c$ reduces to
 
-
 \begin{align*}
-	c &= \frac{1^2\Var(\gamma_0) + x \bar{x} \Var(\gamma_1)}{1^2\Var(\gamma_0) + \bar{x}^2\Var(\gamma_1)} \quad \text{because $\Var(\gamma_0) = \Var(\gamma_1) = \Var(\gamma) = 1$} \\
-	  &= \frac{(1 + x \bar{x})\Var(\gamma)}{(1 + \bar{x}^2)\Var(\gamma)} = \frac{\vec{x}' \vec{\bar{x}}}{\vec{\bar{x}}' \vec{\bar{x}}}
+		c &= \frac{\Var(\gamma_0) + (x + \bar{x}) \Cov(\gamma_0, \gamma_1) + x \bar{x} \Var(\gamma_1)}{\Var(\gamma_0) + 2 \bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)} \\
+		C_{women} &= \frac{\Var(\gamma_0) + \bar{x} \Cov(\gamma_0, \gamma_1)}{\Var(\gamma_0) + 2 \bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)} \\
+	C_{men} &= \frac{\Var(\gamma_0) + (1 + \bar{x}) \Cov(\gamma_0, \gamma_1) + \bar{x} \Var(\gamma_1)}{\Var(\gamma_0) + 2 \bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)} \\
 \end{align*} 
 
 
+\section{Results}
+
+
+Note, we use $p$ to be the population proportion and $\bar{x}$ to be the average characteristics in the clinical trial. For simplicity, we will call $x = 1$ men, and $x = 0$ women and thus $\bar{x}$ represents the proportion of men in the trial.
+
+\subsection*{Case 1}
+For Case 1, we have 
+
+\begin{align*}
+	\beta_i &= (1 - x) \gamma_0 + x \gamma_1 \\
+	\beta_{ATE} &= (1 - \bar{x}) \gamma_0 + \bar{x} \gamma_1 \\
+\end{align*}
+
+For this case we get that whenever $p > \frac{\gamma_0}{ \gamma_0 + \gamma_1}$. When this is true, we only choose men to be in our trial. If $p < \frac{\gamma_0}{ \gamma_0 + \gamma_1}$ we choose all women.
+Otherwise, if $p = \frac{\gamma_0}{ \gamma_0 + \gamma_1}$ it doesn't matter what proportions we include in our trial, the MSE will be the same.
+
+\subsection*{Case 2}
+
+For Case 2, we have 
+
+\begin{align*}
+	\beta_i &=  \gamma_0 + x \gamma_1 \\
+	\beta_{ATE} &=  \gamma_0 + \bar{x} \gamma_1 \\
+\end{align*}
+
+
+For Case $2$, we see that we always have a preference for more men (if we have a population proportion of $p = \frac{1}{2}$, then we would want $\approx 61.8 \%$ of the trial to be men.
+This is because they have a higher variance in outcomes. To further investigate the effect of variance in this case, can also observe that as $\Var(\gamma_1) \to \infty$ holding $\Var(\gamma_0)$ fixed we always choose only men.
+And as $\Var(\gamma_0) \to \infty$ holding $\Var(\gamma_1)$ fixed, we choose $\bar{x} = p$, equal to the population proportion.
+
+\subsection*{Case 3}
+
+In this case, we consider case 2
+\begin{align*}
+	\beta_i &=  \gamma_0 + x \gamma_1 \\
+	\beta_{ATE} &=  \gamma_0 + \bar{x} \gamma_1 \\
+\end{align*}
+
+but allowing for arbitrary correlation betweem $\gamma_0$ and $\gamma_1$.
+
+First, we can see that when we let  $\Cov(\gamma_0, \gamma_1) = 0$, then we recover case 2.
+% But if we allow $\Cov(\gamma_0, \gamma_1) = - \Var(\gamma_0)$
+
+Furthermore, our intuition from the previous results suggest that the representation depends on the respective variances in outcomes of each group.
+
+We will thus consider a set of options.
+
+Given the setup, we can observe that
+\begin{align*}
+	\Var(\beta_{women}) &= \Var(\gamma_0) \\
+	\Var(\beta_{men}) &= \Var(\gamma_0) + 2\Cov(\gamma_0, \gamma_1) + \Var(\gamma_1) \\
+\end{align*} 
+
+So we will impose that $\Var(\gamma_0) = \Var(\gamma_1) = 1$ and consider different covariances to make men or women have more variance.
+
+From the variances for outcomes above, we can see that for men and women to have equal variance we must impose that  $\Cov(\gamma_0, \gamma_1) = -\frac{1}{2}$.
+
+We investigate different covariance options in table \ref{fig:cov_options}
+
+\begin{figure}[btp]
+	\label{fig:cov_options}
+	\centering
+	\includegraphics[width=0.8\textwidth]{cov_options}
+	\caption{The figures contain different options for $\Cov(\gamma_0, \gamma_1)$ and for all but the last graph, $\Var(\gamma_0) = \Var(\gamma_1) = 1$} 
+\end{figure}
 
 
 \section{Appendix}
@@ -118,6 +182,8 @@ so for individual i, $c$ reduces to
 \end{center}
 
 \subsection*{1. symmetric case}
+
+For this case, let $\beta_i = (1 - x) \gamma_0 + x \gamma_1$ and define $\beta_{ATE}$ likewise.
 
 Recall we want to minimize
 \begin{align*}
@@ -440,7 +506,7 @@ We still have
 
 \begin{align*}
 	\beta_i &= \gamma_0 + x \gamma_1 \\
-	\beta_{i}^{post} &= \E(\gamma_0) + \E(\gamma_1)  + c_i ( \gamma_0 + \bar{x} \gamma_1 - (\E(\gamma_0) + \bar{x} \E(\gamma_1))) \\
+	\beta_{i}^{post} &= \E(\gamma_0) + x \E(\gamma_1)  + c_i ( \gamma_0 + \bar{x} \gamma_1 - (\E(\gamma_0) + \bar{x} \E(\gamma_1))) \\
 	\beta_i^{women} &= \gamma_0 \\
 	\beta_i^{men} &= \gamma_0 + \gamma_1 \\
 	\beta_i^{post,men} &= \E(\gamma_0) + \E(\gamma_1)  + c_{men} ( \gamma_0 + \bar{x} \gamma_1 - (\E(\gamma_0) + \bar{x} \E(\gamma_1))) \\
@@ -518,8 +584,8 @@ Let's call $\gamma_2 = \gamma_1 - \gamma_0$
 First observe that 
 
 \begin{align*}
-	\Var(\gamma_2) &= \Var(\gamma_1 - \gamma_0) = \Var(\gamma_0) + \Var(\gamma_1) \quad \text{assuming both are 1} \\
-				   &= 1 + 1 = 2
+	\Var(\gamma_2) &= \Var(\gamma_1 - \gamma_0) = \Var(\gamma_0) + \Var(\gamma_1)  - 2 \Cov(\gamma_0, \gamma_1) \quad \text{assuming both are 1} \\
+				   &= 1 + 1 - 0 = 2
 \end{align*} 
 
 and 
@@ -547,4 +613,78 @@ And thus and MSE
 \end{align*} 
 
 Which is always equal to $\frac{1}{2}$ and independent of $\bar{x}$. This is precisely what we get with the original solution to case 1.
+
+
+% \subsection*{4. Generalization of case 1 and 2}
+
+% In case 1, we solved 
+
+% \begin{align*}
+% 	\beta_i = (1 - x) \gamma_0 + x \gamma_1 = \gamma_0 + x(\gamma_1 - \gamma_0)
+% \end{align*} 
+
+% Thus in effect, the constant and coefficient are correlated through $\gamma_0$. We can thus nest both cases by allowing for arbitrary correlation in case 1.
+
+
+% We will do this below
+
+% First for $C$ 
+
+% We have that
+% \begin{align*}
+% 	c = \frac{\Cov (x \gamma, \bar{x} \gamma)}{ \Var( \bar{x} \gamma )}
+% \end{align*} 
+
+% so for individual i, $c$ reduces to
+
+% \begin{align*}
+% 	c &= \frac{(1-x)(1 - \bar{x})\Var(\gamma_0) + x (1 - \bar{x}) \Cov(\gamma_0, \gamma_1) +(1 - x)\bar{x}  \Cov(\gamma_0, \gamma_1) +   x \bar{x} \Var(\gamma_1)}{(1- \bar{x})^2 \Var(\gamma_0) + 2 \bar{x}(1-\bar{x}) \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)} \\
+% 	C_{women} &= \frac{(1 - \bar{x})\Var(\gamma_0) + \bar{x} \Cov(\gamma_0, \gamma_1)}{(1-\bar{x})^2\Var(\gamma_0) + 2 (1 - \bar{x})\bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)} \\
+% 	C_{men} &= \frac{(1 - \bar{x}) \Cov(\gamma_0, \gamma_1) + \bar{x} \Var(\gamma_1)}{(1-\bar{x})^2\Var(\gamma_0) + 2 (1 - \bar{x})\bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)} \\
+% \end{align*} 
+
+% We still have
+
+% \begin{align*}
+% 	\beta_i &= (1 -x)\gamma_0 + x \gamma_1 \\
+% 	\beta_{i}^{post} &= (1-x)\E(\gamma_0) + x\E(\gamma_1)  + c_i [ (1-\bar{x})\gamma_0 + \bar{x} \gamma_1 - [ (1- \bar{x})\E(\gamma_0) + \bar{x} \E(\gamma_1) ] ] \\
+% 	\beta_i^{women} &= \gamma_0 \\
+% 	\beta_i^{men} &=  \gamma_1 \\
+% 	\beta_i^{post,men} &=  \E(\gamma_1)  + c_{men} ((1-\bar{x})\gamma_0 + \bar{x} \gamma_1 - ((1-\bar{x})\E(\gamma_0) + \bar{x} \E(\gamma_1))) \\
+% 	\beta_i^{post, women} &= \E(\gamma_0) +  c_{women} ((1-\bar{x}) \gamma_0 + \bar{x} \gamma_1 - ((1-\bar{x})\E(\gamma_0) + \bar{x} \E(\gamma_1))) \\
+% \end{align*} 
+
+% and
+
+% \begin{align*}
+% 	W_{women} &=  \beta_i^{women} - \beta_i^{post,women} \\
+% 			&= (\gamma_0 - \E(\gamma_0)) - C_{men} \big[(\gamma_0 - \E(\gamma_0)) + \bar{x} ( \gamma_1 - \E(\gamma_1)) \big] \\
+% 			&= ( 1 - c_{women}(1-\bar{x})) (\gamma_0 - \E(\gamma_0)) - C_{women} \bar{x} (\gamma_1 - \E(\gamma_1)) \\
+% 			&= c_{men}\bar{x} (\gamma_0 - \E(\gamma_0)) - C_{women} \bar{x} (\gamma_1 - \E(\gamma_1)) \\
+% 	W_{men} &=  \beta_i^{men} - \beta_i^{post,men} \\
+% 			&= (\gamma_0 - \E(\gamma_0)) + (\gamma_1 - \E(\gamma_1) - C_{men} \big[(\gamma_0 - \E(\gamma_0)) + \bar{x} ( \gamma_1 - \E(\gamma_1)) \big] \\
+% 			&= ( 1 - c_{men} \bar{x}) (\gamma_1 - \E(\gamma_1)) - C_{men} (1-\bar{x}) (\gamma_0 - \E(\gamma_0)) \\
+% 			&=  c_{women} (1 - \bar{x}) (\gamma_1 - \E(\gamma_1)) - C_{men} (1-\bar{x}) (\gamma_0 - \E(\gamma_0))
+% \end{align*} 
+
+% \begin{align*}
+% 	W_{women}^2 &= (C_{men} \bar{x}))^2\Var(\gamma_1)\\
+% 				& -  2 C_{women} C_{men}\Cov(\gamma_0, \gamma_1)  \\
+% 				& + (\bar{x} C_{women})^2\Var(\gamma_0) \\
+% \end{align*} 
+
+
+% \begin{align*}
+% 	W_{men}^2 &= (C_{women} (1-\bar{x}))^2\Var(\gamma_1)\\
+% 				& -  2 C_{women} C_{men}\Cov(\gamma_0, \gamma_1)  \\
+% 				& + ((1-\bar{x}) C_{men})^2\Var(\gamma_0) \\
+% \end{align*} 
+
+
+
 \end{document}
+
+% (b*(((1-x)*((1-x) * a + x * c)))^2 - 2*c*(1-x)^2*((1-x) * a + x * c)*(x * b + (1-x)*c) + a*((1-x)*(x * b + (1-x) * c))^2) /((1-x)^2*a + 2*x*(1-x)*c + x^2*b))^2
+
+% b*((1-x)*((1-x) * a)/((1-x)^2*a + x^2*b))^2 +
+% a*((1-x)*(x * b)/((1-x)^2*a + x^2*b))^2

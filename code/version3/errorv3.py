@@ -101,3 +101,9 @@ def opt_prop(p, v0, v1, cov):
     opt1 = (v1*p - v0 + cmath.sqrt(4*p*(v0 + cov)*(v1*p + cov) + (v0 - v1*p)**2) )/(2*(v1*p + cov)) 
     opt2 = (v1*p - v0 - cmath.sqrt(4*p*(v0 + cov)*(v1*p + cov) + (v0 - v1*p)**2) )/(2*(v1*p + cov)) 
     return (opt1, opt2)
+
+
+def opt_prop2(p, v0, v1, c):
+    opt1=(v0*(p-1)+v1*p-2*c*p+cmath.sqrt(v0**2*(p-1)**2+2*v0*v1*p*(p-1)+p*(v1**2*p-4*c**2*(p-1))))/(2*(v0*(p-1)+v1*p-2*c*p+c))
+    opt2=(v0*(p-1)+v1*p-2*c*p-cmath.sqrt(v0**2*(p-1)**2+2*v0*v1*p*(p-1)+p*(v1**2*p-4*c**2*(p-1))))/(2*(v0*(p-1)+v1*p-2*c*p+c))
+    return (opt1, opt2)

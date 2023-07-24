@@ -165,13 +165,53 @@ So we will impose that $\Var(\gamma_0) = \Var(\gamma_1) = 1$ and consider differ
 
 From the variances for outcomes above, we can see that for men and women to have equal variance we must impose that  $\Cov(\gamma_0, \gamma_1) = -\frac{1}{2}$.
 
-We investigate different covariance options in table \ref{fig:cov_options}
+We investigate different covariance options in figure \ref{fig:cov_options}
 
 \begin{figure}[btp]
-	\label{fig:cov_options}
 	\centering
 	\includegraphics[width=0.8\textwidth]{cov_options}
 	\caption{The figures contain different options for $\Cov(\gamma_0, \gamma_1)$ and for all but the last graph, $\Var(\gamma_0) = \Var(\gamma_1) = 1$} 
+	\label{fig:cov_options}
+\end{figure}
+
+\subsection*{Case 4}
+
+In this case, we do the same thing as case 3 but apply it to generalize case 1. recall in case 1 we had
+\begin{align*}
+	\beta_i &=  (1-x)\gamma_0 + x \gamma_1 \\
+	\beta_{ATE} &=  (1 - \bar{x})\gamma_0 + \bar{x} \gamma_1 \\
+\end{align*}
+
+but allowing for arbitrary correlation betweem $\gamma_0$ and $\gamma_1$.
+
+First, we can see that when we let  $\Cov(\gamma_0, \gamma_1) = 0$, then we recover case 1.
+% But if we allow $\Cov(\gamma_0, \gamma_1) = - \Var(\gamma_0)$
+
+Furthermore, our intuition from the previous results suggest that the representation depends on the respective variances in outcomes of each group.
+
+We will thus consider a set of options.
+
+Given the setup, we can observe that
+\begin{align*}
+	\Var(\beta_{women}) &= \Var(\gamma_0) \\
+	\Var(\beta_{men}) &= \Var(\gamma_1)
+\end{align*} 
+
+And in this setup, the covariance structure doesn't tell us which group has more variance, but it tells us how much learning about men tells us about the distribution of results for women and vice versa. 
+With this interpretation, we can see that as $\Cov(\gamma_0, \gamma_1) \to 1$ the optimal study proportions $\bar{x} \to p$.
+
+Likewise, as  $\Cov(\gamma_0, \gamma_1) \to 0$, we recover the results from case 1 where the equal variances tell us that because no group has greater variance, whichever group is more common in the true population should be maximized in the study.  e.g. if $p >  \frac{1}{2}$ then $\bar{x} = 1$ and vice versa.
+
+Finally, if $\Cov(\gamma_0, \gamma_1) \in (-1,0)$ then we get edge cases where if $p > \frac{1}{2}$ then MSE is minimized at $\bar{x} = 1$ and vice versa. If $p=\frac{1}{2}$ then $\bar{x} \in \{0,1\}$ are both solutions. And as $\Cov(\gamma_0, \gamma_1) \to -1$, MSE converges pointwise to 0 with a discontinuity at $\frac{1}{2}$.
+
+We can see these results in figure \ref{fig:generalized_case1}
+
+\begin{figure}[ht!]
+  \centering
+	\includegraphics[width=0.8\textwidth]{generalized_case1}
+  % \caption{Plot of $\frac{\partial J}{\partial \bar{x}}$}
+	\caption{Here we show the optimal trial proportion of men vs the population proprtion (on the y and x axis respectively) for equal variances of 1.} 
+	\label{fig:generalized_case1}
 \end{figure}
 
 
@@ -367,11 +407,11 @@ From the second order condition, we can look at the two roots. We can see that t
 We can also see this outlined in the simulations below.
 % insert png figure named Figure_1.png here
 \begin{figure}[ht!]
-	\label{fig:simulate-sym}
   \centering
 	\includegraphics[width=0.8\textwidth]{simulate-sym}
   % \caption{Plot of $\frac{\partial J}{\partial \bar{x}}$}
 	\caption{First column contains the simulated error for different population proportions with the population proportion shown by the blue vertical line and point of minimum error shown with the red vertical line. The second column has the analytic error computed in the math above as well as a vertical line showing the first critical point. The third column shows the first derivative with respect to $\bar{x}$.} 
+	\label{fig:simulate-sym}
 \end{figure}
 
 
@@ -459,19 +499,19 @@ We can see the errors and optimal solutions \ref{fig:v2-intercept} and \ref{fig:
 
 
 \begin{figure}[ht!]
-\label{fig:v2-intercept}
   \centering
 	\includegraphics[width=0.9\textwidth]{v2-intercept}
   % \caption{Plot of $\frac{\partial J}{\partial \bar{x}}$}
 	\caption{First column contains the simulated error for different population proportions with the population proportion shown by the blue vertical line and point of minimum error shown with the red vertical line. The second column has the analytic error computed in the math above as well as a vertical line showing the first critical point and blue line showing population proportion. The third column shows the first derivative with respect to $\bar{x}$ and where it equals zero.} 
+\label{fig:v2-intercept}
 \end{figure}
 
 \begin{figure}[ht!]
-\label{fig:v2-intercept-optim}
   \centering
 	\includegraphics[width=0.8\textwidth]{Intercept_optimal}
   % \caption{Plot of $\frac{\partial J}{\partial \bar{x}}$}
 	\caption{Here we show the optimal trial proportion of men vs the population proprtion (on the y and x axis respectively) for equal variances of 1.} 
+\label{fig:v2-intercept-optim}
 \end{figure}
 
 \subsection*{3. Generalization of case 1 and 2}
@@ -615,76 +655,125 @@ And thus and MSE
 Which is always equal to $\frac{1}{2}$ and independent of $\bar{x}$. This is precisely what we get with the original solution to case 1.
 
 
-% \subsection*{4. Generalization of case 1 and 2}
+\subsection*{4. Generalization of case 1 and 2}
 
-% In case 1, we solved 
+In case 1, we solved 
 
-% \begin{align*}
-% 	\beta_i = (1 - x) \gamma_0 + x \gamma_1 = \gamma_0 + x(\gamma_1 - \gamma_0)
-% \end{align*} 
+\begin{align*}
+	\beta_i = (1 - x) \gamma_0 + x \gamma_1 = \gamma_0 + x(\gamma_1 - \gamma_0)
+\end{align*} 
 
-% Thus in effect, the constant and coefficient are correlated through $\gamma_0$. We can thus nest both cases by allowing for arbitrary correlation in case 1.
-
-
-% We will do this below
-
-% First for $C$ 
-
-% We have that
-% \begin{align*}
-% 	c = \frac{\Cov (x \gamma, \bar{x} \gamma)}{ \Var( \bar{x} \gamma )}
-% \end{align*} 
-
-% so for individual i, $c$ reduces to
-
-% \begin{align*}
-% 	c &= \frac{(1-x)(1 - \bar{x})\Var(\gamma_0) + x (1 - \bar{x}) \Cov(\gamma_0, \gamma_1) +(1 - x)\bar{x}  \Cov(\gamma_0, \gamma_1) +   x \bar{x} \Var(\gamma_1)}{(1- \bar{x})^2 \Var(\gamma_0) + 2 \bar{x}(1-\bar{x}) \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)} \\
-% 	C_{women} &= \frac{(1 - \bar{x})\Var(\gamma_0) + \bar{x} \Cov(\gamma_0, \gamma_1)}{(1-\bar{x})^2\Var(\gamma_0) + 2 (1 - \bar{x})\bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)} \\
-% 	C_{men} &= \frac{(1 - \bar{x}) \Cov(\gamma_0, \gamma_1) + \bar{x} \Var(\gamma_1)}{(1-\bar{x})^2\Var(\gamma_0) + 2 (1 - \bar{x})\bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)} \\
-% \end{align*} 
-
-% We still have
-
-% \begin{align*}
-% 	\beta_i &= (1 -x)\gamma_0 + x \gamma_1 \\
-% 	\beta_{i}^{post} &= (1-x)\E(\gamma_0) + x\E(\gamma_1)  + c_i [ (1-\bar{x})\gamma_0 + \bar{x} \gamma_1 - [ (1- \bar{x})\E(\gamma_0) + \bar{x} \E(\gamma_1) ] ] \\
-% 	\beta_i^{women} &= \gamma_0 \\
-% 	\beta_i^{men} &=  \gamma_1 \\
-% 	\beta_i^{post,men} &=  \E(\gamma_1)  + c_{men} ((1-\bar{x})\gamma_0 + \bar{x} \gamma_1 - ((1-\bar{x})\E(\gamma_0) + \bar{x} \E(\gamma_1))) \\
-% 	\beta_i^{post, women} &= \E(\gamma_0) +  c_{women} ((1-\bar{x}) \gamma_0 + \bar{x} \gamma_1 - ((1-\bar{x})\E(\gamma_0) + \bar{x} \E(\gamma_1))) \\
-% \end{align*} 
-
-% and
-
-% \begin{align*}
-% 	W_{women} &=  \beta_i^{women} - \beta_i^{post,women} \\
-% 			&= (\gamma_0 - \E(\gamma_0)) - C_{men} \big[(\gamma_0 - \E(\gamma_0)) + \bar{x} ( \gamma_1 - \E(\gamma_1)) \big] \\
-% 			&= ( 1 - c_{women}(1-\bar{x})) (\gamma_0 - \E(\gamma_0)) - C_{women} \bar{x} (\gamma_1 - \E(\gamma_1)) \\
-% 			&= c_{men}\bar{x} (\gamma_0 - \E(\gamma_0)) - C_{women} \bar{x} (\gamma_1 - \E(\gamma_1)) \\
-% 	W_{men} &=  \beta_i^{men} - \beta_i^{post,men} \\
-% 			&= (\gamma_0 - \E(\gamma_0)) + (\gamma_1 - \E(\gamma_1) - C_{men} \big[(\gamma_0 - \E(\gamma_0)) + \bar{x} ( \gamma_1 - \E(\gamma_1)) \big] \\
-% 			&= ( 1 - c_{men} \bar{x}) (\gamma_1 - \E(\gamma_1)) - C_{men} (1-\bar{x}) (\gamma_0 - \E(\gamma_0)) \\
-% 			&=  c_{women} (1 - \bar{x}) (\gamma_1 - \E(\gamma_1)) - C_{men} (1-\bar{x}) (\gamma_0 - \E(\gamma_0))
-% \end{align*} 
-
-% \begin{align*}
-% 	W_{women}^2 &= (C_{men} \bar{x}))^2\Var(\gamma_1)\\
-% 				& -  2 C_{women} C_{men}\Cov(\gamma_0, \gamma_1)  \\
-% 				& + (\bar{x} C_{women})^2\Var(\gamma_0) \\
-% \end{align*} 
+Thus in effect, the constant and coefficient are correlated through $\gamma_0$. We can thus nest both cases by allowing for arbitrary correlation in case 1.
 
 
-% \begin{align*}
-% 	W_{men}^2 &= (C_{women} (1-\bar{x}))^2\Var(\gamma_1)\\
-% 				& -  2 C_{women} C_{men}\Cov(\gamma_0, \gamma_1)  \\
-% 				& + ((1-\bar{x}) C_{men})^2\Var(\gamma_0) \\
-% \end{align*} 
+We will do this below
+
+First for $C$ 
+
+We have that
+\begin{align*}
+	c = \frac{\Cov (x \gamma, \bar{x} \gamma)}{ \Var( \bar{x} \gamma )}
+\end{align*} 
+
+so for individual i, $c$ reduces to
+
+\begin{align*}
+	c &= \frac{(1-x)(1 - \bar{x})\Var(\gamma_0) + x (1 - \bar{x}) \Cov(\gamma_0, \gamma_1) +(1 - x)\bar{x}  \Cov(\gamma_0, \gamma_1) +   x \bar{x} \Var(\gamma_1)}{(1- \bar{x})^2 \Var(\gamma_0) + 2 \bar{x}(1-\bar{x}) \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)} \\
+	C_{women} &= \frac{(1 - \bar{x})\Var(\gamma_0) + \bar{x} \Cov(\gamma_0, \gamma_1)}{(1-\bar{x})^2\Var(\gamma_0) + 2 (1 - \bar{x})\bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)} \\
+	C_{men} &= \frac{(1 - \bar{x}) \Cov(\gamma_0, \gamma_1) + \bar{x} \Var(\gamma_1)}{(1-\bar{x})^2\Var(\gamma_0) + 2 (1 - \bar{x})\bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)} \\
+\end{align*} 
+
+We still have
+
+\begin{align*}
+	\beta_i &= (1 -x)\gamma_0 + x \gamma_1 \\
+	\beta_{i}^{post} &= (1-x)\E(\gamma_0) + x\E(\gamma_1)  + c_i [ (1-\bar{x})\gamma_0 + \bar{x} \gamma_1 - [ (1- \bar{x})\E(\gamma_0) + \bar{x} \E(\gamma_1) ] ] \\
+	\beta_i^{women} &= \gamma_0 \\
+	\beta_i^{men} &=  \gamma_1 \\
+	\beta_i^{post,men} &=  \E(\gamma_1)  + c_{men} ((1-\bar{x})\gamma_0 + \bar{x} \gamma_1 - ((1-\bar{x})\E(\gamma_0) + \bar{x} \E(\gamma_1))) \\
+	\beta_i^{post, women} &= \E(\gamma_0) +  c_{women} ((1-\bar{x}) \gamma_0 + \bar{x} \gamma_1 - ((1-\bar{x})\E(\gamma_0) + \bar{x} \E(\gamma_1))) \\
+\end{align*} 
+
+and
+
+\begin{align*}
+	W_{women} &=  \beta_i^{women} - \beta_i^{post,women} \\
+			&= (\gamma_0 - \E(\gamma_0)) - C_{men} \big[(\gamma_0 - \E(\gamma_0)) + \bar{x} ( \gamma_1 - \E(\gamma_1)) \big] \\
+			&= ( 1 - c_{women}(1-\bar{x})) (\gamma_0 - \E(\gamma_0)) - C_{women} \bar{x} (\gamma_1 - \E(\gamma_1)) \\
+			&= c_{men}\bar{x} (\gamma_0 - \E(\gamma_0)) - C_{women} \bar{x} (\gamma_1 - \E(\gamma_1)) \\
+	W_{men} &=  \beta_i^{men} - \beta_i^{post,men} \\
+			&= (\gamma_0 - \E(\gamma_0)) + (\gamma_1 - \E(\gamma_1) - C_{men} \big[(\gamma_0 - \E(\gamma_0)) + \bar{x} ( \gamma_1 - \E(\gamma_1)) \big] \\
+			&= ( 1 - c_{men} \bar{x}) (\gamma_1 - \E(\gamma_1)) - C_{men} (1-\bar{x}) (\gamma_0 - \E(\gamma_0)) \\
+			&=  c_{women} (1 - \bar{x}) (\gamma_1 - \E(\gamma_1)) - C_{men} (1-\bar{x}) (\gamma_0 - \E(\gamma_0))
+\end{align*} 
+
+\begin{align*}
+	W_{women}^2 &= (C_{men} \bar{x})^2\Var(\gamma_0)\\
+				& -  2 \bar{x} ^2 C_{women} C_{men}\Cov(\gamma_0, \gamma_1)  \\
+				& + (\bar{x} C_{women})^2\Var(\gamma_1) \\
+				&= \frac{ (\Var(\gamma_0) \Var(\gamma_1) - \Cov(\gamma_0, \gamma_1)^2) \bar{x}^2 }{ \bar{x}^2 (\Var(\gamma_0) + \Var(\gamma_1) - 2 \Cov(\gamma_0, \gamma_1)) + 2 \bar{x} (\Cov(\gamma_0, \gamma_1) - \Var(\gamma_0)) + \Var(\gamma_0) }
+\end{align*} 
 
 
+\begin{align*}
+	W_{men}^2 &= (C_{women} (1-\bar{x}))^2\Var(\gamma_1)\\
+			  & -  2 (1-\bar{x})^2 C_{women} C_{men}\Cov(\gamma_0, \gamma_1)  \\
+				& + ((1-\bar{x}) C_{men})^2\Var(\gamma_0) \\
+				&= \frac{ (\bar{x} - 1)^2 (\Var(\gamma_0) \Var(\gamma_1) - \Cov(\gamma_0, \gamma_1)^2) }{ \bar{x}^2 (\Var(\gamma_0) + \Var(\gamma_1) - 2 \Cov(\gamma_0, \gamma_1)) + 2 \bar{x} (\Cov(\gamma_0, \gamma_1) - \Var(\gamma_0)) + \Var(\gamma_0) }
+\end{align*} 
+
+And so we get
+\begin{align*}
+	MSE &= (1-p) W_{women}^2 + p W_{men}^2 \\
+		&=  \frac{(\Var(\gamma_0) \Var(\gamma_1) - \Cov(\gamma_0, \gamma_1)^2)[(1-p) \bar{x}^2   + p (\bar{x} - 1)^2 ]} { \bar{x}^2 (\Var(\gamma_0) + \Var(\gamma_1) - 2 \Cov(\gamma_0, \gamma_1)) + 2 \bar{x} (\Cov(\gamma_0, \gamma_1) - \Var(\gamma_0)) + \Var(\gamma_0) }
+\end{align*} 
+
+and derivative
+\begin{scriptsize}
+\begin{align*}
+	\frac{d MSE}{d\bar{x}} &= 
+	\frac{ 2 (\Var(\gamma_0) \Var(\gamma_1) - \Cov(\gamma_0, \gamma_1)^2) ((\bar{x} - 1) \bar{x} (\Var(\gamma_0) (p - 1) + \Var(\gamma_1) p) + \Cov(\gamma_0, \gamma_1) (p (-2 (\bar{x} - 1) \bar{x} - 1) + \bar{x}^2)) }{(\bar{x}^2 (\Var(\gamma_0) + \Var(\gamma_1) - 2 \Cov(\gamma_0, \gamma_1)) + 2 \bar{x} (\Cov(\gamma_0, \gamma_1) - \Var(\gamma_0)) + \Var(\gamma_0))^2}
+\end{align*} 
+\end{scriptsize}
+
+
+Thus taking the numerator and setting it equal to zero we get an FOC
+
+\begin{tiny}
+\begin{align*}
+	\bar{x} = \frac{ \Var(\gamma_0) (p - 1) + \Var(\gamma_1) p - 2 \Cov(\gamma_0, \gamma_1) p \pm \sqrt{ \Var(\gamma_0)^2 (p - 1)^2 + 2 \Var(\gamma_0) \Var(\gamma_1) p (p - 1) + p (\Var(\gamma_1)^2 p - 4 \Cov(\gamma_0, \gamma_1)^2 (p - 1)) } }{ 2 (\Var(\gamma_0) (p - 1) + \Var(\gamma_1) p - 2 \Cov(\gamma_0, \gamma_1) p + \Cov(\gamma_0, \gamma_1)) }
+\end{align*} 
+\end{tiny}
+
+
+We can see from the above solution that whenever
+\begin{align*}
+	\Var(\gamma_0) = 2 \Cov(\gamma_0, \gamma_1) p = p (\Var(\gamma_0) + \Var(\gamma_1)) + \Cov(\gamma_0, \gamma_1)
+\end{align*} 
+That the solution is undefined. In other words, when $\Var(\gamma_0) = \Var(\gamma_1) = \Cov(\gamma_0, \gamma_1) = 1$ there is no solution. 
+
+This makes sense because if the results are perfectly correlated and no group has higher variance, than any choice of representation should tell us the exact same amount about the other group. And thus there is no clear optimal solution.
 
 \end{document}
 
-% (b*(((1-x)*((1-x) * a + x * c)))^2 - 2*c*(1-x)^2*((1-x) * a + x * c)*(x * b + (1-x)*c) + a*((1-x)*(x * b + (1-x) * c))^2) /((1-x)^2*a + 2*x*(1-x)*c + x^2*b))^2
 
-% b*((1-x)*((1-x) * a)/((1-x)^2*a + x^2*b))^2 +
-% a*((1-x)*(x * b)/((1-x)^2*a + x^2*b))^2
+wom^2
+(a*(x*(x * b + (1-x) * c))^2 - 2*c*(x)^2*((1-x) * a + x * c)*(x * b + (1-x)*c) + b*(x*((1-x) * a + x * c))^2) /((1-x)^2*a + 2*x*(1-x)*c + x^2*b)^2
+= ((a b - c^2) x^2)/(a + 2 (-a + c) x + (a + b - 2 c) x^2)
+
+men^2
+(b*((1-x)*((1-x) * a + x * c))^2 - 2*c*(1-x)^2*((1-x) * a + x * c)*(x * b + (1-x)*c) + a*((1-x)*(x * b + (1-x) * c))^2) /((1-x)^2*a + 2*x*(1-x)*c + x^2*b)^2
+=((a b - c^2) (x-1)^2)/(a + 2 (-a + c) x + (a + b - 2 c) x^2)
+
+(1-p)* ((a b - c^2) x^2)/(a + 2 (-a + c) x + (a + b - 2 c) x^2) + p*((a b - c^2) (x-1)^2)/(a + 2 (-a + c) x + (a + b - 2 c) x^2)
+
+
+(a b - c^2)*((1-p)* x^2 + p*(x-1)^2) /(a + 2 (-a + c) x + (a + b - 2 c) x^2)
+
+d/dx (1-p)* ((a b - c^2) x^2)/(a + 2 (-a + c) x + (a + b - 2 c) x^2) + p*((a b - c^2) (x-1)^2)/(a + 2 (-a + c) x + (a + b - 2 c) x^2)
+
+
+gives us 
+(  a (p - 1) + b p - 2 c p \pm sqrt(a^2 (p - 1)^2 + 2 a b p (p - 1) + p (b^2 p - 4 c^2 (p - 1))))/(2 (a (p - 1) + b p - 2 c p + c))
+
+

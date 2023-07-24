@@ -57,3 +57,14 @@ plt.tick_params(labelcolor='none', which='both', top=False, bottom=False, left=F
 fig.supxlabel("Population Proportion")
 fig.supylabel("Trial Proportion")
 plt.show()
+
+
+
+
+
+
+
+
+
+
+

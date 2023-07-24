@@ -142,3 +142,9 @@ def opt_prop(p, v0, v1):
     opt1 = ((v1*p - v0) + cmath.sqrt(v0**2 + 2*v0*v1*p*(2*p -1) + v1**2 * p**2))/(2*v1*p)
     opt2 = ((v1*p - v0) - cmath.sqrt(v0**2 + 2*v0*v1*p*(2*p -1) + v1**2 * p**2))/(2*v1*p)
     return (opt1, opt2)
+
+
+
+def MSE(p,x,a,b,c):
+    return (a*b - c^2)*((1-p)*x^2 + p*(x-1)^2) /(a + 2*(c-a)*x + (a + b - 2*c)*x^2)
+

@@ -3,7 +3,9 @@
 How do physicians respond to changes in average characteristics in a clinical trial when inferring results on a subpopulation?
 Here we start with a stylized optimal approach. Later we will look at how physicians respond in the real world.
 First we examine a simple solution in which two subpopulations comprise the population and share equal variance in outcomes.
-Interestingly our model suggests it is optimal to under-represent minority groups. It seems because error is linear in marginal changes in representation?
+Interestingly, our model suggests under many reasonable scenarios it is optimal to under-represent minority groups. It seems because error is linear in marginal changes in representation?
+To further investigate this, we study the role of variance of the treatment effects for individuals in each subpopulation and the covariance between subgroups. 
+Later, we begin to explore with arbitrary k number of subgroups.
 
 # Cases
 

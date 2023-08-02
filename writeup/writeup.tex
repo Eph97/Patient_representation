@@ -1,5 +1,6 @@
 % {{{
 \input{$HOME/.config/nvim/snippets/.math.preamble.tex}
+\usepackage[font=scriptsize]{caption}
 % }}}
 
 % Title {{{
@@ -111,18 +112,30 @@ so for individual i, $c$ reduces to
 \section{Results}
 
 
-Note, we use $p$ to be the population proportion and $\bar{x}$ to be the average characteristics in the clinical trial. For simplicity, we will call $x = 1$ men, and $x = 0$ women and thus $\bar{x}$ represents the proportion of men in the trial.
+We start by considering two subpopulations: men and women. In this simple scenario, $x_i$ is an indicator for whether individual $i$ is a man.  
+By symmetry, $x_i=0$ implies individual $i$ is a woman.
+In addition, we let $p$ be the proportion of men in the population and $\bar{x}$ to be the fraction of men in the trial. 
+
+Below we will consider the results for four different cases and observe how the results for the optimal trial composition differ. The first two cases assume the covariance in treatment effects for men and women is zero.
+In cases 3 and 4, we generalize the first two cases by allowing for arbitrary covariance between the treatment effects for men and women.
+
+
+In all the cases, we say a solution is optimal if it minimizes the mean squared error of 
+$(\beta_{i,post} - \beta_{i})$
 
 \subsection*{Case 1}
-For Case 1, we have 
-
+Our first setup is
 \begin{align*}
 	\beta_i &= (1 - x) \gamma_0 + x \gamma_1 \\
 	\beta_{ATE} &= (1 - \bar{x}) \gamma_0 + \bar{x} \gamma_1 \\
 \end{align*}
 
-For this case we get that whenever $p > \frac{\gamma_0}{ \gamma_0 + \gamma_1}$. When this is true, we only choose men to be in our trial. If $p < \frac{\gamma_0}{ \gamma_0 + \gamma_1}$ we choose all women.
-Otherwise, if $p = \frac{\gamma_0}{ \gamma_0 + \gamma_1}$ it doesn't matter what proportions we include in our trial, the MSE will be the same.
+When looking at the derivations we observe that the optimal representation in the clinical trial depends both on the proportion of men and women in the population and their respective variances in treatment effects.
+Interestingly, when the proprtion of men in the population is greater than the ratio of the variance in treatment effects for women to the population, (e.g.
+$p > \frac{\Var(\gamma_0)}{ \Var(\gamma_0) + \Var(\gamma_1)}$), it is optimal to choose only men to be in our trial. 
+Conversely, if $p < \frac{\Var(\gamma_0)}{ \Var(\gamma_0) + \Var(\gamma_1)}$ we choose all women.
+The final case is if $p = \frac{\Var(\gamma_0)}{ \Var(\gamma_0) + \Var(\gamma_1)}$. 
+In this scenario it doesn't matter what proportions we include in our trial, the MSE will be the same for all $\bar{x}$.
 
 \subsection*{Case 2}
 
@@ -134,21 +147,26 @@ For Case 2, we have
 \end{align*}
 
 
-For Case $2$, we see that we always have a preference for more men (if we have a population proportion of $p = \frac{1}{2}$, then we would want $\approx 61.8 \%$ of the trial to be men.
-This is because they have a higher variance in outcomes. To further investigate the effect of variance in this case, can also observe that as $\Var(\gamma_1) \to \infty$ holding $\Var(\gamma_0)$ fixed we always choose only men.
-And as $\Var(\gamma_0) \to \infty$ holding $\Var(\gamma_1)$ fixed, we choose $\bar{x} = p$, equal to the population proportion.
+In this case, we observe the same general rule that the optimal proportion in the clinical trial depend on the proportion of men and women in the population and their respective variances in treatment effects.
+However, because of the structure of $\beta_ i$, in this setup men always have a higher variance in treatment effect.
+
+This asymmetric variance between men and women leads to the scenario where there is always a preference for a greater fraction of the clinical trial to be men than in the population. 
+For example, if the true population contains 50\% men ($p = \frac{1}{2}$), then we would want $\approx 61.8 \%$ of the trial to be men in order to minimize the MSE.
+
+To further investigate the effect of variance in this case we can observe that as $\Var(\gamma_1) \to \infty$ holding $\Var(\gamma_0)$ fixed we always choose only men.
+And as the variance for women $\Var(\gamma_0) \to \infty$ holding $\Var(\gamma_1)$ fixed, we choose $\bar{x} = p$. In other words, the optimal clinical trial composition is simply the true population proportion of men and women.
 
 \subsection*{Case 3}
 
-In this case, we consider case 2
+In this case, we generalize case $2$ to allow for arbitrary covariance between $\gamma_0$ and $\gamma_1$
+
+Recall that our setup in case  $2$ is
 \begin{align*}
 	\beta_i &=  \gamma_0 + x \gamma_1 \\
 	\beta_{ATE} &=  \gamma_0 + \bar{x} \gamma_1 \\
 \end{align*}
 
-but allowing for arbitrary correlation betweem $\gamma_0$ and $\gamma_1$.
-
-First, we can see that when we let  $\Cov(\gamma_0, \gamma_1) = 0$, then we recover case 2.
+First, we can see in \ref{sssec:num3} that when we let  $\Cov(\gamma_0, \gamma_1) = 0$ we recover case 2.
 % But if we allow $\Cov(\gamma_0, \gamma_1) = - \Var(\gamma_0)$
 
 Furthermore, our intuition from the previous results suggest that the representation depends on the respective variances in outcomes of each group.
@@ -161,11 +179,12 @@ Given the setup, we can observe that
 	\Var(\beta_{men}) &= \Var(\gamma_0) + 2\Cov(\gamma_0, \gamma_1) + \Var(\gamma_1) \\
 \end{align*} 
 
-So we will impose that $\Var(\gamma_0) = \Var(\gamma_1) = 1$ and consider different covariances to make men or women have more variance.
+So we will impose that $\Var(\gamma_0) = \Var(\gamma_1) = 1$ and consider different covariances to make men or women have greater variance in outcomes.
 
-From the variances for outcomes above, we can see that for men and women to have equal variance we must impose that  $\Cov(\gamma_0, \gamma_1) = -\frac{1}{2}$.
+From the variances for outcomes above we can see that for men and women to have equal variance we must impose that $\Cov(\gamma_0, \gamma_1) = -\frac{1}{2}$.
 
-We investigate different covariance options in figure \ref{fig:cov_options}
+We investigate different covariance options in figure \ref{fig:cov_options}. In the figure we observe that if men and women have the same variance in outcomes, then you overrepresent whatever group is in the majority. As the variance of one group increases relative to another, you choose to overrepresent that group even more.
+And finally, in graph the last graph of the figure, we can replicate the results from case 1 where it is optimal to only include the majority group in our trial.
 
 \begin{figure}[btp]
 	\centering
@@ -176,20 +195,17 @@ We investigate different covariance options in figure \ref{fig:cov_options}
 
 \subsection*{Case 4}
 
-In this case, we do the same thing as case 3 but apply it to generalize case 1. recall in case 1 we had
+In this case, we generalize case 1 to allow for arbitrary correlation betweem $\gamma_0$ and $\gamma_1$.
+Recall that in case 1 we had
 \begin{align*}
 	\beta_i &=  (1-x)\gamma_0 + x \gamma_1 \\
 	\beta_{ATE} &=  (1 - \bar{x})\gamma_0 + \bar{x} \gamma_1 \\
 \end{align*}
 
-but allowing for arbitrary correlation betweem $\gamma_0$ and $\gamma_1$.
 
-First, we can see that when we let  $\Cov(\gamma_0, \gamma_1) = 0$, then we recover case 1.
-% But if we allow $\Cov(\gamma_0, \gamma_1) = - \Var(\gamma_0)$
+First, we can see in \ref{sssec:num4} that when we let  $\Cov(\gamma_0, \gamma_1) = 0$, then we recover case 1.
 
-Furthermore, our intuition from the previous results suggest that the representation depends on the respective variances in outcomes of each group.
-
-We will thus consider a set of options.
+As before, we will consider a range of options changing the respective variances in outcomes for men and women.
 
 Given the setup, we can observe that
 \begin{align*}
@@ -197,10 +213,10 @@ Given the setup, we can observe that
 	\Var(\beta_{men}) &= \Var(\gamma_1)
 \end{align*} 
 
-And in this setup, the covariance structure doesn't tell us which group has more variance, but it tells us how much learning about men tells us about the distribution of results for women and vice versa. 
+In this setup the covariance structure doesn't tell us which group has more variance. However it does tell us how much learning about men tells us about the distribution of results for women and vice versa. 
 With this interpretation, we can see that as $\Cov(\gamma_0, \gamma_1) \to 1$ the optimal study proportions $\bar{x} \to p$.
 
-Likewise, as  $\Cov(\gamma_0, \gamma_1) \to 0$, we recover the results from case 1 where the equal variances tell us that because no group has greater variance, whichever group is more common in the true population should be maximized in the study.  e.g. if $p >  \frac{1}{2}$ then $\bar{x} = 1$ and vice versa.
+As  $\Cov(\gamma_0, \gamma_1) \to 0$, we recover the results from case 1 where the equal variances tell us that because no group has greater variance, whichever group is more common in the true population should be maximized in the study.  e.g. if men are more than half of the population ($p >  \frac{1}{2}$) then we should only include men in the clinical trial ($\bar{x} = 1$) and vice versa.
 
 Finally, if $\Cov(\gamma_0, \gamma_1) \in (-1,0)$ then we get edge cases where if $p > \frac{1}{2}$ then MSE is minimized at $\bar{x} = 1$ and vice versa. If $p=\frac{1}{2}$ then $\bar{x} \in \{0,1\}$ are both solutions. And as $\Cov(\gamma_0, \gamma_1) \to -1$, MSE converges pointwise to 0 with a discontinuity at $\frac{1}{2}$.
 
@@ -230,4 +246,3 @@ We can see these results in figure \ref{fig:generalized_case1}
 
 
 \end{document}
-

@@ -1,0 +1,95 @@
+\subsection*{2. Men Have Higher Variance}
+
+\begin{align*}
+	\beta_i &= \gamma_0 + x \gamma_1 \\
+	\beta_{i}^{post} &= \E(\gamma_0) + \E(\gamma_1)  + c_i ( \gamma_0 + \bar{x} \gamma_1 - (\E(\gamma_0) + \bar{x} \E(\gamma_1))) \\
+	\beta_i^{women} &= \gamma_0 \\
+	\beta_i^{men} &= \gamma_0 + \gamma_1 \\
+	\beta_i^{post,men} &= \E(\gamma_0) + \E(\gamma_1)  + c_{men} ( \gamma_0 + \bar{x} \gamma_1 - (\E(\gamma_0) + \bar{x} \E(\gamma_1))) \\
+	\beta_i^{post, women} &= \E(\gamma_0) +  c_{women} ( \gamma_0 + \bar{x} \gamma_1 - (\E(\gamma_0) + \bar{x} \E(\gamma_1))) \\
+\end{align*} 
+
+And we have
+\begin{align*}
+	C_i &= \frac{\Var(\gamma_0) + x \bar{x} \Var(\gamma_1)}{\Var(\gamma_0) + \bar{x}^2 \Var{\gamma_1)}} \\
+	C_{women} &= \frac{\Var(\gamma_0)}{\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1)} \\
+	C_{men} &= \frac{\Var(\gamma_0) + \bar{x} \Var(\gamma_1)}{\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1)}
+\end{align*} 
+
+\begin{align*}
+	W_{women} &=  \beta_i^{women} - \beta_i^{post,women} \\
+			&= (\gamma_0 - \E(\gamma_0)) - C_{men} \big[(\gamma_0 - \E(\gamma_0)) + \bar{x} ( \gamma_1 - \E(\gamma_1)) \big] \\
+			&= ( 1 - c_{women}) (\gamma_0 - \E(\gamma_0)) - C_{women} \bar{x} (\gamma_1 - \E(\gamma_1)) \\
+	W_{men} &=  \beta_i^{men} - \beta_i^{post,men} \\
+			&= (\gamma_0 - \E(\gamma_0)) + (\gamma_1 - \E(\gamma_1) - C_{men} \big[(\gamma_0 - \E(\gamma_0)) + \bar{x} ( \gamma_1 - \E(\gamma_1)) \big] \\
+			&= ( 1 - c_{men}) (\gamma_0 - \E(\gamma_0)) + (1 - C_{men} \bar{x}) (\gamma_1 - \E(\gamma_1))
+\end{align*} 
+
+Squaring
+\begin{align*}
+	W_{women}^2 &= (1 - c_{wom})^2 \Var(\gamma_0) - 2( 1 - c_{wom})c_{wom} \bar{x}\Cov(\gamma_0, \gamma_1) + c_{wom}^2 \bar{x} \Var(\gamma_1) \\
+	W_{men}^2 &= (1 - c_{men})^2 \Var(\gamma_0) + 2( 1 - c_{men})(1 - c_{men} \bar{x})\Cov(\gamma_0, \gamma_1) + (1 - c_{men} \bar{x})^2 \Var(\gamma_1) \\
+\end{align*} 
+
+And assuming $\Cov(\gamma_0, \gamma_1) = 0$ we get
+
+\begin{align*}
+	W_{women}^2 &= (1 - c_{wom})^2 \Var(\gamma_0) + c_{wom}^2 \bar{x}^2 \Var(\gamma_1) \\
+				&= \frac{\bar{x}^4 \Var(\gamma_1)^2}{(\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2} \Var(\gamma_0) + \frac{\bar{x}^2 \Var(\gamma_0)^2}{(\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2} \Var(\gamma_1) \\
+				&= \bar{x}^2 \Var(\gamma_1) \Var(\gamma_0)\frac{\bar{x}^2 \Var(\gamma_1) + \Var(\gamma_0)}{(\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2} \\
+				&= \frac{\bar{x}^2 \Var(\gamma_1) \Var(\gamma_0)}{\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1)} \\
+	W_{men}^2 &= (1 - c_{men})^2 \Var(\gamma_0) + (1 - c_{men} \bar{x})^2 \Var(\gamma_1) \\
+	          &= \frac{\Var(\gamma_1)^2[\bar{x}^2 - \bar{x}]^2}{(\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2} \Var(\gamma_0) + \frac{\Var(\gamma_0)^2[1 - \bar{x}]^2}{(\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2} \Var(\gamma_1) \\
+			  &= \frac{\Var(\gamma_1)^2 \bar{x}^2 [\bar{x} - 1]^2}{(\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2} \Var(\gamma_0) + \frac{\Var(\gamma_0)^2[\bar{x} - 1]^2}{(\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2} \Var(\gamma_1) \\
+			  &= \Var(\gamma_0) \Var(\gamma_1) [\bar{x} - 1]^2 \frac{\Var(\gamma_1)\bar{x}^2 + \Var(\gamma_0)}{(\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1))^2}\\
+			  &= \frac{\Var(\gamma_0) \Var(\gamma_1) [\bar{x} - 1]^2 }{\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1)}\\
+\end{align*} 
+
+So we get MSE of
+\begin{align*}
+	MSE &= \Var(\gamma_0) \Var(\gamma_1) \frac{(1-p) \bar{x}^2 + p[\bar{x} - 1]^2 }{\Var(\gamma_0) + \bar{x}^2 \Var(\gamma_1)}\\
+\end{align*} 
+
+Taking first order conditions we get
+
+\begin{align*}
+	\frac{d}{dx} &\frac{\Var(\gamma_0) \Var(\gamma_1) [ (1 - p) x^2 + p (x - 1)^2 ]}{\Var(\gamma_0) + \Var(\gamma_1) x^2} \\
+&= 2 \Var(\gamma_0) \Var(\gamma_1) \frac{ \Var(\gamma_0) (x - p) + \Var(\gamma_1) p (x - 1) x }{(\Var(\gamma_0) + \Var(\gamma_1) x^2)^2} = 0 \\
+&\iff \Var(\gamma_0) (x - p) + \Var(\gamma_1) p (x - 1) x = 0 \\
+&\iff x^2 \Var(\gamma_1) p + x(\Var(\gamma_0) - \Var(\gamma_1) p) - \Var(\gamma_0) p = 0
+\end{align*} 
+
+For this we can use the quadratic formula with
+\begin{enumerate}
+	\item $a = \Var(\gamma_1) p$
+	\item $b = \Var(\gamma_0) - \Var(\gamma_1) p$
+	\item $c = - \Var(\gamma_0) p$
+\end{enumerate}
+
+giving us
+
+\begin{align*}
+	x &= \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} \\
+	  &= \frac{-(\Var(\gamma_0) - \Var(\gamma_1) p) \pm \sqrt{(\Var(\gamma_0) - \Var(\gamma_1) p)^2 + 4 \Var(\gamma_0) \Var(\gamma_1) p^2 }}{2 \Var(\gamma_1) p} \\
+	  &= \frac{\Var(\gamma_1) p-\Var(\gamma_0)  \pm \sqrt{\Var(\gamma_0)^2 - 2\Var(\gamma_0) \Var(\gamma_1) p + \Var(\gamma_1)^2 p^2 + 4 \Var(\gamma_0) \Var(\gamma_1) p^2 }}{2 \Var(\gamma_1) p} \\
+	  &= \frac{\Var(\gamma_1) p-\Var(\gamma_0)  \pm \sqrt{\Var(\gamma_0)^2 + 2\Var(\gamma_0) \Var(\gamma_1) p(2p -1) + \Var(\gamma_1)^2 p^2}}{2 \Var(\gamma_1) p} \\
+\end{align*} 
+
+We can see the errors and optimal solutions \ref{fig:v2-intercept} and \ref{fig:v2-intercept-optim}
+
+
+\begin{figure}[ht!]
+  \centering
+	\includegraphics[width=0.9\textwidth]{v2-intercept}
+  % \caption{Plot of $\frac{\partial J}{\partial \bar{x}}$}
+	\caption{First column contains the simulated error for different population proportions with the population proportion shown by the blue vertical line and point of minimum error shown with the red vertical line. The second column has the analytic error computed in the math above as well as a vertical line showing the first critical point and blue line showing population proportion. The third column shows the first derivative with respect to $\bar{x}$ and where it equals zero.} 
+\label{fig:v2-intercept}
+\end{figure}
+
+\begin{figure}[ht!]
+  \centering
+	\includegraphics[width=0.8\textwidth]{Intercept_optimal}
+  % \caption{Plot of $\frac{\partial J}{\partial \bar{x}}$}
+	\caption{Here we show the optimal trial proportion of men vs the population proprtion (on the y and x axis respectively) for equal variances of 1.} 
+\label{fig:v2-intercept-optim}
+\end{figure}

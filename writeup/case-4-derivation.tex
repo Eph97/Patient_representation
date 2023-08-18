@@ -1,0 +1,98 @@
+\subsection*{4. Generalization of case 1 and 2} \label{sssec:num4}
+
+In case 1, we solved 
+
+\begin{align*}
+	\beta_i = (1 - x) \gamma_0 + x \gamma_1 = \gamma_0 + x(\gamma_1 - \gamma_0)
+\end{align*} 
+
+Thus in effect, the constant and coefficient are correlated through $\gamma_0$. We can thus nest both cases by allowing for arbitrary correlation in case 1.
+
+
+We will do this below
+
+First for $C$ 
+
+We have that
+\begin{align*}
+	c = \frac{\Cov (x \gamma, \bar{x} \gamma)}{ \Var( \bar{x} \gamma )}
+\end{align*} 
+
+so for individual i, $c$ reduces to
+
+\begin{align*}
+	c &= \frac{(1-x)(1 - \bar{x})\Var(\gamma_0) + x (1 - \bar{x}) \Cov(\gamma_0, \gamma_1) +(1 - x)\bar{x}  \Cov(\gamma_0, \gamma_1) +   x \bar{x} \Var(\gamma_1)}{(1- \bar{x})^2 \Var(\gamma_0) + 2 \bar{x}(1-\bar{x}) \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)} \\
+	C_{women} &= \frac{(1 - \bar{x})\Var(\gamma_0) + \bar{x} \Cov(\gamma_0, \gamma_1)}{(1-\bar{x})^2\Var(\gamma_0) + 2 (1 - \bar{x})\bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)} \\
+	C_{men} &= \frac{(1 - \bar{x}) \Cov(\gamma_0, \gamma_1) + \bar{x} \Var(\gamma_1)}{(1-\bar{x})^2\Var(\gamma_0) + 2 (1 - \bar{x})\bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)} \\
+\end{align*} 
+
+We still have
+
+\begin{align*}
+	\beta_i &= (1 -x)\gamma_0 + x \gamma_1 \\
+	\beta_{i}^{post} &= (1-x)\E(\gamma_0) + x\E(\gamma_1)  + c_i [ (1-\bar{x})\gamma_0 + \bar{x} \gamma_1 - [ (1- \bar{x})\E(\gamma_0) + \bar{x} \E(\gamma_1) ] ] \\
+	\beta_i^{women} &= \gamma_0 \\
+	\beta_i^{men} &=  \gamma_1 \\
+	\beta_i^{post,men} &=  \E(\gamma_1)  + c_{men} ((1-\bar{x})\gamma_0 + \bar{x} \gamma_1 - ((1-\bar{x})\E(\gamma_0) + \bar{x} \E(\gamma_1))) \\
+	\beta_i^{post, women} &= \E(\gamma_0) +  c_{women} ((1-\bar{x}) \gamma_0 + \bar{x} \gamma_1 - ((1-\bar{x})\E(\gamma_0) + \bar{x} \E(\gamma_1))) \\
+\end{align*} 
+
+and
+
+\begin{align*}
+	W_{women} &=  \beta_i^{women} - \beta_i^{post,women} \\
+			&= (\gamma_0 - \E(\gamma_0)) - C_{men} \big[(\gamma_0 - \E(\gamma_0)) + \bar{x} ( \gamma_1 - \E(\gamma_1)) \big] \\
+			&= ( 1 - c_{women}(1-\bar{x})) (\gamma_0 - \E(\gamma_0)) - C_{women} \bar{x} (\gamma_1 - \E(\gamma_1)) \\
+			&= c_{men}\bar{x} (\gamma_0 - \E(\gamma_0)) - C_{women} \bar{x} (\gamma_1 - \E(\gamma_1)) \\
+	W_{men} &=  \beta_i^{men} - \beta_i^{post,men} \\
+			&= (\gamma_0 - \E(\gamma_0)) + (\gamma_1 - \E(\gamma_1) - C_{men} \big[(\gamma_0 - \E(\gamma_0)) + \bar{x} ( \gamma_1 - \E(\gamma_1)) \big] \\
+			&= ( 1 - c_{men} \bar{x}) (\gamma_1 - \E(\gamma_1)) - C_{men} (1-\bar{x}) (\gamma_0 - \E(\gamma_0)) \\
+			&=  c_{women} (1 - \bar{x}) (\gamma_1 - \E(\gamma_1)) - C_{men} (1-\bar{x}) (\gamma_0 - \E(\gamma_0))
+\end{align*} 
+
+\begin{align*}
+	W_{women}^2 &= (C_{men} \bar{x})^2\Var(\gamma_0)\\
+				& -  2 \bar{x} ^2 C_{women} C_{men}\Cov(\gamma_0, \gamma_1)  \\
+				& + (\bar{x} C_{women})^2\Var(\gamma_1) \\
+				&= \frac{ (\Var(\gamma_0) \Var(\gamma_1) - \Cov(\gamma_0, \gamma_1)^2) \bar{x}^2 }{ \bar{x}^2 (\Var(\gamma_0) + \Var(\gamma_1) - 2 \Cov(\gamma_0, \gamma_1)) + 2 \bar{x} (\Cov(\gamma_0, \gamma_1) - \Var(\gamma_0)) + \Var(\gamma_0) }
+\end{align*} 
+
+
+\begin{align*}
+	W_{men}^2 &= (C_{women} (1-\bar{x}))^2\Var(\gamma_1)\\
+			  & -  2 (1-\bar{x})^2 C_{women} C_{men}\Cov(\gamma_0, \gamma_1)  \\
+				& + ((1-\bar{x}) C_{men})^2\Var(\gamma_0) \\
+				&= \frac{ (\bar{x} - 1)^2 (\Var(\gamma_0) \Var(\gamma_1) - \Cov(\gamma_0, \gamma_1)^2) }{ \bar{x}^2 (\Var(\gamma_0) + \Var(\gamma_1) - 2 \Cov(\gamma_0, \gamma_1)) + 2 \bar{x} (\Cov(\gamma_0, \gamma_1) - \Var(\gamma_0)) + \Var(\gamma_0) }
+\end{align*} 
+
+And so we get
+\begin{align*}
+	MSE &= (1-p) W_{women}^2 + p W_{men}^2 \\
+		&=  \frac{(\Var(\gamma_0) \Var(\gamma_1) - \Cov(\gamma_0, \gamma_1)^2)[(1-p) \bar{x}^2   + p (\bar{x} - 1)^2 ]} { \bar{x}^2 (\Var(\gamma_0) + \Var(\gamma_1) - 2 \Cov(\gamma_0, \gamma_1)) + 2 \bar{x} (\Cov(\gamma_0, \gamma_1) - \Var(\gamma_0)) + \Var(\gamma_0) }
+\end{align*} 
+
+and derivative
+\begin{scriptsize}
+\begin{align*}
+	\frac{d MSE}{d\bar{x}} &= 
+	\frac{ 2 (\Var(\gamma_0) \Var(\gamma_1) - \Cov(\gamma_0, \gamma_1)^2) ((\bar{x} - 1) \bar{x} (\Var(\gamma_0) (p - 1) + \Var(\gamma_1) p) + \Cov(\gamma_0, \gamma_1) (p (-2 (\bar{x} - 1) \bar{x} - 1) + \bar{x}^2)) }{(\bar{x}^2 (\Var(\gamma_0) + \Var(\gamma_1) - 2 \Cov(\gamma_0, \gamma_1)) + 2 \bar{x} (\Cov(\gamma_0, \gamma_1) - \Var(\gamma_0)) + \Var(\gamma_0))^2}
+\end{align*} 
+\end{scriptsize}
+
+
+Thus taking the numerator and setting it equal to zero we get an FOC
+
+\begin{tiny}
+\begin{align*}
+	\bar{x} = \frac{ \Var(\gamma_0) (p - 1) + \Var(\gamma_1) p - 2 \Cov(\gamma_0, \gamma_1) p \pm \sqrt{ \Var(\gamma_0)^2 (p - 1)^2 + 2 \Var(\gamma_0) \Var(\gamma_1) p (p - 1) + p (\Var(\gamma_1)^2 p - 4 \Cov(\gamma_0, \gamma_1)^2 (p - 1)) } }{ 2 (\Var(\gamma_0) (p - 1) + \Var(\gamma_1) p - 2 \Cov(\gamma_0, \gamma_1) p + \Cov(\gamma_0, \gamma_1)) }
+\end{align*} 
+\end{tiny}
+
+
+We can see from the above solution that whenever
+\begin{align*}
+	\Var(\gamma_0) = 2 \Cov(\gamma_0, \gamma_1) p = p (\Var(\gamma_0) + \Var(\gamma_1)) + \Cov(\gamma_0, \gamma_1)
+\end{align*} 
+That the solution is undefined. In other words, when $\Var(\gamma_0) = \Var(\gamma_1) = \Cov(\gamma_0, \gamma_1) = 1$ there is no solution. 
+
+This makes sense because if the results are perfectly correlated and no group has higher variance, than any choice of representation should tell us the exact same amount about the other group. And thus there is no clear optimal solution.

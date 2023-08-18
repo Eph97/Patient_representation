@@ -1,5 +1,48 @@
 % {{{
-\input{$HOME/.config/nvim/snippets/.math.preamble.tex}
+\documentclass[12pt]{article}
+\usepackage[tmargin=0.75in,bmargin=0.75in,lmargin=0.9in,rmargin=0.9in]{geometry}
+
+\usepackage{amsmath}
+\include{latexsym}
+\include{amssymb}
+\usepackage{enumitem}
+\usepackage[symbol, hang]{footmisc}
+\usepackage{indentfirst}
+\usepackage{amssymb}
+\usepackage{graphicx,psfrag}
+\usepackage{dsfont}
+\usepackage{caption}
+\usepackage{hyperref}
+
+\def\F{\mathcal{F}}
+\def\M{\mathcal{M}}
+\def\dimspec{\mathfrak{D}}
+\def\htop{h_{top}}
+\def\trans{\mathcal{T}}
+\def\G{\mathcal{G}}
+\newcommand{\Z}{\mathbb{Z}}
+\pagenumbering{gobble}
+\def\O{\mathcal{O}}
+\DeclareMathOperator{\diam}{diam}
+
+\newcommand{\1}{\mathds{1}}
+
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\setcounter{secnumdepth}{3}
+
+\newcommand\NoIndent[1]{%
+  \begingroup
+  \par
+  \parshape0
+  #1\par
+  \endgroup
+}
+
+
+%sets align environment spacing
+\setlength{\jot}{3ex}
 \usepackage[font=scriptsize]{caption}
 % }}}
 
@@ -17,219 +60,10 @@
 % First we'll start by examining a simple scenario where two subgroups have equal variance (e.g. Consider men and women).
 
 
-\section{Setup}
+\input{setup.tex}
 
-
-\begin{enumerate}
-
-	\item  Suppose a physician can only observe an ATE and some measure of representativeness. Physicians have prior
-		$\bar{\beta}$ and  $\beta_{ATE} = (1/N) \sum \beta_{i}$.
-
-	\item We need a model for the betas related to each other based on $x$'s -- an individuals characteristics.
-
-		Suppose
-		\begin{align*}
-			\beta(x_i) = x_i \gamma
-		\end{align*} 
-		Where $x_i$ is a vector of characteristics and $\gamma$ is a vector of coefficients. \\
-		If you know $\gamma$, then you know $\beta$ for any given patient.
-	\item However, you don't observe $\gamma$, you instead observe:
-		$\beta_{ATE} = \bar x \gamma$ where $\bar x = (\frac{1}{N}) \sum x_i$
-	\item We know $\beta_i$ for patients with characteristics $\bar x$ (it is $\beta_{ATE}$).
-	\item For other patients, we need to solve
-		\begin{align*}
-			\beta_{i,post} = \E(x_i \gamma | \bar x \gamma = \beta_{ATE})
-		\end{align*} 
-
-	\item To solve
-		\begin{enumerate}
-			\item
-				\begin{align*}
-					\beta_{i,post} & = \E (x_i \gamma | \bar x \gamma = \beta_{ATE})                                                                        \\
-								   & = \E((x_i - c_i \bar{x}) \gamma | \bar{x} \gamma = \beta_{ATE}) + c_i \E(\bar{x} \gamma | \bar{x} \gamma = \beta_{ATE}) \\
-								   & = \E((x_{i} - c_i \bar{x}) \gamma | \bar{x} \gamma = \beta_{ATE}) + c_i \beta_{ATE}                                       \\
-				\end{align*}
-				For any constant $c_i$. \\
-				Choose $c_i$ so that 
-				\begin{align*}
-					\Cov((x_{i} - c_i \bar{x})\gamma, \bar{x} \gamma) = 0
-				\end{align*} 
-				Assume normality so that this guarantees independence.
-				Then,
-				\begin{align*}
-					\E((x_i - c_i \bar{x}) \gamma | \bar{x} \gamma = \beta_{ATE}) = (x_{i} - c_i \bar{x}) \E(\gamma)
-				\end{align*}
-				So then
-				\begin{align*}
-					(x_i - c_i \bar{x}) \E(\gamma) + c_i \beta_{ATE} = x_i \E(\gamma) + c_i (\beta_{ATE} - \bar{x} \E(\gamma))
-				\end{align*} 
-				($c_i$ depends on $x_i$)
-
-				In other words, your belief is your prior, adjusted based on the difference between the observed ATE and your prior about the ATE.
-				The key question is how much adjustment you do which depends on $"c_i"$. We choose $c_i$ to solve:
-
-				\begin{align*}
-                          & \Cov ((x_i - c_i \bar{x}) \gamma, \bar{x} \gamma) = 0                          \\
-				 \iff     & \Cov(x_i \gamma, \bar{x} \gamma) -c_i \Cov(\bar{x} \gamma, \bar{x} \gamma) = 0 \\
-					\iff  & \Cov(x_i \gamma, \bar{x} \gamma) = c_i \Var(\bar{x} \gamma)                  \\
-				\iff & c_i = \frac{\Cov(\beta_i, \beta_{ATE}) }{ \Var(\beta_{ATE})}
-				\end{align*} 
-				The random variable in this context is $\gamma$ (the coefficients on the $x $'s) in this case $\Var(\beta_{ATE})$ is a measure of how uncertain one was about what $\beta_{ATE}$ would be before doing the trial.
-
-				$c_i$ is the equation for a regression of $\beta_i$ on $\beta_{ATE}$. In other words, we take a bunch of patients with characteristics $x_i$ and we keep redrawing the gammas from our prior distribution. Then we ask how correlated  $\beta_i$ and $\beta_{ATE}$ are. If they are more correlated (as they would be for patients where the $x_i$ are closer to $\bar{x}$) we update more.
-
-				To compute $c_i$, we just need to know $x_i$, $\bar{x}$, and the distribution of $\gamma$.
-
-				Suppose we want to design the trial to minimize:
-				\begin{align*}
-					\min \E[(\beta_i - \beta_{i,post})^2]
-				\end{align*} 
-		\end{enumerate}
-
-\end{enumerate} 
-
-
-% First observe that in our current setup, we have that
-% \begin{align*}
-% 	c = \frac{\Cov ( \gamma_0 + \gamma_1 x , \gamma_0  + \gamma_1 \bar{x} )}{ \Var( \gamma_0  + \gamma_1 \bar{x} ))}
-% \end{align*} 
-
-
-% so for individual i, $c$ reduces to
-
-% \begin{align*}
-% 		c &= \frac{\Var(\gamma_0) + (x + \bar{x}) \Cov(\gamma_0, \gamma_1) + x \bar{x} \Var(\gamma_1)}{\Var(\gamma_0) + 2 \bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)} \\
-% 		C_{women} &= \frac{\Var(\gamma_0) + \bar{x} \Cov(\gamma_0, \gamma_1)}{\Var(\gamma_0) + 2 \bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)} \\
-% 	C_{men} &= \frac{\Var(\gamma_0) + (1 + \bar{x}) \Cov(\gamma_0, \gamma_1) + \bar{x} \Var(\gamma_1)}{\Var(\gamma_0) + 2 \bar{x} \Cov(\gamma_0, \gamma_1) + \bar{x}^2\Var(\gamma_1)} \\
-% \end{align*} 
-
-
-\section{Results}
-
-
-We start by considering two subpopulations: men and women. In this simple scenario, $x_i$ is an indicator for whether individual $i$ is a man.  
-By symmetry, $x_i=0$ implies individual $i$ is a woman.
-In addition, we let $p$ be the proportion of men in the population and $\bar{x}$ to be the fraction of men in the trial. 
-
-Below we will consider the results for four different cases and observe how the results for the optimal trial composition differ. The first two cases assume the covariance in treatment effects for men and women is zero.
-In cases 3 and 4 we generalize the first two cases by allowing for arbitrary covariance between the treatment effects for men and women.
-
-
-In all the cases, we say a solution is optimal if it minimizes the mean squared error of 
-$(\beta_{i,post} - \beta_{i})$
-
-\subsection*{Case 1}
-Our first setup is
-\begin{align*}
-	\beta_i &= (1 - x) \gamma_0 + x \gamma_1 \\
-	\beta_{ATE} &= (1 - \bar{x}) \gamma_0 + \bar{x} \gamma_1 \\
-\end{align*}
-
-When looking at the derivations we observe that the optimal representation in the clinical trial depends both on the proportion of men and women in the population and their respective variances in treatment effects.
-Interestingly, when the proportion of men in the population is greater than the ratio of the variance in treatment effects for women to the population, (e.g.
-$p > \frac{\Var(\gamma_0)}{ \Var(\gamma_0) + \Var(\gamma_1)}$), it is optimal to choose only men to be in our trial. 
-Conversely, if $p < \frac{\Var(\gamma_0)}{ \Var(\gamma_0) + \Var(\gamma_1)}$ we choose only women.
-The final case is if $p = \frac{\Var(\gamma_0)}{ \Var(\gamma_0) + \Var(\gamma_1)}$. 
-In this scenario it doesn't matter what proportions we include in our trial, the MSE will be the same for all $\bar{x}$.
-
-If we impose that $\Var(\gamma_0) = \Var(\gamma_1) = 1$ then we get that when $p > \frac{1}{2}$ we only want men in the clinical trial.
-If $p < \frac{1}{2}$, we only want women in the clinical trial. And if $p = \frac{1}{2}$, then any choice of composition of men and women in the clinical trial will lead to the same MSE.
-
-\subsection*{Case 2}
-
-For Case 2, we have 
-
-\begin{align*}
-	\beta_i &=  \gamma_0 + x \gamma_1 \\
-	\beta_{ATE} &=  \gamma_0 + \bar{x} \gamma_1 \\
-\end{align*}
-
-
-In this case, we observe the same general rule that the optimal proportion in the clinical trial depends on the proportion of men and women in the population and their respective variances in outcomes.
-However, because of the structure of $\beta_ i$, in this setup men always have a higher variance in outcomes.
-
-This asymmetric variance between men and women leads to the scenario where there is always a preference for a greater fraction of the clinical trial to be men than in the population. 
-For example, if the true population contains 50\% men ($p = \frac{1}{2}$), then we would want $\approx 61.8 \%$ of the trial to be men in order to minimize the MSE.
-
-To further investigate the effect of variance in this case we can observe that as $\Var(\gamma_1) \to \infty$ holding $\Var(\gamma_0)$ fixed we always choose only men.
-And as the variance for women $\Var(\gamma_0) \to \infty$ holding $\Var(\gamma_1)$ fixed, we choose $\bar{x} = p$. In other words, the optimal clinical trial composition is simply the true population proportion of men and women.
-
-\subsection*{Case 3}
-
-In this case, we generalize case $2$ to allow for arbitrary covariance between $\gamma_0$ and $\gamma_1$
-
-Recall that our setup in case  $2$ is
-\begin{align*}
-	\beta_i &=  \gamma_0 + x \gamma_1 \\
-	\beta_{ATE} &=  \gamma_0 + \bar{x} \gamma_1 \\
-\end{align*}
-
-First, we can see in \ref{sssec:num3} that when we let  $\Cov(\gamma_0, \gamma_1) = 0$ we recover case 2.
-% But if we allow $\Cov(\gamma_0, \gamma_1) = - \Var(\gamma_0)$
-
-Furthermore, our intuition from the previous results suggest that the representation depends on the respective variances in outcomes of each group.
-
-We will thus consider a set of options.
-
-Given the setup, we can observe that
-\begin{align*}
-	\Var(\beta_{women}) &= \Var(\gamma_0) \\
-	\Var(\beta_{men}) &= \Var(\gamma_0) + 2\Cov(\gamma_0, \gamma_1) + \Var(\gamma_1) \\
-\end{align*} 
-
-We will impose that $\Var(\gamma_0) = \Var(\gamma_1) = 1$ and consider different covariances to make men or women have greater variance in outcomes.
-
-From the variances for outcomes above, we can see that for men and women to have equal variance we must impose that $\Cov(\gamma_0, \gamma_1) = -\frac{1}{2}$.
-
-We investigate different covariance options in figure \ref{fig:cov_options}. In the figure we observe that if men and women have the same variance in outcomes, then you over represent whichever group is in the majority. As the variance of one group increases relative to another, you choose to over represent that group even more.
-And finally, as seen in the last graph of the figure, we can replicate the results from case 1 where it is optimal to only include the majority group in our trial by making the outcomes for men and women inversely correlated while having the same variance.
-
-\begin{figure}[btp]
-	\centering
-	\includegraphics[width=0.8\textwidth]{cov_options}
-	\caption{The figures contain different options for $\Cov(\gamma_0, \gamma_1)$ and for all but the last graph, $\Var(\gamma_0) = \Var(\gamma_1) = 1$} 
-	\label{fig:cov_options}
-\end{figure}
-
-\subsection*{Case 4}
-
-In this case, we generalize case 1 to allow for arbitrary correlation between $\gamma_0$ and $\gamma_1$.
-Recall that in case 1 we had
-\begin{align*}
-	\beta_i &=  (1-x)\gamma_0 + x \gamma_1 \\
-	\beta_{ATE} &=  (1 - \bar{x})\gamma_0 + \bar{x} \gamma_1 \\
-\end{align*}
-
-
-First, we can see in \ref{sssec:num4} that when we let  $\Cov(\gamma_0, \gamma_1) = 0$ we recover case 1.
-
-As before, we will consider a range of options changing the respective variances in outcomes for men and women.
-
-Given the setup, we can observe that
-\begin{align*}
-	\Var(\beta_{women}) &= \Var(\gamma_0) \\
-	\Var(\beta_{men}) &= \Var(\gamma_1)
-\end{align*} 
-
-In this setup, the covariance structure doesn't tell us which group has more variance. However it does tell us how much the outcomes for men tells us about the distribution of outcomes for women and vice versa. 
-With this interpretation, we can see that as $\Cov(\gamma_0, \gamma_1) \to 1$ the optimal study proportions $\bar{x} \to p$. In other words, the optimal proportion of men in the trial is the proportion of men in the population.
-
-As $\Cov(\gamma_0, \gamma_1) \to 0$, we recover the results from case 1 where the equal variances tell us that because no group has greater variance, whichever group is more common in the true population should be maximized in the study.  e.g. if men are more than half of the population ($p >  \frac{1}{2}$) then we should only include men in the clinical trial ($\bar{x} = 1$) and vice versa.
-
-Finally, if $\Cov(\gamma_0, \gamma_1) \in (-1,0)$ then we get edge cases where if men are the majority ($p > \frac{1}{2}$), then MSE is minimized at $\bar{x} = 1$ and vice versa.
-If $p=\frac{1}{2}$ then it is optimal to choose either all women or all men to be in the clinical trial. Choosing only to include men or women produces the same minimizing MSE. 
-And as $\Cov(\gamma_0, \gamma_1) \to -1$, MSE converges point wise to 0 with a discontinuity at $\frac{1}{2}$. This means that it does not matter what the proportions of men and women are in the true population, any composition of men and women in the clinical trial will produce the same minimizing MSE.
-
-We can see these results in figure \ref{fig:generalized_case1}
-
-\begin{figure}[ht!]
-  \centering
-	\includegraphics[width=0.8\textwidth]{generalized_case1}
-  % \caption{Plot of $\frac{\partial J}{\partial \bar{x}}$}
-	\caption{Here we show the optimal trial proportion of men vs the population proportion (on the y and x axis respectively) for equal variances of 1.} 
-	\label{fig:generalized_case1}
-\end{figure}
-
+% results section
+\input{results.tex}
 
 \section{Appendix}
 

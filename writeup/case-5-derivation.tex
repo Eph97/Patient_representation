@@ -1,0 +1,127 @@
+\subsection*{5. Generalization of case 2 allowing for $k$ subgroups.}
+
+\begin{align*}
+	\beta_i &= (1-x_1)(1- x_2) \gamma_0 + (1-x_1) x_2 \gamma_1 +  x_1(1- x_2) \gamma_2 +  x_1 x_2 \gamma_3 \\
+	\beta_{ATE} &= (1-\bar{x}_1)(1- \bar{x}_2) \gamma_0 + (1-\bar{x}_1) \bar{x}_2 \gamma_1 +  \bar{x}_1(1- \bar{x}_2) \gamma_2 +  \bar{x}_1 \bar{x}_2 \gamma_3 \\
+\end{align*} 
+
+Observe that for $k$ subgroups, this produces $2^{k}$ interactions. In other words, we are simple enumerating the binary expansion for all possible combinations of $k$ characteristics.
+
+
+We will start by assuming $\Cov(\gamma_i, \gamma_j) = 0$ for $i \neq j$ and  $\Var(\gamma_i) = 1$ for every $i$.
+
+In addition we will start by solving the case for $k = 2$ and then attempting to generalize.
+
+We will do this below
+
+First, for simplicity, let $ \alpha_i$ be the ith subgroup created by our k characteristics. In other words, $\alpha_0 = (1-x_1) (1 - x_2)$ and $\bar{\alpha}_0 = (1-\bar{x}_1)(1 - \bar{x}_2)$ and 
+$\alpha_5 = x_1 x_2$ with $\bar{\alpha} $ defined similarly.
+
+And more over, let $A$ be a vector such that
+\begin{align*}
+	A = \begin{bmatrix}
+		\alpha_0 \\
+		\alpha_1 \\
+		\vdots \\
+		\alpha_{2^{k}-1}
+	\end{bmatrix}
+\end{align*}
+
+and $\bar{A}$ be define likewise.
+
+Then For $C$ we have that
+\begin{align*}
+	c &= \frac{\Cov (\beta_i, \beta_{ATE})}{ \Var(\beta_{ATE})} \\
+	  &= \frac{\sum_{i=0}^{2^{k}-1} \alpha_i \bar{\alpha}_i \Var(\gamma_i)}{\sum_{i=0}^{2^{k}-1} ( \bar{\alpha}_i)^2 \Var(\gamma_i)} \qquad \text{assuming $\Var(\gamma_i) = 0$ } \\
+	  &= \frac{\sum_{i=0}^{2^{k}-1} \alpha_i \bar{\alpha}_i }{\sum_{i=0}^{2^{k}-1} ( \bar{\alpha}_i)^2 } \\ 
+	  &= \frac{A' \bar{A}}{\bar{A}' \bar{A}} \\
+\end{align*} 
+
+so for individual i, $c$ reduces to
+
+\begin{align*}
+	c &= \frac{(1-x_1)(1- x_2)(1- \bar{x}_1)(1-\bar{x}_2) \Var(\gamma_0) +x_2 \bar{x}_2 \Var(\gamma_2)}{\Var(\gamma_0) + 2 \bar{x} \Cov(\gamma_0, \gamma_1) + (1- \bar{x}_1) (1 - \bar{x}_2)\Var(\gamma_3)} \\
+	  &= \frac{\sum_{i=1}^{k} (x_i \bar{x}_i) \Var(\gamma_i)  } {}\\
+\end{align*} 
+
+
+For now, let $k=2$
+
+and assume $\Cov(\gamma_i, \gamma_j) = 0$ for $i \neq j$
+
+Let $x_1 = $ white, $x_2=$ black
+
+\begin{align*}
+		C_{white} &= \frac{\Var(\gamma_0) + \bar{x}_1 \Var(\gamma_1) }{\Var(\gamma_0) + \bar{x}_1^2\Var(\gamma_1) + \bar{x}_2^2\Var(\gamma_2)} \\
+	C_{black} &= \frac{\Var(\gamma_0) + \bar{x}_2 \Var(\gamma_2)}{\Var(\gamma_0) + \bar{x}_1^2\Var(\gamma_1) + \bar{x}_2^2\Var(\gamma_2)} \\
+\end{align*} 
+
+
+we want to minimize
+
+\begin{align*}
+	\E [(\beta_i - \beta_{i, post})^2]
+\end{align*} 
+
+\begin{align*}
+	\E((x_i - c_i \bar{x}) \gamma | \bar{x} \gamma = \beta_{ATE}) = (x_{i} - c_i \bar{x}) \E(\gamma)
+\end{align*}
+where, for the $k = 1$ case,
+\begin{align*}
+	\beta_{i, post} = (x_i - c_i \bar{x}) \E(\gamma) + c_i \beta_{ATE} = x_i \E(\gamma) + c_i (\beta_{ATE} - \bar{x} \E(\gamma))
+\end{align*} 
+
+rewriting this in the matrix form, we have that
+
+\begin{align*}
+	\beta_i = A' \gamma
+\end{align*} 
+
+where $\gamma$ is the vector of $\gamma_i$ e.g.
+
+\begin{align*}
+	\gamma = \begin{bmatrix}
+		\gamma_0 \\
+		\gamma_1 \\
+		\ldots \\
+		\gamma_{2^{k}-1}
+	\end{bmatrix}
+\end{align*}
+
+
+then we get 
+ \begin{align*}
+	\beta_{ATE} = \bar{A}' \gamma
+\end{align*} 
+
+\begin{align*}
+	\beta_{i, post} = A' \E(\gamma) + \frac{A' \bar{A}}{\bar{A}' \bar{A}} (\bar{A}' \gamma - \bar{A}' \E(\gamma))
+\end{align*} 
+
+then our error becomes
+
+\begin{align*}
+	(\beta_{i} - \beta_{i, post})^2
+	&= (A'\gamma - \big[A' \E(\gamma) + \frac{A' \bar{A}}{\bar{A}' \bar{A}} (\bar{A}' \gamma - \bar{A}' \E(\gamma))\big])^2 \\
+	&= \big[A'(\gamma - \E(\gamma)) - \frac{A' \bar{A}}{\bar{A}' \bar{A}} \bar{A}' (\gamma - \E(\gamma))\big]^2
+\end{align*} 
+
+function:
+\[
+  f = (A^\top \cdot (g-f)-(A^\top \cdot B)/(B^\top \cdot B)\cdot B^\top \cdot (g-f))^{2}
+\]
+
+gradient:
+
+% \[
+%   \frac{\partial f}{\partial B} = -((2\cdot ((g-f)' \cdot A-(B' \cdot A\cdot (g-f)' \cdot B)/(B' \cdot B)))/(B' \cdot B)\cdot (g-f)' \cdot B\cdot A+(2\cdot (A' \cdot (g-f)-(A' \cdot B\cdot B' \cdot (g-f))/(B' \cdot B)))/(B' \cdot B)\cdot A' \cdot B\cdot (g-f)-((2\cdot (A' \cdot (g-f)-(A' \cdot B\cdot B' \cdot (g-f))/(B' \cdot B)))/(B' \cdot B)^{2}\cdot A' \cdot B\cdot B' \cdot (g-f)\cdot B+(2\cdot ((g-f)' \cdot A-(B' \cdot A\cdot (g-f)' \cdot B)/(B' \cdot B)))/(B' \cdot B)^{2}\cdot B' \cdot A\cdot (g-f)' \cdot B\cdot B))
+% \]
+
+\begin{align*}
+	&\frac{\partial f}{\partial \bar{A}} = -(\frac{(2 ((\gamma-\E(\gamma))'  A-\frac{(\bar{A}'  A (\gamma-\E(\gamma))'  \bar{A})}{(\bar{A}'  \bar{A})}))}{(\bar{A}'  \bar{A})} (\gamma-\E(\gamma))'  \bar{A} A \\
+	&+ \frac{(2 (A'  (\gamma-\E(\gamma))-\frac{(A'  \bar{A} \bar{A}'  (\gamma-\E(\gamma)))}{(\bar{A}'  \bar{A})}))}{(\bar{A}'  \bar{A})} A'  \bar{A} (\gamma-\E(\gamma)) \\
+	&-(\frac{(2 (A'  (\gamma-\E(\gamma))-\frac{(A'  \bar{A} \bar{A}'  (\gamma-\E(\gamma)))}{(\bar{A}'  \bar{A})}))}{(\bar{A}'  \bar{A})^{2}} A'  \bar{A} \bar{A}'  (\gamma-\E(\gamma)) \bar{A} \\
+	&+\frac{(2 ((\gamma-\E(\gamma))'  A-\frac{(\bar{A}'  A (\gamma-\E(\gamma))'  \bar{A})}{(\bar{A}'  \bar{A})}))}{(\bar{A}'  \bar{A})^{2}} \bar{A}'  A (\gamma-\E(\gamma))'  \bar{A} \bar{A}))
+\end{align*} 
+
+Now note that $\frac{\partial}{\partial x} E( f(A, \gamma, \bar{A}) ) = E(\frac{\partial}{\partial x} f(A, \gamma, \bar{A}))$ (I believe this just follows from linearity of expectation but we likely need bounded and continuously differentiable but those should be satisfied).

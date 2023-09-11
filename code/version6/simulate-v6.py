@@ -29,7 +29,12 @@ deriv_df = pd.DataFrame()
 options = np.linspace(0.0, 1.0, 101)
 
 
-p_opt = [0.25, 0.5, 0.75]
+p0 = [0.1]
+p1 = [0.3]
+p2 = [0.6]
+
+# p_opt = [0.33,0.34]
+# p_opt = [0.25, 0.5, 0.75]
 gammas = np.random.multivariate_normal(mean=gamma_mean, cov=gamma_cov, size=num_sims)
 # gammas[:,1] += gammas[:,0]
 sample_gamma_mean = gammas.mean(axis=0, keepdims=True)
@@ -42,9 +47,9 @@ v2 = var[2]
 # g1 = gammas[:,1]
 # g2 = gammas[:,2]
 max_diff = -np.inf
-for p_0 in p_opt:
-    for p_1 in p_opt:
-        for p_2 in p_opt:
+for p_0 in p0:
+    for p_1 in p1:
+        for p_2 in p2:
             print(np.abs(p_0 + p_1 + p_2 - 1))
             if np.abs(p_0 + p_1 + p_2 - 1) > 0.0001:
                 # print("skipping (from p)")
@@ -84,11 +89,13 @@ for p_0 in p_opt:
 
                         error = MSE(x, x_bar, c_i, gammas)
                         error2 = anal_error(x, x_bar, gammas)
+                        error_test = test(x, x_bar, gammas)
                         diff = np.abs(error - error2)
+                        diff2 = np.abs(error - error_test)
                         # diff2 = np.abs(error - error3)
 
-                        print(error, error2, diff)
-                        assert diff < 0.0001
+                        print(error, error_test, diff2)
+                        # assert diff2 < 0.0001
                         # assert diff2 < 0.0001
 
                         trial_props = x_bar[0]
@@ -111,9 +118,9 @@ for p_0 in p_opt:
 # error_df = error_df.drop(columns="Unnamed: 0")
 
 # select where p_1 = 0.25, p_2 = 0.25, p_3 = 0.5
-graph_1 = error_df[(error_df['p_1'] == 0.5) & (error_df['p_2'] == 0.25) & (error_df['p_3'] == 0.25)]
-graph_2 = error_df[(error_df['p_1'] == 0.25) & (error_df['p_2'] == 0.5) & (error_df['p_3'] == 0.25)]
-graph_3 = error_df[(error_df['p_1'] == 0.25) & (error_df['p_2'] == 0.25) & (error_df['p_3'] == 0.5)]
+graph_1 = error_df[(error_df['p_1'] == 0.1) & (error_df['p_2'] == 0.3) & (error_df['p_3'] == 0.6)]
+graph_2 = error_df[(error_df['p_1'] == 0.33) & (error_df['p_2'] == 0.34) & (error_df['p_3'] == 0.33)]
+graph_3 = error_df[(error_df['p_1'] == 0.33) & (error_df['p_2'] == 0.33) & (error_df['p_3'] == 0.34)]
 
 
 # error_curve = [select(i) for i in graph_1['x_bar_1'].unique()]

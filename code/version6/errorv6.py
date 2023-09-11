@@ -31,6 +31,25 @@ def anal_error(x, x_bar, g):
 
 
 
+
+
+def test(x, x_bar, g):
+    b = g - g.mean(axis=0)
+    p_1, p_2, p_3 = x.mean(axis=0)
+    xb, yb, zb = x_bar[0]
+    b = g - g.mean(axis=0)
+    b1 = b[:,0]
+    b2 = b[:,1]
+    b3 = b[:,2]
+    denom = np.dot(x_bar, x_bar.T)
+    xi = (xb*b1+yb*b2+zb*b3)/denom
+    # weighted_mean = p_1*(b1 - xb * xi)**2 + p_2*(b2 - yb*xi)**2 + (1 - p_1 - p_2)*(b3-(1 - xb - yb)*xi)**2
+    weighted_mean = p_1*(1-2*xb**2/denom +xb**2*xi**2) + p_2*(1-2*yb**2/denom+yb**2*xi**2) + (1 - p_1 - p_2)*(1-2*(1-xb-yb)**2/denom+(1-xb-yb)**2*xi**2)
+    # weighted_mean = ((1-p_2)*xb**2 + (1 - p_1)*yb**2 + (1 - p_1 - p_2)*(2*xb*yb - 2*xb - 2*yb + 1))*xi**2
+    return (weighted_mean).mean()
+
+
+
 # def test(x, x_bar, g):
 #     b = g - g.mean(axis=0)
 #     p_1, p_2, p_3 = x.mean(axis=0)
@@ -40,3 +59,9 @@ def anal_error(x, x_bar, g):
 #     b2 = b[:,1]
 #     b3 = b[:,2]
 #     w_0 = (x[8,0]*b1 + x[8,1]*b2 + x[8,2]*b3 - np.dot(x[8],b.T) *(xb*b1+yb*b2+zb*b3)/np.dot(x_bar, x_bar.T))**2
+
+
+def test_sol(p1,p2,p3, x,y,z):
+    numer =(1-p1)*x**2 + (1-p2)*y**2 + (1-p3)*z**2
+    denom = x**2 + y**2 + z**2
+    return numer/denom

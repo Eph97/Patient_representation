@@ -1,109 +1,42 @@
 import cmath
 import numpy as np
 
-def error(x, xb, g0, g1):
-    g0 = g0.reshape(1,-1)
-    g1 = g1.reshape(1,-1)
-    a = (g0 - g0.mean())
-    b = (g1 - g1.mean())
-    b2 = (b**2).mean()
-    a2 = (a**2).mean()
-    y = xb
-    error = (p - 2*p*y + y**2)/(1 - 2*y + 2*y**2)
-    return error
-
-def deriv(p, xb):
-    y = xb
-    deriv = ((2*y**2 - 2*y)*(2*p - 1))/(1 - 2*y + 2*y**2)**2
-    return deriv
-
-
-
-
-# def errorMenWom(x, xb, g0, g1):
-#     x = x.reshape(-1,1)
-#     g0 = g0.reshape(1,-1)
-#     g1 = g1.reshape(1,-1)
-#     denom = (1 + xb**2)
-#     c = (1 + x*xb)/denom
-#     bi_men = x * g1
-#     bi_men_post = (x-c*xb)*g1.mean()
-#     bi_wom = g0
-#     bi_wom_post = (1-c)*g0.mean()
-#     error = (bi_men + bi_wom - (bi_men_post + bi_wom_post))**2
-#     return error.mean(axis=1).mean()
-
-
-
-def errorMenWom2(x, xb, g0, g1):
-    x = x.reshape(-1,1)
-    g0 = g0.reshape(1,-1)
-    g1 = g1.reshape(1,-1)
-    # b2 = (b**2).mean()
-    # a2 = (a**2).mean()
-    c = (1 + x*xb)/(1 + xb**2)
-    w_men = (x - c*xb)*(g1 - g1.mean()) 
-    w_wom = (1 - c)*(g0 - g0.mean()) 
-    error = (w_men + w_wom)**2
-    return error.mean(axis=1).mean()
-
-
-def errorMenWom3(x, xb, g0, g1):
-    x = x.reshape(-1,1)
-    g0 = g0.reshape(1,-1)
-    g1 = g1.reshape(1,-1)
-    # b2 = (b**2).mean()
-    # a2 = (a**2).mean()
-    c = (1 + x*xb)/(1 + xb**2)
-    w_men = (x - c*xb)*(g1 - g1.mean()) 
-    w_wom = (1 - c)*(g0 - g0.mean()) 
-    error = w_men**2 + w_wom**2
-    return error.mean(axis=1).mean()
-
-def errorMenWom4(x, xb, g0, g1):
-    x = x.reshape(-1,1)
-    g0 = g0.reshape(1,-1)
-    g1 = g1.reshape(1,-1)
-    # b2 = (b**2).mean()
-    # a2 = (a**2).mean()
-    c = (1 + x*xb)/(1 + xb**2)
-    w_men = (x - c*xb)*(g1 - g1.mean()) 
-    w_wom = (1 - c)*(g0 - g0.mean()) 
-    error = w_men**2*np.var(g1) + w_wom**2*np.var(g0)
-    return error.mean()
-
-
-def errorMenWom5(p, xb, v0, v1, cov):
-    # g0 = g0.reshape(1,-1)
-    # g1 = g1.reshape(1,-1)
-    denom = (v0 + xb**2*v1 + 2*cov*xb)
-    # w_men = (x - c*xb)*(g1 - g1.mean()) 
-    # w_wom = (1 - c)*(g0 - g0.mean()) 
-    # error = (xb*(xb-2*p)/denom**2)*np.var(g1) + (xb**2*(xb**2 - 2*p*xb + p)/denom**2)*np.var(g0)
-    error = (v0*v1 - cov**2)*((1-p)*xb**2 + p*(xb-1)**2)/denom
+def MSE(x, x_bar, c_i, g):
+    b = g - g.mean(axis=0)
+    xb = c_i*x_bar
+    x_scaled = (x - xb)
+    error = (np.dot(x_scaled, b.T)**2).mean()
     return error
 
 
-def splitderiv2(p, xb, v0, v1, cov):
-    # g0 = g0.reshape(1,-1)
-    # g1 = g1.reshape(1,-1)
-    # v0 = np.var(g0)
-    # v1 = np.var(g1)
-    denom = (v0 + xb**2*v1 + 2*cov*xb)
-    deriv = 2*(v0*v1 - cov**2)*(v0*(xb - p) + v1*p*(xb-1)*xb + cov*(xb**2 - p))/denom**2
-    return deriv
+def partials(x,p_1, p_2, p_3, b1, b2, b3):
+    eqn1 = p_1*(x*(2*x-2*(1-x-y))*(x*(b1-b3)+y*(b2-b3)+b3)/(x^2+(1-x-y)^2+y^2)-2*x*(b1-b3)+y*(b2-b3)+b3)*(b1-x*(x*(b1-b3)+y*(b2-b3)+b3)/(x^2+(1-x-y)^2+y^2))+p_2*(y*(2*x-2*(1-x-y))*(x*(b1-b3)+y*(b2-b3)+b3)/(x^2+(1-x-y)^2+y^2)-y*(b1-b3))*(b2-y*(x*(b1-b3)+y*(b2-b3)+b3)/(x^2+(1-x-y)^2+y^2))+(p_3)*((1-x-y)*(2*x-2*(1-x-y))*(x*(b1-b3)+y*(b2-b3)+b3)/(x^2+(1-x-y)^2+y^2)+x*(b1-b3)+y*(b2-b3)+b3-(b1-b3)*(1-x-y))*(b3-(1-x-y)*(x*(b1-b3)+y*(b2-b3)+b3)/(x^2+(1-x-y)^2+y^2))
+    eqn2 = p_1*(x*(2*y-2*(1-x-y))*(x*(b1-b3)+y*(b2-b3)+b3)/(x^2+(1-x-y)^2+y^2)-x*(b2-b3))*(b1-x*(x*(b1-b3)+y*(b2-b3)+b3)/(x^2+(1-x-y)^2+y^2))+p_2*(y*(2*y-2*(1-x-y))*(x*(b1-b3)+y*(b2-b3)+b3)/(x^2+(1-x-y)^2+y^2)-x*(b1-b3)+2*y*(b2-b3)+b3)*(b2-y*(x*(b1-b3)+y*(b2-b3)+b3)/(x^2+(1-x-y)^2+y^2))+(p_3)*((2*y-2*(1-x-y))*(1-x-y)*(x*(b1-b3)+y*(b2-b3)+b3)/(x^2+(1-x-y)^2+y^2)+x*(b1-b3)+y*(b2-b3)+b3-(b2-b3)*(1-x-y))*(b3-((1-x-y)*(x*(b1-b3)+y*(b2-b3)+b3))/(x^2+(1-x-y)^2+y^2)) == 0;
+    return eqn1, eqn2
+
+
+def anal_error(x, x_bar, g):
+    b = g - g.mean(axis=0)
+    p_1, p_2, p_3 = x.mean(axis=0)
+    xb, yb, zb = x_bar[0]
+    b = g - g.mean(axis=0)
+    b1 = b[:,0]
+    b2 = b[:,1]
+    b3 = b[:,2]
+    w_1 = (b1-xb*(xb*b1+yb*b2+zb*b3)/np.dot(x_bar, x_bar.T))
+    w_2 = (b2-yb*(xb*b1+yb*b2+zb*b3)/np.dot(x_bar, x_bar.T))
+    w_3 = (b3-zb*(xb*b1+yb*b2+zb*b3)/np.dot(x_bar, x_bar.T))
+    weighted_mean = p_1*w_1**2 + p_2*w_2**2 + p_3*w_3**2
+    return (weighted_mean).mean()
 
 
 
-def opt_prop(p, v0, v1, cov):
-    # opt1 = ((v1*p - v0) + cmath.sqrt(v0**2 + 2*v0*v1*p*(2*p -1) + v1**2 * p**2))/(2*v1*p)
-    # opt2 = ((v1*p - v0) - cmath.sqrt(v0**2 + 2*v0*v1*p*(2*p -1) + v1**2 * p**2))/(2*v1*p)
-    opt1 = (v1*p - v0 + cmath.sqrt(4*p*(v0 + cov)*(v1*p + cov) + (v0 - v1*p)**2) )/(2*(v1*p + cov)) 
-    opt2 = (v1*p - v0 - cmath.sqrt(4*p*(v0 + cov)*(v1*p + cov) + (v0 - v1*p)**2) )/(2*(v1*p + cov)) 
-    return (opt1, opt2)
-
-
-def opt_prop2(p, v0, v1, c):
-    opt1=(v0*(p-1)+v1*p-2*c*p+cmath.sqrt(v0**2*(p-1)**2+2*v0*v1*p*(p-1)+p*(v1**2*p-4*c**2*(p-1))))/(2*(v0*(p-1)+v1*p-2*c*p+c))
-    opt2=(v0*(p-1)+v1*p-2*c*p-cmath.sqrt(v0**2*(p-1)**2+2*v0*v1*p*(p-1)+p*(v1**2*p-4*c**2*(p-1))))/(2*(v0*(p-1)+v1*p-2*c*p+c))
-    return (opt1, opt2)
+# def test(x, x_bar, g):
+#     b = g - g.mean(axis=0)
+#     p_1, p_2, p_3 = x.mean(axis=0)
+#     xb, yb, zb = x_bar[0]
+#     b = g - g.mean(axis=0)
+#     b1 = b[:,0]
+#     b2 = b[:,1]
+#     b3 = b[:,2]
+#     w_0 = (x[8,0]*b1 + x[8,1]*b2 + x[8,2]*b3 - np.dot(x[8],b.T) *(xb*b1+yb*b2+zb*b3)/np.dot(x_bar, x_bar.T))**2

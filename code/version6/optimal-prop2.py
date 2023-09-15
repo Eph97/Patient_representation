@@ -26,7 +26,7 @@ test = [test_sol(p_1,p_2,p_3,round((1-x)/2,3),x, round((1-x)/2,3)) for x in opti
 min_ind =test.index(min(test))
 ax[1,0].title.set_text(f"p_1 = {p_1}, p_2 = {p_2},  p_3 = {p_3}")
 ax[1,0].plot(options[:], test)
-ax[1,0].axvline(x=p_1)
+ax[1,0].axvline(x=p_2)
 ax[1,0].axvline(x=options[min_ind], color='red')
 
 
@@ -34,7 +34,7 @@ test = [test_sol(p_1,p_2,p_3,round((1-x)/2,3), round((1-x)/2,3), x) for x in opt
 min_ind =test.index(min(test))
 ax[2,0].title.set_text(f"p_1 = {p_1}, p_2 = {p_2},  p_3 = {p_3}")
 ax[2,0].plot(options[:], test)
-ax[2,0].axvline(x=p_1)
+ax[2,0].axvline(x=p_3)
 ax[2,0].axvline(x=options[min_ind], color='red')
 
 
@@ -52,7 +52,7 @@ test = [test_sol(p_1,p_2,p_3,round((1-x)/2,3),x, round((1-x)/2,3)) for x in opti
 min_ind =test.index(min(test))
 ax[1,1].title.set_text(f"p_1 = {p_1}, p_2 = {p_2},  p_3 = {p_3}")
 ax[1,1].plot(options[:], test)
-ax[1,1].axvline(x=p_1)
+ax[1,1].axvline(x=p_2)
 ax[1,1].axvline(x=options[min_ind], color='red')
 
 
@@ -60,7 +60,7 @@ test = [test_sol(p_1,p_2,p_3,round((1-x)/2,3), round((1-x)/2,3), x) for x in opt
 min_ind =test.index(min(test))
 ax[2,1].title.set_text(f"p_1 = {p_1}, p_2 = {p_2},  p_3 = {p_3}")
 ax[2,1].plot(options[:], test)
-ax[2,1].axvline(x=p_1)
+ax[2,1].axvline(x=p_3)
 ax[2,1].axvline(x=options[min_ind], color='red')
 
 
@@ -78,7 +78,7 @@ test = [test_sol(p_1,p_2,p_3,round((1-x)/2,3),x, round((1-x)/2,3)) for x in opti
 min_ind =test.index(min(test))
 ax[1,2].title.set_text(f"p_1 = {p_1}, p_2 = {p_2},  p_3 = {p_3}")
 ax[1,2].plot(options[:], test)
-ax[1,2].axvline(x=p_1)
+ax[1,2].axvline(x=p_2)
 ax[1,2].axvline(x=options[min_ind], color='red')
 
 
@@ -86,7 +86,7 @@ test = [test_sol(p_1,p_2,p_3,round((1-x)/2,3), round((1-x)/2,3), x) for x in opt
 min_ind =test.index(min(test))
 ax[2,2].title.set_text(f"p_1 = {p_1}, p_2 = {p_2},  p_3 = {p_3}")
 ax[2,2].plot(options[:], test)
-ax[2,2].axvline(x=p_1)
+ax[2,2].axvline(x=p_3)
 ax[2,2].axvline(x=options[min_ind], color='red')
 
 plt.show()

@@ -1,0 +1,72 @@
+\subsection*{7. Generalization allowing for $k$ subgroups and allowing for covariance}
+
+Let $\Var(\gamma_i) = v_{i}$ and $\Cov(\gamma_i, \gamma_j) = v_{i,j}$ for $i \neq j$
+
+we saw from before that we can write
+
+\begin{align*}
+	E J_i &= p_1 ( b_1 - c_1 (\bar{y}_1 b_1 + \bar{y}_2 b_2 + \ldots + \bar{y}_k b_k ))^2 \\
+		  &+ p_2 ( b_2 - c_2 (\bar{y}_1 b_1 +  \bar{y}_2 b_2 + \ldots + \bar{y}_k b_k ))^2 \\
+		  &\vdots \\
+		  &+ p_k ( b_k - c_k (\bar{y}_1 b_1 +\bar{y}_2 b_2 +  \ldots + \bar{y}_k b_k ))^2 \\
+\end{align*}
+
+expanding $c_i$ 
+\begin{align*}
+	c_i &= \frac{\bar{y}_i v_{i} + \sum_{j}^{k} \bar{y}_j v_{i,j} }{\sum_i^k \bar{y}_i^2 v_i + 2 \sum_{i \neq j}^k \bar{y}_i\bar{y}_j v_{i,k} } \quad \text{for $i \in \{1,\ldots,3\}$} \\
+\end{align*}
+
+We can describe these as the loss for an individual $i$ in subgroup $k$ 
+
+% \begin{align*}
+% 		  &W_1^2=  \left( b_1 -  \bar{y}_1\frac{ \bar{y}_1 b_1 + \bar{y}_2 b_2 + \ldots + \bar{y}_k b_k }{\bar{y}_1^2 v_1 + \bar{y}_2^2 v_2 + \ldots + \bar{y}_k^2 v_k} \right)^2 \\
+% 		  &W_2^2= \left( b_2 -  \bar{y}_2\frac{ \bar{y}_1 b_1 + \bar{y}_2 b_2 + \ldots + \bar{y}_k b_k }{\bar{y}_1^2 v_1 + \bar{y}_2^2 v_2 + \ldots + \bar{y}_k^2 v_k} \right)^2 \\
+% 		  & \vdots \\
+% 		  &W_k^2 = \left( b_3 - \bar{y}_k\frac{ \bar{y}_1 b_1 + \bar{y}_2 b_2 + \ldots + \bar{y}_k b_k }{\bar{y}_1^2 v_1 + \bar{y}_2^2 v_2 + \ldots + \bar{y}_k^2 v_k} \right)^2 \\
+% \end{align*} 
+
+where $\bar{y}_k = (1 - \bar{x}_1 - \ldots - \bar{y}_{k-1}$)
+
+
+Call $\xi = \frac{ \bar{y}_1 b_1 + \bar{y}_2 b_2 + \ldots + \bar{y}_k b_k }{\sum_i^k \bar{y}_i^2 v_i + 2 \sum_{i \neq j}^k \bar{y}_i\bar{y}_j v_{i,k} }$
+
+
+\begin{align*}
+		  &W_1^2=  \left( b_1 -  (\bar{y}_{1} v_{1} + \sum_{j}^{k} \bar{y}_j v_{1,j} ) \xi \right)^2 = b_1^2 - 2 b_1 (\bar{y}_{1} v_{1} + \sum_{j}^{k} \bar{y}_j v_{1,j} ) \xi + (\bar{y}_{1} v_{1} + \sum_{j}^{k} \bar{y}_j v_{1,j} )^2 \xi^2 \\
+		  &W_2^2= \left( b_2 -  (\bar{y}_{2} v_{2} + \sum_{j}^{k} \bar{y}_j v_{2,j} ) \xi \right)^2 = b_2^2 - 2 b_2 (\bar{y}_{2} v_{2} + \sum_{j}^{k} \bar{y}_j v_{2,j} )_2 \xi + (\bar{y}_{2} v_{2} + \sum_{j}^{k} \bar{y}_j v_{2,j} )^2 \xi^2 \\
+		  & \vdots \\
+		  &W_k^2 = \left( b_k - (\bar{y}_{k} v_{k} + \sum_{j}^{k} \bar{y}_j v_{k,j} ) \xi \right)^2 = b_k^2 - 2 b_k(\bar{y}_{k} v_{k} + \sum_{j}^{k} \bar{y}_j v_{k,j} ) \xi  + (\bar{y}_{k} v_{k} + \sum_{j}^{k} \bar{y}_j v_{k,j} )^2 \xi^2 \\
+\end{align*} 
+
+taking expectation over $\gamma_i$ we get
+
+\begin{align*}
+		  &W_1^2=  v_1 - 2 v_1 \frac{\bar{y}_1^2 }{\bar{y}_1^2 v_1 + \bar{y}_2^2 v_2 + \ldots + \bar{y}_k^2 v_k} + \bar{y}_1^2 v_1 \xi^2 \\
+		  &W_2^2=  v_2 - 2 v_2 \frac{\bar{y}_2^2 }{\bar{y}_1^2 v_1 + \bar{y}_2^2 v_2 + \ldots + \bar{y}_k^2 v_k} + \bar{y}_2^2 v_2 \xi^2 \\
+		  & \vdots \\
+		  &W_k^2=  v_k - 2 v_k \frac{\bar{y}_k^2 }{\bar{y}_1^2 v_1 + \bar{y}_2^2 v_2 + \ldots + \bar{y}_k^2 v_k} + \bar{y}_k^2 v_k \xi^2 \\
+\end{align*}
+
+and start by assuming $\Var(\gamma_i) = 1$ then
+
+\begin{align*}
+	MSE = &p_1 W_1^2 + p_2 W_2^2 + \ldots + p_k W_k^2 \\
+	MSE = &p_1[v_1 - 2 \frac{\bar{y}_1^2 v_1}{\bar{y}_1^2 v_1 + \bar{y}_2^2 v_2 + \ldots + \bar{y}_k^2 v_k}+ \bar{y}_1^2 v_1 \xi^2] \\
+	  + &p_2[v_2 - 2 \frac{\bar{y}_2^2 v_2}{\bar{y}_1^2 v_1 + \bar{y}_2^2 v_2 + \ldots + \bar{y}_k^2 v_k}+ \bar{y}_2^2 v_2 \xi^2 ] \\ 
+	  & \vdots \\
+	 + &p_k [v_k -2 \frac{\bar{y}_k^2 v_k}{\bar{y}_1^2 v_1 + \bar{y}_2^2 v_2 + \ldots + \bar{y}_k^2 v_k} + \bar{y}_k^2 v_k \xi^2] \\
+\end{align*}
+
+First, assume $p = p_1 = p_2 = p_3 = \frac{1}{3}$
+            
+and note that in expectation (assuming $Cov(\gamma_i, \gamma_j) = 0$ for $i \neq j$)
+\begin{align*}
+	(\bar{y}_1 b_1 + \bar{y}_2 b_2 + \dots + \bar{y}_k b_3 )^2 &= \Var(\gamma_1) \bar{y}_1^2 + \Var(\gamma_2) \bar{y}_2^2 + \dots +\Var(\gamma_3) \bar{y}_k^2 \\
+\end{align*}
+
+then
+
+\begin{align*}
+	MSE = & p [(v_1 + v_2 + \dots + v_k) - 2 + 1] \\
+	= &p[(v_1 + v_2 + \dots + v_k) -1] = \frac{(v_1 + v_2 + \dots + v_k) -1}{3} \\
+\end{align*} 

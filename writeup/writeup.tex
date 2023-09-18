@@ -94,13 +94,29 @@ Let $A$ be a vector such that
 
 and $\bar{A}$ be define likewise.
 
+Similarly, let $b_i = \gamma_i - \bar{\gamma}_i$ and
+
+\begin{align*}
+	B = \begin{bmatrix}
+		b_1 \\
+		b_2 \\
+		\vdots \\
+		b_{k}
+	\end{bmatrix}
+\end{align*}
+
 then it can be seen that
 
 \begin{align*}
-    \E J_i &= E [(A_i - c_i \bar{A})(\gamma - \bar{\gamma})]^2 \\
+    \E J_i &= E [(A_i - c_i \bar{A})'(\gamma - \bar{\gamma})]^2 \\
+    \E J_i &= E [(A_i - c_i \bar{A})' B]^2 \\
 \end{align*}
 
 \input{case-6-derivation.tex}
+
+% \input{case-7-derivation.tex}
+
+\input{case-7-derivation-simplified.tex}
 
 
 \end{document}

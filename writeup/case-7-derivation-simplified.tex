@@ -1,0 +1,127 @@
+\subsection*{7. Generalization allowing for $k$ subgroups and allowing for covariance}
+
+First note, that from the vectorized equation above, we can see that the treatment effect $\beta_i$  is always the center random variable $\gamma - \E(\gamma)$. So WLOG, we will assume $\gamma$ is the centered r.v. with mean zero.
+
+
+
+we saw from before that we can write
+
+\begin{align*}
+	E J_i &=  p_1 ( b_1 - c_1 \beta_{ATE})^2 \\
+		  & + p_2 ( b_2 - c_2 \beta_{ATE})^2 \\
+		  &\vdots \\
+		  &+ p_k ( b_k -  c_k \beta_{ATE})^2 \\
+		  &=p_1 ( b_1 - c_1 (\bar{y}_1 b_1 + \bar{y}_2 b_2 + \ldots + \bar{y}_k b_k ))^2 \\
+		  &+ p_2 ( b_2 - c_2 (\bar{y}_1 b_1 +  \bar{y}_2 b_2 + \ldots + \bar{y}_k b_k ))^2 \\
+		  &\vdots \\
+		  &+ p_k ( b_k - c_k (\bar{y}_1 b_1 +\bar{y}_2 b_2 +  \ldots + \bar{y}_k b_k ))^2 \\
+\end{align*}
+
+expanding $c_i$ 
+\begin{align*}
+	c_i &= \frac{\Cov(\gamma_i, \beta_{ATE})}{\Var(\beta_{ATE})} \\
+		&= \frac{\bar{y}_i v_{i} + \sum_{j}^{k} \bar{y}_j v_{i,j} }{\sum_i^k \bar{y}_i^2 v_i + 2 \sum_{i \neq j}^k \bar{y}_i\bar{y}_j v_{i,k} } \quad \text{for $i \in \{1,\ldots,3\}$} \\
+\end{align*}
+
+We can describe these as the loss for an individual $i$ in subgroup $k$ 
+
+so 
+
+
+\begin{align*}
+	E J_i 
+	&=  p_1 ( b_1 -  \frac{\Cov(\gamma_1, \beta_{ATE})}{\Var(\beta_{ATE})} \beta_{ATE})^2 \\
+	& + p_2 ( b_2  - \frac{\Cov(\gamma_2, \beta_{ATE})}{\Var(\beta_{ATE})} \beta_{ATE})^2 \\
+	&\vdots \\
+	&+ p_k  ( b_k  - \frac{\Cov(\gamma_k, \beta_{ATE})}{\Var(\beta_{ATE})} \beta_{ATE})^2 \\
+	&=  p_1 ( b_1^2 - 2 b_1\frac{\Cov(\gamma_1, \beta_{ATE})}{\Var(\beta_{ATE})} \beta_{ATE} + \frac{\Cov(\bar{y}_1 \gamma_1, \beta_{ATE})^2}{\Var(\beta_{ATE})^2} \beta_{ATE}) \\
+	& + p_2 ( b_2^2 - 2 b_2\frac{\Cov(\gamma_2, \beta_{ATE})}{\Var(\beta_{ATE})} \beta_{ATE} + \frac{\Cov(\bar{y}_2 \gamma_2, \beta_{ATE})^2}{\Var(\beta_{ATE})^2} \beta_{ATE}) \\
+	&\vdots \\                                                                                                                        
+	&+ p_k  ( b_k^2 - 2 b_k\frac{\Cov(\gamma_k, \beta_{ATE})}{\Var(\beta_{ATE})} \beta_{ATE} + \frac{\Cov(\bar{y}_k \gamma_k, \beta_{ATE})^2}{\Var(\beta_{ATE})^2} \beta_{ATE}) \\
+\end{align*}
+
+Now taking the expectation over $\gamma$
+
+\begin{align*}
+	MSE
+	&=  p_1 \left(\Var(\gamma_1) - 2\frac{\Cov(\gamma_1, \beta_{ATE})^2}{\Var(\beta_{ATE})} + \frac{\Cov(\gamma_1, \beta_{ATE})^2}{\Var(\beta_{ATE})^2} \Var(\beta_{ATE})^2 \right) \\
+	& + p_2 \left(\Var(\gamma_2) - 2\frac{\Cov(\gamma_2, \beta_{ATE})^2}{\Var(\beta_{ATE})} + \frac{\Cov(\gamma_2, \beta_{ATE})^2}{\Var(\beta_{ATE})^2} \Var(\beta_{ATE})^2 \right) \\
+	&\vdots \\
+	&+ p_k  \left(\Var(\gamma_k) - 2\frac{\Cov(\gamma_k, \beta_{ATE})^2}{\Var(\beta_{ATE})}+ \frac{\Cov(\gamma_k, \beta_{ATE})^2}{\Var(\beta_{ATE})^2} \Var(\beta_{ATE})^2 \right) \\
+	&=  p_1 \left(\Var(\gamma_1) - 2\frac{\Cov(\gamma_1, \beta_{ATE})^2}{\Var(\beta_{ATE})} + \frac{\Cov(\gamma_1, \beta_{ATE})^2}{\Var(\beta_{ATE})}  \right) \\
+	& + p_2 \left(\Var(\gamma_2) - 2\frac{\Cov(\gamma_2, \beta_{ATE})^2}{\Var(\beta_{ATE})} + \frac{\Cov(\gamma_2, \beta_{ATE})^2}{\Var(\beta_{ATE})} \right) \\
+	&\vdots \\
+	&+ p_k  \left(\Var(\gamma_k) - 2\frac{\Cov(\gamma_k, \beta_{ATE})^2}{\Var(\beta_{ATE})}+ \frac{\Cov(\gamma_k, \beta_{ATE})^2}{\Var(\beta_{ATE})}  \right) \\
+	&=  p_1 \left(\Var(\gamma_1) - \frac{\Cov(\gamma_1, \beta_{ATE})^2}{\Var(\beta_{ATE})}  \right) \\
+	& + p_2 \left(\Var(\gamma_2) - \frac{\Cov(\gamma_2, \beta_{ATE})^2}{\Var(\beta_{ATE})} \right) \\
+	&\vdots \\
+	&+ p_k  \left(\Var(\gamma_k) - \frac{\Cov(\gamma_k, \beta_{ATE})^2}{\Var(\beta_{ATE})} \right) \\
+\end{align*}
+
+
+So then our MSE is simply
+\begin{align*}
+	MSE &= \sum_{i=1}^{k} p_i (\Var(\gamma_i)  - \frac{\Cov(\gamma_i, \beta_{ATE})^2}{\Var(\beta_{ATE})})  \\
+	MSE &= \sum_{i=1}^{k} p_i \Var(\gamma_i) 
+	- \sum_{i=1}^{k} p_i \frac{\Cov(\gamma_i, \beta_{ATE})^2}{\Var(\beta_{ATE})} \\
+		&\geq \sum_{i=1}^{k} p_i \Var(\gamma_i) 
+	- \sum_{i=1}^{k} p_i \frac{\Var(\gamma_i)\Var( \beta_{ATE})}{\Var(\beta_{ATE})} \\
+\end{align*} 
+
+Which is clearly minimized when the second term is maximized which happens when we assign all our trial proportion to the group with the highest variance
+
+
+more literally, looking to maximize the second term, we get
+\begin{align*}
+	&\sum_{i=1}^k p_i \frac{(\sum_{j}^{k} \bar{y}_j v_{i,j} )^2}{\sum_l^k \bar{y}_l^2 v_l + 2 \sum_{j \neq l}^k \bar{y}_j\bar{y}_l v_{j,l} }  \\
+	=&\sum_{i=1}^k p_i \frac{(\bar{y}_i v_{i} + \sum_{j}^{k} \bar{y}_j v_{i,j} )^2}{\sum_i^k \bar{y}_i^2 v_i + 2 \sum_{i \neq j}^k \bar{y}_i\bar{y}_j v_{i,k} }  \\
+\end{align*} 
+
+Starting with zero covariance then we get
+
+\begin{align*}
+	TERM &= \sum_{i=1}^k p_i \frac{(\bar{y}_i v_{i})^2}{\sum_i^k \bar{y}_i^2 v_i } = \sum_{i=1}^k p_i \frac{\bar{y}_i^2 v_{i}^2}{\sum_i^k \bar{y}_i^2 v_i }  \\
+\end{align*}
+
+Which is clearly maximized by assigning the largest share to the group with the heighest $p_i v_{i}$. And if a set of groups have the same $p_i v_{i}$, then any linear combination of them subject to the constraint that the sum of their trial proportions is 1, produces the same minimizing MSE.
+
+We can also see this via FOC:
+\begin{align*}
+	\frac{\partial}{\partial x_i} TERM &=
+	\frac{2 p_i v_i^2 x_i [\sum_{j \neq i}^k x_j^2 v_j]}{(\sum_i^k x_i^2 v_i)^2}  
+	 - \frac{2 v_i x_i [\sum_{j \neq i}^k p_j x_j^2 v_j^2]}{(\sum_i^k x_i^2 v_i)^2}  = 0 \\
+									   &=\frac{2 v_i x_i [\sum_{j \neq i}^k  p_i x_j^2 v_iv_j - p_j x_j^2 v_j^2]}{(\sum_i^k x_i^2 v_i)^2}
+\end{align*} 
+
+Solving this we get
+
+\begin{align*}
+	&p_i v_i x_i [\sum_{j \neq i}^k x_j^2 v_j] - x_i [\sum_{j \neq i}^k p_j x_j^2 v_j^2] = 0 \\
+	&p_i v_i [\sum_{j \neq i}^k x_j^2 v_j] = [\sum_{j \neq i}^k p_j x_j^2 v_j^2] \\
+	& \sum_{j \neq i}^k x_j^2(p_i v_i v_j - p_j v_j^2) = 0
+\end{align*} 
+
+so in order for each partial derivative equals zero satisfying the system of equations every sum has to equal zero.
+There are two ways this can happen: if $p_i v_i = p_j v_j$ or $x_j = 0$.
+However, because $\sum_{i}^{k} x_i = 1$, at least one $x_j$  must be non-zero. This gives us the solution that whenever $p_i v_i = p_j v_j$, we choose a corner solution for $x_{i}$ and because of the symmetry of the MSE, simply choose any linear combination along the constraint amongst the other terms with the same $p_i v_{i}$ weighting.
+
+% \frac{(x_i v_{i} + \sum_{j}^{k} x_j v_{i,j} )^2}{\sum_i^k x_i^2 v_i + 2 \sum_{i \neq j}^k x_ix_j v_{i,k} }  \\
+
+and with covariance we get
+
+\begin{align*}
+	\frac{\partial}{\partial x_i} TERM =
+	\frac{\sum_{l=1}^{k} 2 p_l v_{i,l} [\sum_{j}^k x_j v_{j,l} ]}{\sum_i^k x_i^2 v_i + 2 \sum_{i \neq j}^k x_i x_j v_{i,k} }  
+	- \frac{(\sum_{l=1}^{k} p_l[x_l v_l + \sum_{j\neq l}^{k} x_j v_{l,j} ]^2)[2x_i v_i + \sum_{j\neq i}^{k} 2x_j v_{i,j} ]}{(\sum_i^k x_i^2 v_i + 2 \sum_{i \neq j}^k x_i x_j v_{i,k} )^2}  = 0
+\end{align*} 
+
+\begin{align*}
+&\sum_{l=1}^{k} 2 p_l v_{i,l} [\sum_{j}^k x_j v_{j,l} ]
+- \frac{(\sum_{l=1}^{k} p_l[x_l v_l + \sum_{j\neq l}^{k} x_j v_{l,j} ]^2)[2x_i v_i + \sum_{j\neq i}^{k} 2x_j v_{i,j} ]}{\sum_i^k x_i^2 v_i + 2 \sum_{i \neq j}^k x_i x_j v_{i,k}}  = 0 \\
+&(\sum_{l=1}^{k} 2 p_l v_{i,l} [\sum_{j}^k x_j v_{j,l} ])[\sum_i^k x_i^2 v_i + 2 \sum_{i \neq j}^k x_i x_j v_{i,k}] = (\sum_{l=1}^{k} p_l[x_l v_l + \sum_{j\neq l}^{k} x_j v_{l,j} ]^2)[2x_i v_i + \sum_{j\neq i}^{k} 2x_j v_{i,j} ]
+\end{align*} 
+simplifying subscripts slightly
+
+\begin{align*}
+&(\sum_{l=1}^{k} 2 p_l v_{i,l} [\sum_{j}^k x_j v_{j,l} ])[\sum_i^k \sum_{j}^k x_i x_j v_{i,j}] = (\sum_{l=1}^{k} p_l[ \sum_{j}^{k} x_j v_{l,j} ]^2)[\sum_{j}^{k} 2x_j v_{i,j} ]
+\end{align*} 

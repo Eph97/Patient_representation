@@ -34,20 +34,20 @@ so
 	& + p_2 ( b_2  - \frac{\Cov(\gamma_2, \beta_{ATE})}{\Var(\beta_{ATE})} \beta_{ATE})^2 \\
 	&\vdots \\
 	&+ p_k  ( b_k  - \frac{\Cov(\gamma_k, \beta_{ATE})}{\Var(\beta_{ATE})} \beta_{ATE})^2 \\
-	&=  p_1 ( b_1^2 - 2 b_1\frac{\Cov(\gamma_1, \beta_{ATE})}{\Var(\beta_{ATE})} \beta_{ATE} + \frac{\Cov(\bar{y}_1 \gamma_1, \beta_{ATE})^2}{\Var(\beta_{ATE})^2} \beta_{ATE}) \\
-	& + p_2 ( b_2^2 - 2 b_2\frac{\Cov(\gamma_2, \beta_{ATE})}{\Var(\beta_{ATE})} \beta_{ATE} + \frac{\Cov(\bar{y}_2 \gamma_2, \beta_{ATE})^2}{\Var(\beta_{ATE})^2} \beta_{ATE}) \\
+	&=  p_1 ( b_1^2 - 2 b_1\frac{\Cov(\gamma_1, \beta_{ATE})}{\Var(\beta_{ATE})} \beta_{ATE} + \frac{\Cov(\bar{y}_1 \gamma_1, \beta_{ATE})^2}{\Var(\beta_{ATE})^2} \beta_{ATE}^2) \\
+	& + p_2 ( b_2^2 - 2 b_2\frac{\Cov(\gamma_2, \beta_{ATE})}{\Var(\beta_{ATE})} \beta_{ATE} + \frac{\Cov(\bar{y}_2 \gamma_2, \beta_{ATE})^2}{\Var(\beta_{ATE})^2} \beta_{ATE}^2) \\
 	&\vdots \\                                                                                                                        
-	&+ p_k  ( b_k^2 - 2 b_k\frac{\Cov(\gamma_k, \beta_{ATE})}{\Var(\beta_{ATE})} \beta_{ATE} + \frac{\Cov(\bar{y}_k \gamma_k, \beta_{ATE})^2}{\Var(\beta_{ATE})^2} \beta_{ATE}) \\
+	&+ p_k  ( b_k^2 - 2 b_k\frac{\Cov(\gamma_k, \beta_{ATE})}{\Var(\beta_{ATE})} \beta_{ATE} + \frac{\Cov(\bar{y}_k \gamma_k, \beta_{ATE})^2}{\Var(\beta_{ATE})^2} \beta_{ATE}^2) \\
 \end{align*}
 
 Now taking the expectation over $\gamma$
 
 \begin{align*}
 	MSE
-	&=  p_1 \left(\Var(\gamma_1) - 2\frac{\Cov(\gamma_1, \beta_{ATE})^2}{\Var(\beta_{ATE})} + \frac{\Cov(\gamma_1, \beta_{ATE})^2}{\Var(\beta_{ATE})^2} \Var(\beta_{ATE})^2 \right) \\
-	& + p_2 \left(\Var(\gamma_2) - 2\frac{\Cov(\gamma_2, \beta_{ATE})^2}{\Var(\beta_{ATE})} + \frac{\Cov(\gamma_2, \beta_{ATE})^2}{\Var(\beta_{ATE})^2} \Var(\beta_{ATE})^2 \right) \\
+	&=  p_1 \left(\Var(\gamma_1) - 2\frac{\Cov(\gamma_1, \beta_{ATE})^2}{\Var(\beta_{ATE})} + \frac{\Cov(\gamma_1, \beta_{ATE})^2}{\Var(\beta_{ATE})^2} \Var(\beta_{ATE}) \right) \\
+	& + p_2 \left(\Var(\gamma_2) - 2\frac{\Cov(\gamma_2, \beta_{ATE})^2}{\Var(\beta_{ATE})} + \frac{\Cov(\gamma_2, \beta_{ATE})^2}{\Var(\beta_{ATE})^2} \Var(\beta_{ATE}) \right) \\
 	&\vdots \\
-	&+ p_k  \left(\Var(\gamma_k) - 2\frac{\Cov(\gamma_k, \beta_{ATE})^2}{\Var(\beta_{ATE})}+ \frac{\Cov(\gamma_k, \beta_{ATE})^2}{\Var(\beta_{ATE})^2} \Var(\beta_{ATE})^2 \right) \\
+	&+ p_k  \left(\Var(\gamma_k) - 2\frac{\Cov(\gamma_k, \beta_{ATE})^2}{\Var(\beta_{ATE})}+ \frac{\Cov(\gamma_k, \beta_{ATE})^2}{\Var(\beta_{ATE})^2} \Var(\beta_{ATE}) \right) \\
 	&=  p_1 \left(\Var(\gamma_1) - 2\frac{\Cov(\gamma_1, \beta_{ATE})^2}{\Var(\beta_{ATE})} + \frac{\Cov(\gamma_1, \beta_{ATE})^2}{\Var(\beta_{ATE})}  \right) \\
 	& + p_2 \left(\Var(\gamma_2) - 2\frac{\Cov(\gamma_2, \beta_{ATE})^2}{\Var(\beta_{ATE})} + \frac{\Cov(\gamma_2, \beta_{ATE})^2}{\Var(\beta_{ATE})} \right) \\
 	&\vdots \\
@@ -107,21 +107,60 @@ However, because $\sum_{i}^{k} x_i = 1$, at least one $x_j$  must be non-zero. T
 
 % \frac{(x_i v_{i} + \sum_{j}^{k} x_j v_{i,j} )^2}{\sum_i^k x_i^2 v_i + 2 \sum_{i \neq j}^k x_ix_j v_{i,k} }  \\
 
-and with covariance we get
+and with covariance problem, the solution is similar. Here we again want to maximize the second which is maximized when we assign the weight to the $i$th group that produces the largest $p_i \Cov(\gamma_i, \beta_{ATE})$. If this term is the same for some groups $i$ and $j$ and larger than the term for other groups, than any linear combination between then we just find the optimizing alocation between these comparable groups.
+
 
 \begin{align*}
-	\frac{\partial}{\partial x_i} TERM =
-	\frac{\sum_{l=1}^{k} 2 p_l v_{i,l} [\sum_{j}^k x_j v_{j,l} ]}{\sum_i^k x_i^2 v_i + 2 \sum_{i \neq j}^k x_i x_j v_{i,k} }  
-	- \frac{(\sum_{l=1}^{k} p_l[x_l v_l + \sum_{j\neq l}^{k} x_j v_{l,j} ]^2)[2x_i v_i + \sum_{j\neq i}^{k} 2x_j v_{i,j} ]}{(\sum_i^k x_i^2 v_i + 2 \sum_{i \neq j}^k x_i x_j v_{i,k} )^2}  = 0
+	\frac{\partial}{\partial x_i} TERM &= \sum_{l}^{k}2 p_{l} \frac{\Cov(\gamma_l, \beta_{ATE}) }{\Var(\beta_{ATE})}\frac{\partial \Cov(\gamma_l, \beta_{ATE})}{\partial x_{i}} - \sum_{l}^{k} p_l\frac{\Cov(\gamma_l, \beta_{ATE})}{\Var(\beta_{ATE})^2} \frac{\partial \Var(\beta_{ATE})}{\partial x_i}= 0 \\ 
 \end{align*} 
 
+which is satisfied when
 \begin{align*}
-&\sum_{l=1}^{k} 2 p_l v_{i,l} [\sum_{j}^k x_j v_{j,l} ]
-- \frac{(\sum_{l=1}^{k} p_l[x_l v_l + \sum_{j\neq l}^{k} x_j v_{l,j} ]^2)[2x_i v_i + \sum_{j\neq i}^{k} 2x_j v_{i,j} ]}{\sum_i^k x_i^2 v_i + 2 \sum_{i \neq j}^k x_i x_j v_{i,k}}  = 0 \\
-&(\sum_{l=1}^{k} 2 p_l v_{i,l} [\sum_{j}^k x_j v_{j,l} ])[\sum_i^k x_i^2 v_i + 2 \sum_{i \neq j}^k x_i x_j v_{i,k}] = (\sum_{l=1}^{k} p_l[x_l v_l + \sum_{j\neq l}^{k} x_j v_{l,j} ]^2)[2x_i v_i + \sum_{j\neq i}^{k} 2x_j v_{i,j} ]
+	 \sum_{l}^{k} p_{l}\frac{\Cov(\gamma_l, \beta_{ATE}) }{\Var(\beta_{ATE})}  \big( \frac{\partial \Cov(\gamma_l, \beta_{ATE})}{\partial x_{i}} - \frac{1}{2\Var(\beta_{ATE})} \frac{\partial \Var(\beta_{ATE})}{\partial x_i} \big) = 0 \\ 
 \end{align*} 
-simplifying subscripts slightly
 
-\begin{align*}
-&(\sum_{l=1}^{k} 2 p_l v_{i,l} [\sum_{j}^k x_j v_{j,l} ])[\sum_i^k \sum_{j}^k x_i x_j v_{i,j}] = (\sum_{l=1}^{k} p_l[ \sum_{j}^{k} x_j v_{l,j} ]^2)[\sum_{j}^{k} 2x_j v_{i,j} ]
-\end{align*} 
+% which happens when for every $l$, either
+
+% \begin{align*}
+% 	\Cov(\gamma_l, \beta_{ATE}) = 0
+% \end{align*} 
+% or 
+
+% \begin{align*}
+% 	2 \Var(\beta_{ATE}) \frac{\partial \Cov(\gamma_l, \beta_{ATE})}{\partial x_{i}} = \frac{\partial \Var(\beta_{ATE})}{\partial x_i} 
+% \end{align*} 
+
+
+
+% expanded,
+% \begin{align*}
+									    % \frac{\sum_{l=1}^{k} 2 p_l v_{i,l} [\sum_{j}^k x_j v_{j,l} ]}{\sum_i^k x_i^2 v_i + 2 \sum_{i \neq j}^k x_i x_j v_{i,k} }  
+									   % - \frac{(\sum_{l=1}^{k} p_l[x_l v_l + \sum_{j\neq l}^{k} x_j v_{l,j} ]^2)[2x_i v_i + \sum_{j\neq i}^{k} 2x_j v_{i,j} ]}{(\sum_i^k x_i^2 v_i + 2 \sum_{i \neq j}^k x_i x_j v_{i,k} )^2}  = 0
+% \end{align*} 
+
+% \begin{align*}
+% &\sum_{l=1}^{k} 2 p_l v_{i,l} [\sum_{j}^k x_j v_{j,l} ]
+% - \frac{(\sum_{l=1}^{k} p_l[x_l v_l + \sum_{j\neq l}^{k} x_j v_{l,j} ]^2)[2x_i v_i + \sum_{j\neq i}^{k} 2x_j v_{i,j} ]}{\sum_i^k x_i^2 v_i + 2 \sum_{i \neq j}^k x_i x_j v_{i,k}}  = 0 \\
+% &(\sum_{l=1}^{k} 2 p_l v_{i,l} [\sum_{j}^k x_j v_{j,l} ])[\sum_i^k x_i^2 v_i + 2 \sum_{i \neq j}^k x_i x_j v_{i,k}] = (\sum_{l=1}^{k} p_l[x_l v_l + \sum_{j\neq l}^{k} x_j v_{l,j} ]^2)[2x_i v_i + \sum_{j\neq i}^{k} 2x_j v_{i,j} ]
+% \end{align*} 
+% simplifying subscripts slightly
+
+% \begin{align*}
+% &(\sum_{l=1}^{k} 2 p_l v_{i,l} [\sum_{j}^k x_j v_{j,l} ])[\sum_l^k \sum_{j}^k x_l x_j v_{l,j}] = (\sum_{l=1}^{k} p_l[ \sum_{j}^{k} x_j v_{l,j} ]^2)[\sum_{j}^{k} 2x_j v_{i,j} ] \\
+% &(\sum_{l=1}^{k} p_l v_{i,l} [\sum_{j}^k x_j v_{j,l} ])[\sum_l^k \sum_{j}^k x_l x_j v_{l,j}] = (\sum_{l=1}^{k} p_l[ \sum_{j}^{k} x_j v_{l,j} ]^2)[\sum_{j}^{k} x_j v_{i,j} ] \\
+% \end{align*} 
+
+% \begin{align*}
+	% &(\sum_{l=1}^{k} p_l v_{i,l} \underbrace{[\sum_{j}^k x_j v_{j,l} ]}_{T_j})
+	% \underbrace{[\sum_l^k \sum_{j}^k x_l x_j v_{l,j}]}_{\Var(\beta_{ATE})} = 
+	% \underbrace{(\sum_{l=1}^{k} p_l[ \sum_{j}^{k} x_j v_{l,j} ]^2)}_{T_j}\underbrace{[\sum_{j}^{k} x_j v_{i,j} ]}_{T_i} \\
+% \end{align*} 
+
+% then letting  $k=3$,
+
+% the solution to the ith FOC is
+% \begin{align*}
+% 	p_{1}T_1 [v_{1,i} \Var(\beta_{ATE}) - T_{1} T_{i}] + 
+% 	p_{2}T_2 [v_{2,i} \Var(\beta_{ATE}) - T_{2} T_{i}] +
+% 	p_{3}T_3 [v_{3,i} \Var(\beta_{ATE}) - T_{3} T_{i}] = 0
+% \end{align*} 

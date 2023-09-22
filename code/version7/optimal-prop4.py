@@ -32,19 +32,19 @@ k = 3 # number of groups
 gamma_mean = np.ones(k) *0.0
 gamma_cov=np.identity(k)
 i = 0; j = 1
-gamma_cov[i,j] = gamma_cov[j,i] = 0.7
+gamma_cov[i,j] = gamma_cov[j,i] = 0.8
 # gamma_cov[2,2] = 1
-gamma_cov[1,1] = 1
-gamma_cov[0,0] = 0.9
+# gamma_cov[1,1] = 1
+# gamma_cov[0,0] = 2
 var_cov = gamma_cov
-p1 = 2/9
-p2 = 3/9
-p3 = 4/9
+p1 = 1/4
+p2 = 2/4
+p3 = 1/4
 
 assert gamma_cov[i,j]**2 <= gamma_cov[i,i]*gamma_cov[j,j]
 
 p = [p1, p2, p3]
-domain =[[ i,j, (1-i-j) ] for i in options for j in options]
+domain =[[ i,j, round((1-i-j),4) ] for i in options for j in options]
 
 domain_clean = np.array([x_bar for x_bar in domain if (x_bar[-1] >= 0)])
 
@@ -57,6 +57,7 @@ df = pd.DataFrame(domain_clean, columns = ['x_1', 'x_2', 'x_3'])
 df['error'] = error
 
 print(df.iloc[min_ind])
+opt_x_bar = df.iloc[min_ind].values[:3]
 
 # find row with minimum error in df
 
@@ -77,3 +78,4 @@ ax.set_title(f"Error surface for 3 groups p_1={p[0]}, p_2={p[1]}, p_3={p[2]}")
 
 plt.show()
 
+# test(p, gamma_cov, opt_x_bar, 0)
